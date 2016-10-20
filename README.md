@@ -1,2 +1,3 @@
 # Adventure_Land_Codes
-Place where I store codes for adventure_lands -- 
+
+Get more functions from -- https://github.com/kaansoral/adventureland
