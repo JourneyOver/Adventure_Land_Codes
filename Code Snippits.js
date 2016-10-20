@@ -166,6 +166,87 @@ parent.u_item = item_slot;
 parent.u_scroll = scroll_slot;
 parent.upgrade();
 
+//More Advenced Auto upgrade
+function find_item(itemName) {
+  var i;
+
+  for (i = 0; i < 42; i++) {
+    if (character.items[i] != undefined &&
+        character.items[i].name == itemName) {
+          return i;
+        }
+  }
+  return -1;
+
+}
+
+function equipItem(invSlot) {
+  var sock = get_socket();
+  sock.emit("equip", {num: invSlot});
+}
+
+function upgradeEquip(itemName, equipSlot, level, buyable) {
+  var invSlot;
+  var invItem;
+  var equippedItem;
+  var scrollSlot;
+
+  //ensure item in inv
+  invSlot = find_item(itemName);
+  if (invSlot == -1) {
+    if (buyable) {
+      buy(itemName, 1);
+      return true;
+    }
+    return false;
+  } else {
+    invItem = character.items[invSlot];
+  }
+
+  //ensure item is equipped
+  equippedItem = character.slots[equipSlot];
+  if (equippedItem == undefined || equippedItem.name != itemName) {
+    equipItem(invSlot);
+    return true;
+  }
+
+  //ensure equipped item is not at level
+  if (equippedItem.level >= level) {
+    return false;
+  }
+
+  //equip the better
+  if (invItem.level > equippedItem.level) {
+    equipItem(invSlot);
+    return true;
+  }
+
+
+  if (invItem.level < 7) {
+  //ensure have scroll
+    scrollSlot = find_item("scroll0");
+    if (scrollSlot == -1) {
+      buy("scroll0", 1);
+      return true;
+    }
+
+    //upgrade the inv
+    upgrade(invSlot, scrollSlot);
+    return true;
+  }
+  else {
+    scrollSlot = find_item("scroll1");
+    if (scrollSlot == -1) {
+      buy("scroll1", 1);
+      return true;
+    }
+
+    //upgrade the inv
+    upgrade(invSlot, scrollSlot);
+    return true;
+  }
+}
+
 //Refined Potion Use
 if (character.hp <= character.max_hp - 200 || character.mp < character.mp_cost) {
 	use_hp_or_mp();

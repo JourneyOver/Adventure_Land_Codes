@@ -25,7 +25,7 @@ function keyboard(e)
 	var key = e.keyCode;
 	set_message(key);
 	//Convert to keycodes
-	
+
 	if(key == 32 && !grind)
 	{
 		grind = true;
