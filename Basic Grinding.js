@@ -1,6 +1,6 @@
-var enemydist = parent.G.monsters.<targettype>.range + 5; //Change <targettype> to whatever you are fighting, list of names for each monster will be in targettype variables.txt, this will be dynamic soonish
+/* var enemydist = parent.G.monsters.<targettype>.range + 5; //Change <targettype> to whatever you are fighting, list of names for each monster will be in targettype variables.txt, this will be dynamic soonish */ //decapricated for now, using a differnt method to get distance thanks to wiz!
 var mode = 0; //0 is default, 1 is testing (do not use testing for now)
-var min_xp_from_mob = 4000; //set to minimum xp you want to be getting from each kill -- lowest amount of xp a mob has to have to be targetted
+var min_xp_from_mob = 100; //set to minimum xp you want to be getting from each kill -- lowest amount of xp a mob has to have to be targetted
 var max_att_from_mob = 120; //set to maximum damage you want to take from each hit -- most attack you're willing to fight
 var min_xp_from_mob2 = 4000; //set to minimum xp you want to be getting from each kill if can't find min from first target -- lowest amount of xp a mob has to have to be targetted
 var max_att_from_mob2 = 120; //set to maximum damage you want to take from each hit if can't find max from first target -- most attack you're willing to fight
@@ -100,33 +100,33 @@ setInterval(function()
     {
         if (distx > 0) //Player is left of enemy
         {
-            move(target.real_x - enemydist, chary);
+            move(target.real_x - parent.G.monsters[target.mtype].range+5, chary);
         }
         if (distx < 0) //Player is right of enemy
         {
-            move(target.real_x + enemydist, chary);
+            move(target.real_x + parent.G.monsters[target.mtype].range+5, chary);
         }
         if (disty > 0) //Player is below enemy
         {
-            move(charx, target.real_y - enemydist);
+            move(charx, target.real_y - parent.G.monsters[target.mtype].range+5);
         }
         if (disty < 0) //Player is above enemy
         {
-            move(charx, target.real_y + enemydist);
+            move(charx, target.real_y + parent.G.monsters[target.mtype].range+5);
         }
     }
-    else if (mode == 1)
+/*    else if (mode == 1)
     {
         var tox, toy;
-        for (tox = -enemydist; tox <= enemydist; tox++)
+        for (tox = -parent.G.monsters[target.mtype].range+5; tox <= parent.G.monsters[target.mtype].range+5; tox++)
         {
-            for (toy = -enemydist; toy <= enemydist; toy++)
+            for (toy = -parent.G.monsters[target.mtype].range+5; toy <= parent.G.monsters[target.mtype].range+5; toy++)
             {
-                if (Math.pow(tox, 2) + Math.pow(toy, 2) == Math.pow(enemydist, 2))
+                if (Math.pow(tox, 2) + Math.pow(toy, 2) == Math.pow(parent.G.monsters[target.mtype].range+5, 2))
                     move(target.real_x + tox, target.real_y + toy);
             }
         }
-    }
+    } */
     //Following/Maintaining Distance - Too Simplistic
 
 
