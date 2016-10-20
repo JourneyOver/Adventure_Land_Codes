@@ -3,13 +3,23 @@
 var mode = 0; //0 is kite(moveing around while attacking), 1 is standing still, 2 is testing (do not use testing for now)
 var min_xp_from_mob = 100; //set to minimum xp you want to be getting from each kill -- lowest amount of xp a mob has to have to be targetted
 var max_att_from_mob = 120; //set to maximum damage you want to take from each hit -- most attack you're willing to fight
-var min_xp_from_mob2 = 4000; //set to minimum xp you want to be getting from each kill if can't find min from first target -- lowest amount of xp a mob has to have to be targetted
+var min_xp_from_mob2 = 100; //set to minimum xp you want to be getting from each kill if can't find min from first target -- lowest amount of xp a mob has to have to be targetted
 var max_att_from_mob2 = 120; //set to maximum damage you want to take from each hit if can't find max from first target -- most attack you're willing to fight
 //Settings
 
 var prevx = 0;
 var prevy = 0;
 //Previous coords
+
+var angle;
+var flipcd = 0;
+var stuck = 2;
+//Distance Maintainence Variables
+
+//show_json(character);
+//show_json(get_targeted_monster());
+//show_json(parent.M);
+//JSONs
 
 //Automatic Potion Purchasing!
 var purchase_pots = true; //Set to true in order to allow potion purchases
@@ -35,15 +45,20 @@ setInterval(function() {
 		parent.use('mp');
 	//Constrained Healing
 
+	var charx = character.real_x;
+	var chary = character.real_y;
+	//Character Location
+
 	var target = get_targeted_monster();
 	if (!target) {
 		target = get_nearest_monster({
 			min_xp: min_xp_from_mob,
 			max_att: max_att_from_mob
 		});
-		if (target)
+		if (target) {
 			change_target(target);
-		else {
+			angle = Math.atan2(target.real_y - chary, target.real_x - charx);
+		} else {
 			target = get_nearest_monster({
 				min_xp: min_xp_from_mob2,
 				max_att: max_att_from_mob2
@@ -56,6 +71,7 @@ setInterval(function() {
 			}
 		}
 	}
+	enemydist = parent.G.monsters[target.mtype].range + 5;
 	//Monster Searching
 
 	loot();
@@ -65,45 +81,33 @@ setInterval(function() {
 		attack(target);
 	//Attack
 
-	var parmem = get_nearest_player();
-	parent.socket.emit("party_invite", {
-		id: parmem.id
-	});
-	//Invite to Party
-
-	var charx = character.real_x;
-	var chary = character.real_y;
-	//Character Location
+	/*		var parmem = get_nearest_player();
+			if (parmem) {
+				parent.socket.emit("party_invite", {
+					id: parmem.id
+				});
+			}
+			//Invite to Party */
 
 	var distx = target.real_x - charx;
 	var disty = target.real_y - chary;
-	//Enemy Distance
+	if (!angle && target)
+		angle = Math.atan2(disty, distx);
+	//Enemy Distance and Angle
 
 	set_message("Location:\n" +
-		Math.ceil(charx) + "," + Math.ceil(chary) +
-		"\nEnemy:\n" +
-		Math.ceil(target.real_x) + "," + Math.ceil(target.real_y) +
-		"\nDistance:\n" +
-		Math.ceil(distx) + "," + Math.ceil(disty));
+		Math.ceil(charx) + "," + Math.ceil(chary));
 	//Output
 
 	if (mode === 0) {
 		if (distx > 0) //Player is left of enemy
-		{
-			move(target.real_x - parent.G.monsters[target.mtype].range + 5, chary);
-		}
+			move(target.real_x - enemydist, chary);
 		if (distx < 0) //Player is right of enemy
-		{
-			move(target.real_x + parent.G.monsters[target.mtype].range + 5, chary);
-		}
+			move(target.real_x + enemydist, chary);
 		if (disty > 0) //Player is below enemy
-		{
-			move(charx, target.real_y - parent.G.monsters[target.mtype].range + 5);
-		}
+			move(charx, target.real_y - enemydist);
 		if (disty < 0) //Player is above enemy
-		{
-			move(charx, target.real_y + parent.G.monsters[target.mtype].range + 5);
-		}
+			move(charx, target.real_y + enemydist);
 	} else if (mode == 1)
 		if (!in_attack_range(target)) {
 			move(
@@ -111,20 +115,27 @@ setInterval(function() {
 				character.real_y + (target.real_y - character.real_y) / 2
 			);
 			// Walk half the distance
+		} else if (mode == 2) {
+		var chx = charx - prevx;
+		var chy = chary - prevy;
+		var distmov = Math.sqrt(chx * chx + chy * chy);
+
+		if (distmov < stuck) {
+			angle = angle + Math.PI * 2 * 0.125;
 		}
-		/*    else if (mode == 2)
-		    {
-		        var tox, toy;
-		        for (tox = -parent.G.monsters[target.mtype].range+5; tox <= parent.G.monsters[target.mtype].range+5; tox++)
-		        {
-		            for (toy = -parent.G.monsters[target.mtype].range+5; toy <= parent.G.monsters[target.mtype].range+5; toy++)
-		            {
-		                if (Math.pow(tox, 2) + Math.pow(toy, 2) == Math.pow(parent.G.monsters[target.mtype].range+5, 2))
-		                    move(target.real_x + tox, target.real_y + toy);
-		            }
-		        }
-		    } */
-		//Following/Maintaining Distance - Too Simplistic
+		if (parent.distance(character, target) <= enemydist && flipcd > 18) {
+			angle = angle + Math.PI * 2 * 0.35;
+			flipcd = 0;
+		}
+		flipcd++;
+		//Stuck Code
+
+		var new_x = target.real_x + enemydist * Math.cos(angle);
+		var new_y = target.real_y + enemydist * Math.sin(angle);
+		move(new_x, new_y);
+		//Credit to /u/idrum4316
+	}
+	//Following/Maintaining Distance
 
 	prevx = Math.ceil(charx);
 	prevy = Math.ceil(chary);

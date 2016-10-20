@@ -112,7 +112,45 @@ if (upgradeNumber < 3 && itemNumber <= /last item to be upgraded/) {
 	}
 }
 
-//Auto Upgrade 2
+// Auto Upgrade 2 (stops at a +6)
+var item_slot = 0;
+var scroll_slot = 1;
+var scroll2_slot = 2;
+var max_item_level = 7;
+var item_to_upgrade = "boots"
+
+
+setInterval(function(){
+
+    if(!character.items[item_slot])
+        parent.buy(item_to_upgrade, 1);
+    if(!character.items[scroll_slot])
+        parent.buy("scroll0", 200);
+    if(!character.items[scroll2_slot])
+        parent.buy("scroll1", 1);
+
+    if(max_item_level <= 7)
+    {
+        if(character.items[item_slot].level < max_item_level)
+        {
+            upgrade(item_slot, scroll_slot);
+        }
+    }else if(max_item_level > 7)
+    {
+        if(character.items[item_slot].level <= 6)
+        {
+            upgrade(item_slot, scroll_slot);
+        }else if(character.items[item_slot].level < max_item_level)
+        {
+            upgrade(item_slot, scroll2_slot)
+        }
+    }
+
+
+
+},1000/2); // Loops every 1/2 seconds.
+
+//Auto Upgrade 3
 var item_slot = 0;
 var scroll_slot = 1;
 // Put the item to upgrade in slot 0, the scroll to use in slot 1
@@ -122,8 +160,8 @@ if (!character.items[item_slot])
 if (!character.items[scroll_slot])
 	parent.buy("scroll0", 200);
 
-upgrade(item_slot, scroll_slot)
-	// upgrade changes u_item and u_scroll, so I just change them directly.
+// parent.upgrade(item_slot, scroll_slot) didn't seem to work
+// upgrade changes u_item and u_scroll, so I just change them directly.
 parent.u_item = item_slot;
 parent.u_scroll = scroll_slot;
 parent.upgrade();
