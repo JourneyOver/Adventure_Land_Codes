@@ -1,6 +1,6 @@
 /* var enemydist = parent.G.monsters.<targettype>.range + 5; //Change <targettype> to whatever you are fighting, list of names for each monster will be in targettype variables.txt, this will be dynamic soonish */
 //deprecated for now, using a different method to get distance thanks to wiz!
-var mode = 0; //0 is kite(moveing around while attacking), 1 is standing still, 2 is testing (do not use testing for now)
+var mode = 2; //0 is kite (move in straight line while attacking), 1 is standing still (will move if target is out of range), 2 is circle kite (walks in circles around enemy)
 var min_xp_from_mob = 100; //set to minimum xp you want to be getting from each kill -- lowest amount of xp a mob has to have to be targetted
 var max_att_from_mob = 120; //set to maximum damage you want to take from each hit -- most attack you're willing to fight
 var min_xp_from_mob2 = 100; //set to minimum xp you want to be getting from each kill if can't find min from first target -- lowest amount of xp a mob has to have to be targetted
@@ -108,14 +108,15 @@ setInterval(function() {
 			move(charx, target.real_y - enemydist);
 		if (disty < 0) //Player is above enemy
 			move(charx, target.real_y + enemydist);
-	} else if (mode == 1)
+	} else if (mode == 1) {
 		if (!in_attack_range(target)) {
 			move(
 				character.real_x + (target.real_x - character.real_x) / 2,
 				character.real_y + (target.real_y - character.real_y) / 2
 			);
-			// Walk half the distance
-		} else if (mode == 2) {
+		}
+		// Walk half the distance
+	} else if (mode == 2) {
 		var chx = charx - prevx;
 		var chy = chary - prevy;
 		var distmov = Math.sqrt(chx * chx + chy * chy);
