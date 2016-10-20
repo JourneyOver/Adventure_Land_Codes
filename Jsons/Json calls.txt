@@ -1,0 +1,11 @@
+show_json(character) (The obvious one)
+show_json(parent.M) - Map's lines
+show_json(parent.G) - Game data, definitions
+show_json(get_target()) - Practical way to inspect whatever you are targeting
+
+
+show_json(parent.G.monsters)
+show_json(parent.G.items)
+show_json(parent.G.npcs)
+
+For example -> G.items[character.items[0].name].compound - if this is true, then you can combine the item, with other items of the same name and level

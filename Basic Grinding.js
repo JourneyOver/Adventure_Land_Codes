@@ -1,4 +1,4 @@
-var enemydist = character.range - 123; //Change if character keeps running away
+var enemydist = parent.G.monsters.<targettype>.range + 5; //Change <targettype> to whatever you are fighting, list of names for each monster will be in targettype variables.txt, this will be dynamic soonish
 var mode = 1; //0 is default, 1 is testing
 var min_xp_from_mob = 4000; //set to minimum xp you want to be getting from each kill -- lowest amount of xp a mob has to have to be targetted
 var max_att_from_mob = 120; //set to maximum damage you want to take from each hit -- most attack you're willing to fight
