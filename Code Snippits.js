@@ -315,7 +315,7 @@ function has_moved() {
 	return moved;
 }
 
-
+//Follow The Party Leader And Attack His Target
 setInterval(function(){
     loot();
     if(character.max_hp - character.hp > 200 ||
