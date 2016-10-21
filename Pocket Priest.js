@@ -33,7 +33,7 @@ var party_list = [
 	{
 		name: "",
 		priority: 0.0
-}, ]
+} ]
 
 var party_count = 0;
 //Fills the Party List
@@ -67,7 +67,7 @@ setInterval(function() {
 	loot();
 
 	//Heal and restore mana if required
-	if (character.hp / character.max_hp < 0.3) {
+	if (character.hp / character.max_hp < 0.7) {
 		parent.use('hp');
 		if (character.hp <= 100)
 			parent.socket.emit("transport", {
