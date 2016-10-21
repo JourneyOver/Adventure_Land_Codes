@@ -76,7 +76,7 @@ var party_list = [
 	{
 		name: "",
 		priority: 0
-}, ]
+} ]
 
 function fill_party_list() {
 	var min_d = 999999,
@@ -348,3 +348,41 @@ setInterval(function(){
         move(character.real_x + (leader.real_x - character.real_x),
              character.real_y + (leader.real_y - character.real_y));
 },1000/4);
+
+
+//Upgrade and exchange
+var upgrade = true; // true for upgrading, false for exchanging
+var exItemScroll = 0 // The slot with the scrolls/item to be exchanged (slot 0 is first inv slot)
+var itemSlot = 1 // The slot with the item to be upgraded.
+var maxLevel = 7 // Max level the item can become.
+
+var updatesPS; // Number of updates per sec.
+
+setInterval(function(){
+    if(upgrade && character.items[itemSlot].level < maxLevel-1) {
+        upgrade(itemSlot,exItemScroll);
+        updatesPS = 4;
+    }
+    else{
+        exchange(exItemScroll);
+        updatesPS = 1;
+    }
+},1000/updatesPS);
+
+
+//different targeting procedure
+if (!target) {
+	target = get_nearest_monster({
+		min_xp: 20000,
+		max_att: 275
+	});
+	if (target && target.hp > 20000) change_target(target);
+	else if (!target) change_target(get_nearest_monster({
+		min_xp: 5000,
+		max_att: 275
+	}));
+	else {
+		set_message("No Monsters");
+		return;
+	}
+}

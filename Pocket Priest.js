@@ -2,7 +2,7 @@
 // Will follow your party around and auto-heal the members based on a priority calculation.
 // It looks at their max hp vs current hp and heals the person with the highest percentage loss.
 //Courtesy of: Sulsaries and JourneyOver
-//Version 0.0.1
+//Version 1.1.0
 
 //Automatic Potion Purchasing!
 var purchase_pots = true; //Set to true in order to allow potion purchases
@@ -33,7 +33,7 @@ var party_list = [
 	{
 		name: "",
 		priority: 0.0
-} ]
+}]
 
 var party_count = 0;
 //Fills the Party List
@@ -42,16 +42,17 @@ function fill_party_list() {
 		target = null;
 	party_count = 0;
 	set_message("Making party_list");
-	party_list[party_count].name = character.party;
+	party_list[party_count].name = character.name;
 	party_count++;
 	for (id in parent.entities) {
+
 		var current = parent.entities[id];
 		if (current.player === false || current.dead || current.party != character.party /* || current.hp==current.max_hp*/ ) {
+
 			continue;
 		}
 		var c_dist = parent.distance(character, current);
-		if (c_dist < min_d) min_d = c_dist, target = current;
-		else if (current.player === true) {
+		if (c_dist < min_d && current.player === true) {
 			target = current;
 			party_list[party_count].name = target.name;
 			party_count++;
@@ -66,8 +67,9 @@ setInterval(function() {
 	//Loot available chests
 	loot();
 
+
 	//Heal and restore mana if required
-	if (character.hp / character.max_hp < 0.7) {
+	if (character.hp / character.max_hp < 0.3) {
 		parent.use('hp');
 		if (character.hp <= 100)
 			parent.socket.emit("transport", {
@@ -92,6 +94,7 @@ setInterval(function() {
 	var target = null;
 	//Update party list
 	fill_party_list();
+	//show_json(party_list);
 	set_message(party_count);
 	//set_message(party_list[0].name);
 
@@ -125,17 +128,15 @@ setInterval(function() {
 		set_message("Healing");
 	}
 
-	if ((target.real_x != character.real_x) || (target.real_y != character.real_y) && !target.rip) {
-		move(
-			character.real_x + (target.real_x - character.real_x),
-			character.real_y + (target.real_y - character.real_y)
-		);
+	if (!in_attack_range(target)) {
+		move_to(target, character.range);
+
 		set_message("Moving to Priority");
 	}
 
 	//set_message(party_count);
 
-}, 1000 / 4); // Loops every 1/4 seconds.
+}, 1000 / 3); // Loops every 1/4 seconds.
 
 function purchase_potions() {
 	set_message("Buying pots.");
@@ -146,3 +147,22 @@ function purchase_potions() {
 		parent.buy("mpot0", pots_to_buy);
 	}
 }
+
+function move_to(char, distance) {
+	if (!char) return;
+	var dist_x = character.real_x - char.real_x;
+	var dist_y = character.real_y - char.real_y;
+
+	var from_char = sqrt(dist_x * dist_x + dist_y * dist_y);
+
+	var perc = from_char / distance;
+
+	if (perc > 1.01) {
+		move(
+			character.real_x - (dist_x - dist_x / perc),
+			character.real_y - (dist_y - dist_y / perc)
+		);
+		return true;
+	}
+	return false;
+};
