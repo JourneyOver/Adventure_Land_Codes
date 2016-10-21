@@ -314,3 +314,37 @@ function has_moved() {
 	oldY = character.real_y;
 	return moved;
 }
+
+
+setInterval(function(){
+    loot();
+    if(character.max_hp - character.hp > 200 ||
+       character.max_mp - character.mp > 300)
+        use_hp_or_mp();
+
+    // Party leader
+    var leader = get_player(character.party);
+
+    // Current target and target of leader.
+    var currentTarget = get_targeted_monster();
+    var leaderTarget = get_target_of(leader)
+
+    // Change the target.
+    if (!currentTarget || currentTarget != leaderTarget){
+        // Current target is empty or other than the leader's.
+        change_target(leaderTarget);
+        currentTarget = get_targeted_monster();
+    }
+
+    // Attack the target.
+    if(currentTarget && can_attack(currentTarget)){
+        // Current target isn't empty and attackable.
+        attack(currentTarget);
+    }
+
+    //Move to leader.
+    if(!character.moving)
+        // Move only if you are not already moving.
+        move(character.real_x + (leader.real_x - character.real_x),
+             character.real_y + (leader.real_y - character.real_y));
+},1000/4);
