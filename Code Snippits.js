@@ -1,53 +1,45 @@
-//Returns the nearest living player.
-function get_nearest_player() {
-	var min_d = 999999,
-		target = null;
-	for (id in parent.entities) {
-		var current = parent.entities[id];
-		if (current.player === false || current.dead) continue;
-		var c_dist = parent.distance(character, current);
-		if (c_dist < min_d) min_d = c_dist, target = current;
-		else if (current.player === true) {
-			target = current;
-		}
-	}
-	return target;
-}
-
-//Returns the nearest living player not currently in a party
-function get_nearest_solo_player() {
-	var min_d = 999999,
-		target = null;
-	for (id in parent.entities) {
-		var current = parent.entities[id];
-		if (current.player === false || current.dead || current.party) continue;
-		var c_dist = parent.distance(character, current);
-		if (c_dist < min_d) min_d = c_dist, target = current;
-		else if (current.player === true) {
-			target = current;
-		}
-	}
-	return target;
-}
-
-//Gets the nearest living member of your party
+//Player Finding Function w/ Conditions
+/////////////////////////////////////////////////////////////////////////
 //Modified by: Sulsaries
-function get_nearest_party_member() {
+
+//Basic Structure
+[Function Name]
+{
 	var min_d = 999999,
-		target = null;
-	for (id in parent.entities) {
+	target = null;
+	for (var id in parent.entities) 
+	{
 		var current = parent.entities[id];
-		if (current.player === false || current.dead || current.party != character.party) {
+		if ([Condition]) 
 			continue;
-		}
 		var c_dist = parent.distance(character, current);
-		if (c_dist < min_d) min_d = c_dist, target = current;
-		else if (current.player === true) {
+		if (c_dist < min_d)
+			min_d = c_dist, target = current;
+		else if (current.player === true)
 			target = current;
-		}
 	}
 	return target;
 }
+
+//Return Nearest Living Player.
+//Function Name:
+function get_nearest_player()
+//Condition: 
+current.player === false || current.dead
+
+//Return Nearest Living Player not in a Party
+//Function Name:
+function get_nearest_solo_player()
+//Condition:
+current.player === false || current.dead || current.party
+
+//Returns Nearest Living Player in your Party
+//Function Name:
+function get_nearest_party_member()
+//Condition:
+current.player === false || current.dead || current.party != character.party
+
+//////////////////////////////////////////////////////////////////////////////
 
 //Fills the party_list with the living members of your party in the area.
 //Modified by: Sulsaries
