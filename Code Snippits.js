@@ -7,10 +7,10 @@
 {
 	var min_d = 999999,
 	target = null;
-	for (var id in parent.entities) 
+	for (var id in parent.entities)
 	{
 		var current = parent.entities[id];
-		if ([Condition]) 
+		if ([Condition])
 			continue;
 		var c_dist = parent.distance(character, current);
 		if (c_dist < min_d)
@@ -24,7 +24,7 @@
 //Return Nearest Living Player.
 //Function Name:
 function get_nearest_player()
-//Condition: 
+//Condition:
 current.player === false || current.dead
 
 //Return Nearest Living Player not in a Party
@@ -432,4 +432,18 @@ if (!target) {
 		set_message("No Monsters");
 		return;
 	}
+}
+
+//Timer for set_messages
+var timeout;
+var default_message = "Idle";
+function temp_message(message, duration) {
+  if (timeout) {
+    clearTimeout(timeout);
+    timeout = null;
+  }
+  set_message(message);
+  timeout = setTimeout(function() {
+    set_message(default_message);
+  }, duration);
 }
