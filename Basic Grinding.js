@@ -92,13 +92,13 @@ setInterval(function() {
   set_message("Attacking: " + target.mtype);
   //Attack
 
-  var parmem = get_nearest_solo_player();
+/*  var parmem = get_nearest_solo_player();
   if (parmem)
     parent.socket.emit("party", {
       event: 'invite',
       id: parmem.id
     });
-  //Invite to Party
+  //Invite to Party */
 
   var distx = target.real_x - charx;
   var disty = target.real_y - chary;
