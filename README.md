@@ -1,4 +1,19 @@
-# Adventure_Land_Codes
+### Adventure Land Codes
 
-Get more functions from -- https://github.com/kaansoral/adventureland
-Get a nice Auto Upgrader -- https://github.com/marcopoloq/adventure.land/tree/master/CODE
+## Get more functions from --
+
+[Adventure.land function base][9f58efd3]
+
+  [9f58efd3]: <https://github.com/kaansoral/adventureland> "Adventure.land function base"
+
+## Get some more scripts from --
+
+[TrentWDB][d0515cb7]
+
+[Marcopoloq Scripts][c3819301]
+
+[@ishaan1 Scripts][d2824ab2]
+
+  [d0515cb7]: https://github.com/TrentWDB/AdventureLandScripts "TrentWDB Scripts"
+  [d2824ab2]: https://github.com/ishaanbharal/AdventureLand_Party "@ishaan1 Scripts"
+  [c3819301]: <https://github.com/marcopoloq/adventure.land/tree/master/CODE> "Marcopoloq Scripts"
