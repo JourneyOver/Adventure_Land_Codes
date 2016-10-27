@@ -1,4 +1,4 @@
-var mode = 0; //0 [default] is kite (move in straight line while attacking), 1 is standing still (will move if target is out of range), 2 is circle kite (walks in circles around enemy), 3 Moves to front of target before attacking
+var mode = 0; //kite (move in straight line while attacking) [default] = 0, standing still (will move if target is out of range) = 1, circle kite (walks in circles around enemy) = 2, Front of target (Moves to front of target before attacking) = 3, Don't Move at all (will not move even if target is out of range) = 4
 var targetting = 2; //Monster Range  = 0, Character Range = 1, Tank Range[default] = 2
 var min_xp_from_mob = 1000; //set to minimum xp you want to be getting from each kill -- lowest amount of xp a mob has to have to be attacked
 var max_att_from_mob = 100; //set to maximum damage you want to take from each hit -- most attack you're willing to fight
@@ -54,16 +54,17 @@ setInterval(function() {
   //Character Location
 
   var target = get_targeted_monster();
-  if (!target) {
-    target = get_nearest_monster({
+  if (!target || (target.target && target.target != character.name)) {
+    target = get_nearest_available_monster({
       min_xp: min_xp_from_mob,
-      max_att: max_att_from_mob
+      max_att: max_att_from_mob,
+      no_attack: true
     });
     if (target) {
       change_target(target);
       angle = Math.atan2(target.real_y - chary, target.real_x - charx);
     } else if (!target) {
-      target = get_nearest_monster({
+      target = get_nearest_available_monster({
         min_xp: min_xp_from_mob2,
         max_att: max_att_from_mob2
       });
@@ -92,13 +93,13 @@ setInterval(function() {
   set_message("Attacking: " + target.mtype);
   //Attack
 
-/*  var parmem = get_nearest_solo_player();
-  if (parmem)
-    parent.socket.emit("party", {
-      event: 'invite',
-      id: parmem.id
-    });
-  //Invite to Party */
+  /*  var parmem = get_nearest_solo_player();
+    if (parmem)
+      parent.socket.emit("party", {
+        event: 'invite',
+        id: parmem.id
+      });
+    //Invite to Party */
 
   var distx = target.real_x - charx;
   var disty = target.real_y - chary;
@@ -144,7 +145,7 @@ setInterval(function() {
     //Credit to /u/idrum4316
   } else if (mode == 3) {
     move(target.real_x, target.real_y + 5);
-  }
+  } else if (mode == 4) {}
   //Following/Maintaining Distance
 
   prevx = Math.ceil(charx);
@@ -172,6 +173,19 @@ function get_nearest_solo_player() {
   }
   return target;
   //Credit to /u/Sulsaries
+}
+
+function get_nearest_available_monster(args) {
+  var min_d = 400,
+    target = null;
+  for (id in parent.entities) {
+    var current = parent.entities[id];
+    if (current.type != "monster" || args.min_xp && current.xp < args.min_xp || args.max_att && current.attack > args.max_att || current.dead || (current.target && current.target != character.name)) continue;
+    if (args.no_target && current.target && current.target != character.name) continue;
+    var c_dist = parent.distance(character, current);
+    if (c_dist < min_d) min_d = c_dist, target = current;
+  }
+  return target;
 }
 
 function purchase_potions() {
