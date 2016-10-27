@@ -1,31 +1,31 @@
 var party = [
     {
-        name : "name",
+        name : "Razaan",
         priority : 0
     },
     {
-        name : "name",
+        name : "Ryasha",
         priority : 0
     },
     {
-        name : "name",
+        name : "Shistara",
         priority : 0
     },
     {
-        name : "name",
+        name : "Rathien",
         priority : 0
     },
     {
-        name : "name",
+        name : "Nutmeg",
         priority : 0
     },
     {
-        name : "name",
+        name : "Caranyc",
         priority : 0
     }
 ]
 
-var main_assist = "name";
+var main_assist = "Razaan";
 
 setInterval(function(){
 
