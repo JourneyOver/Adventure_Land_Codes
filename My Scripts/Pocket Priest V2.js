@@ -1,11 +1,11 @@
-//Pocket Priest V2
+// Pocket Priest V2
 // Will follow your party around and auto-heal the members based on a priority calculation.
 // It looks at their max hp vs current hp and heals the person with the highest percentage loss.
 // Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-//Version 1.0.0
+// Version 1.0.0
 
-var till_level = 0; //Kills till level = 0, XP till level = 1 (do not use 0 for now until I can get attacking/cursing in)
+var till_level = 0; //Kills till level = 0, XP till level = 1
 var heal_dist = 0; //Stay at a distance and move when out of range of target/leader (only when leader is attacking something) = 0, Stay always on top of leader = 1
 //Main Settings
 
