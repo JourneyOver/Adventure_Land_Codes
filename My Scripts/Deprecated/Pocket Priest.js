@@ -128,10 +128,10 @@ setInterval(function() {
   //target = get_player(party_list[0].name);
 
   target = get_player(party_list[highest_priority].name);
-  if (party_list[highest_priority].priority > .10 && !target.rip) {
+  if (party_list[highest_priority].priority > .30 && !target.rip) {
     if (target) change_target(target);
     heal(target);
-    set_message("Healing");
+    set_message("Healing " + target.name);
   }
 
   if (!in_attack_range(target)) {

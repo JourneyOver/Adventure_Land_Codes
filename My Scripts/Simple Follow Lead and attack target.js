@@ -18,7 +18,7 @@ setInterval(function() {
   }
 
   //Heal and restore mana if required
-  if (character.hp / character.max_hp < 0.3) {
+  if (character.hp / character.max_hp < 0.3 && new Date() > parent.next_potion) {
     parent.use('hp');
     if (character.hp <= 100)
       parent.socket.emit("transport", {
@@ -27,7 +27,7 @@ setInterval(function() {
     //Panic Button
   }
 
-  if (character.mp / character.max_mp < 0.3)
+  if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
     parent.use('mp');
   //Constrained Healing
 
@@ -39,8 +39,8 @@ setInterval(function() {
 
   // Current target and target of leader.
   var currentTarget = get_targeted_monster();
-  var leaderTarget = get_target_of(leader)
-  var targetTarget = get_target_of(currentTarget)
+  var leaderTarget = get_target_of(leader);
+  var targetTarget = get_target_of(currentTarget);
 
   // Change the target.
   if (!currentTarget || currentTarget != leaderTarget) {
@@ -53,6 +53,7 @@ setInterval(function() {
   if (currentTarget && can_attack(currentTarget) && targetTarget == leader) {
     // Current target isn't empty and attackable.
     attack(currentTarget);
+    set_message("Attacking " + currentTarget.mtype);
   }
 
   //Move to leader.
@@ -60,7 +61,7 @@ setInterval(function() {
   // Move only if you are not already moving.
     move(leader.real_x, leader.real_y);
 
-  set_message("Dpsing");
+
 }, 1000 / 4);
 
 function initGUI() {
@@ -134,11 +135,11 @@ function ncomma(x) {
 initGUI();
 
 function purchase_potions() {
-  set_message("Buying pots.");
   if (character.items[0].q < pots_minimum) {
     parent.buy("hpot0", pots_to_buy);
   }
   if (character.items[1].q < pots_minimum) {
     parent.buy("mpot0", pots_to_buy);
+    set_message("Buying pots.");
   }
 }

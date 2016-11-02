@@ -30,16 +30,16 @@ var pots_to_buy = 1000; //This is how many you will buy
 //Grind Code below --------------------------
 setInterval(function() {
 
-//Updates GUI for Till_Level/Gold
+  //Updates GUI for Till_Level/Gold
   updateGUI();
 
-//Purchases Potions when below threshold
+  //Purchases Potions when below threshold
   if (purchase_pots) {
     purchase_potions();
   }
 
-	//Heal and restore mana if required
-  if (character.hp / character.max_hp < 0.3) {
+  //Heal and restore mana if required
+  if (character.hp / character.max_hp < 0.3 && new Date() > parent.next_potion) {
     parent.use('hp');
     if (character.hp <= 100)
       parent.socket.emit("transport", {
@@ -48,7 +48,7 @@ setInterval(function() {
     //Panic Button
   }
 
-  if (character.mp / character.max_mp < 0.3)
+  if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
     parent.use('mp');
   //Constrained Healing
 
@@ -265,12 +265,12 @@ function ncomma(x) {
 initGUI();
 
 function purchase_potions() {
-  set_message("Buying pots.");
   if (character.items[0].q < pots_minimum) {
     parent.buy("hpot0", pots_to_buy);
   }
   if (character.items[1].q < pots_minimum) {
     parent.buy("mpot0", pots_to_buy);
+    set_message("Buying pots.");
   }
 }
 
