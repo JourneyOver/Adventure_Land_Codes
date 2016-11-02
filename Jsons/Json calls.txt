@@ -8,4 +8,8 @@ show_json(parent.G.monsters)
 show_json(parent.G.items)
 show_json(parent.G.npcs)
 
+
+show_json(character.items)
+show_json(character.slots)
+
 For example -> G.items[character.items[0].name].compound - if this is true, then you can combine the item, with other items of the same name and level

@@ -1,10 +1,11 @@
 var mode = 0; //kite (move in straight line while attacking) [default] = 0, standing still (will move if target is out of range) = 1, circle kite (walks in circles around enemy) = 2, Front of target (Moves to front of target before attacking) = 3, Don't Move at all (will not move even if target is out of range) = 4
 var targetting = 2; //Monster Range  = 0, Character Range = 1, Tank Range[default] = 2
+var till_level = 0; // Kills till level = 0, XP till level = 1
 var min_xp_from_mob = 1000; //set to minimum xp you want to be getting from each kill -- lowest amount of xp a mob has to have to be attacked
 var max_att_from_mob = 100; //set to maximum damage you want to take from each hit -- most attack you're willing to fight
 var min_xp_from_mob2 = 500; //set to minimum xp you want to be getting from each kill if can't find min from first target -- lowest amount of xp a mob has to have to be attacked
 var max_att_from_mob2 = 50; //set to maximum damage you want to take from each hit if can't find max from first target -- most attack you're willing to fight
-//Settings
+//Main Settings
 
 var prevx = 0;
 var prevy = 0;
@@ -29,10 +30,15 @@ var pots_to_buy = 1000; //This is how many you will buy
 //Grind Code below --------------------------
 setInterval(function() {
 
+//Updates GUI for Till_Level/Gold
+  updateGUI();
+
+//Purchases Potions when below threshold
   if (purchase_pots) {
     purchase_potions();
   }
 
+	//Heal and restore mana if required
   if (character.hp / character.max_hp < 0.3) {
     parent.use('hp');
     if (character.hp <= 100)
@@ -187,6 +193,76 @@ function get_nearest_available_monster(args) {
   }
   return target;
 }
+
+function initGUI() {
+  let $ = parent.$;
+  let brc = $('#bottomrightcorner');
+  $('#xpui').css({
+    fontSize: '28px',
+  });
+
+  brc.find('.xpsui').css({
+    background: 'url("https://i.imgur.com/zCb8PGK.png")',
+    backgroundSize: 'cover'
+  });
+
+  brc.find('#goldui').remove();
+  let gb = $('<div id="goldui"></div>').css({
+    background: 'black',
+    border: 'solid gray',
+    borderWidth: '0 5px',
+    height: '34px',
+    lineHeight: '34px',
+    fontSize: '30px',
+    color: '#FFD700',
+    textAlign: 'center',
+  });
+  gb.insertBefore($('#gamelog'));
+}
+
+var last_target = null;
+
+if (till_level === 0)
+
+function updateGUI() {
+    let $ = parent.$;
+    let xp_percent = ((character.xp / parent.G.levels[character.level]) * 100).toFixed(2);
+    let xp_string = `LV${character.level} ${xp_percent}%`;
+    if (parent.ctarget && parent.ctarget.type == 'monster') {
+      last_target = parent.ctarget.mtype;
+    }
+    if (last_target) {
+      let xp_missing = parent.G.levels[character.level] - character.xp;
+      let monster_xp = parent.G.monsters[last_target].xp;
+      let party_modifier = character.party ? 1.5 / parent.party_list.length : 1;
+      let monsters_left = Math.ceil(xp_missing / (monster_xp * party_modifier * character.xpm));
+      xp_string += ` (${ncomma(monsters_left)} to go!)`;
+    }
+    $('#xpui').html(xp_string);
+    $('#goldui').html(ncomma(character.gold) + " GOLD");
+  } else if (till_level === 1)
+
+  function updateGUI() {
+  let $ = parent.$;
+  let xp_percent = ((character.xp / G.levels[character.level]) * 100).toFixed(2);
+  let xp_missing = ncomma(G.levels[character.level] - character.xp);
+  let xp_string = `LV${character.level} ${xp_percent}% (${xp_missing}) to go!`;
+  $('#xpui').html(xp_string);
+  $('#goldui').html(ncomma(character.gold) + " GOLD");
+}
+
+function ncomma(x) {
+  let number = x.toString();
+  let result = [];
+  while (number.length > 3) {
+    result.unshift(number.slice(-3));
+    number = number.slice(0, -3);
+  }
+  result.unshift(number);
+  return result.join(',');
+}
+
+initGUI();
 
 function purchase_potions() {
   set_message("Buying pots.");
