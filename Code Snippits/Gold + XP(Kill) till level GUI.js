@@ -120,7 +120,7 @@ initGUI();
 ///////////////////////////////////////////////////////
 
 //Gold + var switch between xp or kill till level GUI
-var Till_Level = 0; // Kills till level = 0, XP till level = 1
+var till_level = 0; // Kills till level = 0, XP till level = 1
 
 setInterval(function() {
   updateGUI();
@@ -154,7 +154,7 @@ function initGUI() {
 
 var last_target = null;
 
-if (Till_Level === 0)
+if (till_level === 0)
 
 function updateGUI() {
     let $ = parent.$;
@@ -172,7 +172,7 @@ function updateGUI() {
     }
     $('#xpui').html(xp_string);
     $('#goldui').html(ncomma(character.gold) + " GOLD");
-  } else if (Till_Level === 1)
+  } else if (till_level === 1)
 
   function updateGUI() {
   let $ = parent.$;
