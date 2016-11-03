@@ -72,7 +72,7 @@ setInterval(function() {
     target = get_target();
 
     //If there is a valid target, attempt to curse it.
-    if (target && in_attack_range(target) && get_target_of(target).party == character.party) {
+    if (target && in_attack_range(target) && get_target_of(target) && get_target_of(target).party == character.party) {
       curse(target);
       set_message("Cursing " + target.mtype);
 
