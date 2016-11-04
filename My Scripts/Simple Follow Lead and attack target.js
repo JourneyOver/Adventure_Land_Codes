@@ -1,4 +1,6 @@
-//Version 1.4.2
+// Base Code & Auto Compounding stuff Courtesy of: Mark
+// Edits & Additions By: JourneyOver
+// Version 1.4.2
 
 var gui_tl_gold = false; //Set to true in order to turn on GUI for kill (or xp) till level + gold per hour (and gold per scripted session gained/lost) [if set to true and then turned to false you'll have to refresh game]
 var gui_timer = false; //Set to true in order to turn on GUI for time till level [if set to true and then turned to false you'll have to refresh game]

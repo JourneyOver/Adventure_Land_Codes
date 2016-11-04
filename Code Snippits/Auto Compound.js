@@ -1,3 +1,6 @@
+// Auto Compounding
+// Courtesy of: Mark
+
 var cp = false; //Set to true in order to allow compounding of items
 var whitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj'];
 var maxLevel = 3;

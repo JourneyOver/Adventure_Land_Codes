@@ -1,7 +1,7 @@
 // Pocket Priest V2
 // Will follow your party around and auto-heal the members based on a priority calculation.
 // It looks at their max hp vs current hp and heals the person with the highest percentage loss.
-// Courtesy of: Mark
+// Base code and Auto Compounding Courtesy of: Mark
 // Edits & Additions By: JourneyOver
 // Version 1.3.5
 

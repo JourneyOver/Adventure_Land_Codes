@@ -1,4 +1,5 @@
-//Version 1.6.2
+// Auto Compounding Courtesy of: Mark
+// Version 1.6.2
 
 var mode = 0; //kite (move in straight line while attacking) [default] = 0, standing still (will move if target is out of range) = 1, circle kite (walks in circles around enemy) = 2, Front of target (Moves to front of target before attacking) = 3, Don't Move at all (will not move even if target is out of range) = 4
 var targetting = 2; //Monster Range  = 0, Character Range = 1, Tank Range[default] = 2
@@ -54,6 +55,7 @@ setInterval(function() {
     update_xptimer();
   }
 
+  //Compound Items
   if (cp) {
     compound_items();
   }

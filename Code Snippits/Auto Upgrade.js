@@ -1,11 +1,10 @@
 // Auto Upgrade
-//Credits to /u/aget61695
+//Credits to /u/aget61695 & Termii|Kevin
 var item_slot = 0; //Inventory slot of item to be upgraded
 var scroll_slot = 1; //Inventory slot of 1000g scroll (T1)
 var scroll2_slot = 2; //Inventory slot of 40000g scroll (T2)
 var max_item_level = 7; //Max level to be upgraded to
 var item_to_upgrade = "boots" //Name of item to be upgraded
-
 
 setInterval(function() {
 
@@ -22,7 +21,9 @@ setInterval(function() {
     if (!character.items[scroll2_slot])
       parent.buy("scroll1", 1);
   }
-
+  if (character.items[item_slot] == null) {
+    return;
+  }
 
   //Upgrades items until the max_item_level is reached
   if (max_item_level <= 7) {
