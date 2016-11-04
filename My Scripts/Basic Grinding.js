@@ -1,4 +1,4 @@
-//Version 1.5.0
+//Version 1.5.1
 
 var mode = 0; //kite (move in straight line while attacking) [default] = 0, standing still (will move if target is out of range) = 1, circle kite (walks in circles around enemy) = 2, Front of target (Moves to front of target before attacking) = 3, Don't Move at all (will not move even if target is out of range) = 4
 var targetting = 2; //Monster Range  = 0, Character Range = 1, Tank Range[default] = 2
@@ -225,135 +225,15 @@ function get_nearest_available_monster(args) {
 }
 
 //GUI Stuff
-var skills = {
-  'charge': {
-    display: 'Charge',
-    cooldown: 40000
-  },
-  'taunt': {
-    display: 'Taunt',
-    cooldown: 6000
-  },
-  'supershot': {
-    display: 'Super Shot',
-    cooldown: 30000
-  },
-  'curse': {
-    display: 'Curse',
-    cooldown: 5000
-  },
-  'invis': {
-    display: 'Stealth',
-    cooldown: 12000,
-    start: () => new Promise((res) => {
-      let state = 0;
-      let watcher_interval = setInterval(() => {
-        if (state == 0 && character.invis) state = 1;
-        else if (state == 1 && !character.invis) state = 2;
-
-        if (state == 2) {
-          clearInterval(watcher_interval);
-          res();
-        }
-      }, 10);
-    })
-  }
-};
-
+var last_target = null;
+var gold = character.gold;
 var p = parent;
-
-function create_cooldown(skill) {
-  let $ = p.$;
-
-  let cd = $('<div class="cd"></div>').css({
-    background: 'black',
-    border: '5px solid gray',
-    height: '30px',
-    position: 'relative',
-    marginTop: '5px',
-  });
-
-  let slider = $('<div class="cdslider"></div>').css({
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    width: '100%',
-    background: 'green',
-    border: '2px solid black',
-    boxSizing: 'border-box',
-  });
-
-  let text = $(`<span class="cdtext">${skill}</div>`).css({
-    width: '100%',
-    textAlign: 'center',
-    color: '#FFFFFF',
-    fontSize: '30px',
-    position: 'relative',
-  });
-
-  cd.append(slider);
-  cd.append(text);
-
-  return cd;
-}
-
-var cooldowns = [];
-
-function manage_cooldown(skill) {
-  let $ = p.$;
-
-  let skill_info = skills[skill];
-
-  if (!skill_info || cooldowns.includes(skill)) return;
-  cooldowns.push(skill);
-
-  let start = skill_info.start ? skill_info.start() : Promise.resolve();
-
-  let el = create_cooldown(skill_info.display);
-  $('#cdcontainer').append(el);
-
-  start.then(() => {
-    el.find('.cdslider').animate({
-      width: '4px'
-    }, skill_info.cooldown, 'linear', () => {
-      el.remove();
-      cooldowns.splice(cooldowns.indexOf(skill), 1);
-    });
-  });
-}
 
 function initGUI() {
   let $ = p.$;
-
-  if (p.original_emit) p.socket.emit = p.original_emit;
-
-  $('#cdcontainer').remove();
-
-  let mid = $('#bottommid');
-  let cd_container = $('<div id="cdcontainer"></div>').css({
-    width: '360px',
-    position: 'absolute',
-    bottom: '90px',
-    right: 0,
-    left: 0,
-    margin: 'auto'
-  });
-
-  mid.append(cd_container);
-
-  p.original_emit = p.socket.emit;
-
-  p.socket.emit = function(event, args) {
-    if (parent && event == 'ability') {
-      manage_cooldown(args.name);
-    }
-    p.original_emit.apply(this, arguments);
-  };
-
   let brc = $('#bottomrightcorner');
   $('#xpui').css({
-    fontSize: '28px',
+    fontSize: '25px',
   });
 
   brc.find('.xpsui').css({
@@ -368,14 +248,13 @@ function initGUI() {
     borderWidth: '0 5px',
     height: '34px',
     lineHeight: '34px',
-    fontSize: '30px',
+    fontSize: '25px',
     color: '#FFD700',
     textAlign: 'center',
   });
   gb.insertBefore($('#gamelog'));
 }
 
-var last_target = null;
 
 if (till_level === 0)
 
@@ -394,7 +273,7 @@ function updateGUI() {
     xp_string += ` (${ncomma(monsters_left)} kills to go!)`;
   }
   $('#xpui').html(xp_string);
-  $('#goldui').html(ncomma(character.gold) + " GOLD");
+  $('#goldui').html(ncomma(character.gold - gold) + " GOLD" + " Gain/Lost");
 } else if (till_level === 1)
 
 function updateGUI() {
@@ -403,7 +282,7 @@ function updateGUI() {
   let xp_missing = ncomma(G.levels[character.level] - character.xp);
   let xp_string = `LV${character.level} ${xp_percent}% (${xp_missing}) xp to go!`;
   $('#xpui').html(xp_string);
-  $('#goldui').html(ncomma(character.gold) + " GOLD");
+  $('#goldui').html(ncomma(character.gold - gold) + " GOLD" + " Gain/Lost");
 }
 
 function ncomma(x) {

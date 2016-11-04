@@ -1,1268 +1,1257 @@
 {
-   "intearring":{
-      "name":"Earring of Intelligence",
-      "g":80000,
-      "int":3,
-      "skin":"intearring",
-      "grades":[
-         3,
-         5
-      ],
-      "compound":{
-         "int":2
-      },
-      "type":"earring"
-   },
-   "helmet1":{
-      "stat":1,
-      "grade":1,
-      "resistance":16,
-      "grades":[
-         0,
-         8
-      ],
-      "skin":"helmet1",
-      "tier":2,
-      "a":2,
-      "upgrade":{
-         "armor":2.5,
-         "stat":1,
-         "resistance":2.5
-      },
-      "name":"Sturdy Helmet",
-      "g":32000,
-      "armor":14,
-      "edge":2,
-      "type":"helmet",
-      "scroll":true
-   },
-   "hpants":{
-      "stat":1,
-      "grade":2,
-      "resistance":18,
-      "grades":[
-         0,
-         0
-      ],
-      "skin":"hpants",
-      "tier":3,
-      "a":2,
-      "upgrade":{
-         "armor":4.25,
-         "stat":1,
-         "resistance":4.25
-      },
-      "name":"Heavy Underarmor",
-      "g":780000,
-      "armor":30,
-      "edge":4,
-      "type":"pants",
-      "scroll":true
-   },
-   "shoes":{
-      "stat":1,
-      "upgrade":{
-         "armor":1.25,
-         "stat":1,
-         "speed":0.625
-      },
-      "name":"Shoes",
-      "g":12100,
-      "armor":4,
-      "speed":6,
-      "grades":[
-         7,
-         9
-      ],
-      "skin":"shoes",
-      "tier":1,
-      "type":"shoes",
-      "scroll":true
-   },
-   "spear":{
-      "apiercing":10,
-      "grades":[
-         3,
-         8
-      ],
-      "skin":"spear",
-      "range":15,
-      "a":2,
-      "upgrade":{
-         "range":2,
-         "attack":4.25,
-         "apiercing":5
-      },
-      "name":"Spear",
-      "g":72000,
-      "wtype":"spear",
-      "damage":"physical",
-      "attack":15,
-      "type":"weapon"
-   },
-   "amuletofm":{
-      "a":true,
-      "int":1,
-      "hp":40,
-      "compound":{
-         "dex":1,
-         "reflection":0.5,
-         "evasion":1,
-         "int":1,
-         "hp":60,
-         "armor":2,
-         "str":1
-      },
-      "g":640000,
-      "grades":[
-         3,
-         5
-      ],
-      "skin":"amuletofm",
-      "name":"Amulet of Mystery",
-      "dex":1,
-      "reflection":0.5,
-      "evasion":2,
-      "armor":10,
-      "str":1,
-      "type":"amulet"
-   },
-   "stoneofluck":{
-      "g":2970000,
-      "days":30,
-      "skin_a":"stoneofluck",
-      "name":"Stone of Luck",
-      "skin":"stoneofluck",
-      "explanation":"Increases your chances to loot something from a monster by 20%.",
-      "type":"stone",
-      "cash":3600,
-      "gain":"luck"
-   },
-   "quiver":{
-      "dex":2,
-      "range":20,
-      "upgrade":{
-         "dex":1,
-         "armor":2,
-         "range":3.5
-      },
-      "name":"Quiver",
-      "g":12000,
-      "skin":"quiver",
-      "armor":10,
-      "type":"quiver",
-      "grades":[
-         3,
-         7
+  "intearring": {
+    "name": "Earring of Intelligence",
+    "g": 80000,
+    "int": 3,
+    "skin": "intearring",
+    "grades": [
+      3,
+      5
+    ],
+    "compound": {
+      "int": 2
+    },
+    "type": "earring"
+  },
+  "helmet1": {
+    "stat": 1,
+    "grade": 1,
+    "resistance": 16,
+    "grades": [
+      0,
+      8
+    ],
+    "skin": "helmet1",
+    "tier": 2,
+    "a": 2,
+    "upgrade": {
+      "armor": 2.5,
+      "stat": 1,
+      "resistance": 2.5
+    },
+    "name": "Sturdy Helmet",
+    "g": 32000,
+    "armor": 14,
+    "edge": 2,
+    "type": "helmet",
+    "scroll": true
+  },
+  "hpants": {
+    "stat": 1,
+    "grade": 2,
+    "resistance": 18,
+    "grades": [
+      0,
+      0
+    ],
+    "skin": "hpants",
+    "tier": 3,
+    "a": 2,
+    "upgrade": {
+      "armor": 4.25,
+      "stat": 1,
+      "resistance": 4.25
+    },
+    "name": "Heavy Underarmor",
+    "g": 780000,
+    "armor": 30,
+    "edge": 4,
+    "type": "pants",
+    "scroll": true
+  },
+  "shoes": {
+    "stat": 1,
+    "upgrade": {
+      "armor": 1.25,
+      "stat": 1,
+      "speed": 0.625
+    },
+    "name": "Shoes",
+    "g": 12100,
+    "armor": 4,
+    "speed": 6,
+    "grades": [
+      7,
+      9
+    ],
+    "skin": "shoes",
+    "tier": 1,
+    "type": "shoes",
+    "scroll": true
+  },
+  "spear": {
+    "apiercing": 10,
+    "grades": [
+      3,
+      8
+    ],
+    "skin": "spear",
+    "range": 15,
+    "a": 2,
+    "upgrade": {
+      "range": 2,
+      "attack": 4.25,
+      "apiercing": 5
+    },
+    "name": "Spear",
+    "g": 72000,
+    "wtype": "spear",
+    "damage": "physical",
+    "attack": 15,
+    "type": "weapon"
+  },
+  "amuletofm": {
+    "a": true,
+    "int": 1,
+    "hp": 40,
+    "compound": {
+      "dex": 1,
+      "reflection": 0.5,
+      "evasion": 1,
+      "int": 1,
+      "hp": 60,
+      "armor": 2,
+      "str": 1
+    },
+    "g": 640000,
+    "grades": [
+      3,
+      5
+    ],
+    "skin": "amuletofm",
+    "name": "Amulet of Mystery",
+    "dex": 1,
+    "reflection": 0.5,
+    "evasion": 2,
+    "armor": 10,
+    "str": 1,
+    "type": "amulet"
+  },
+  "stoneofluck": {
+    "g": 2970000,
+    "days": 30,
+    "skin_a": "stoneofluck",
+    "name": "Stone of Luck",
+    "skin": "stoneofluck",
+    "explanation": "Increases your chances to loot something from a monster by 20%.",
+    "type": "stone",
+    "cash": 3600,
+    "gain": "luck"
+  },
+  "quiver": {
+    "dex": 2,
+    "range": 20,
+    "upgrade": {
+      "dex": 1,
+      "armor": 2,
+      "range": 3.5
+    },
+    "name": "Quiver",
+    "g": 12000,
+    "skin": "quiver",
+    "armor": 10,
+    "type": "quiver",
+    "grades": [
+      3,
+      7
+    ]
+  },
+  "ringsj": {
+    "dex": 1,
+    "g": 24000,
+    "grades": [
+      3,
+      5
+    ],
+    "name": "Ring of Small Joys",
+    "str": 1,
+    "skin": "ring",
+    "int": 1,
+    "compound": {
+      "int": 1,
+      "dex": 1,
+      "resistance": 5,
+      "str": 1
+    },
+    "type": "ring",
+    "resistance": 5
+  },
+  "stoneofxp": {
+    "g": 2970000,
+    "days": 30,
+    "skin_a": "stoneofxp_a",
+    "name": "Stone of Wisdom",
+    "skin": "stoneofxp",
+    "explanation": "Increases experience gain by 50%. Needs to be activated. Can be morphed into other stones.",
+    "type": "stone",
+    "cash": 3600,
+    "gain": "xp"
+  },
+  "orbofstr": {
+    "name": "Orb of Strength",
+    "g": 240000,
+    "skin": "orangeorb",
+    "str": 5,
+    "compound": {
+      "str": 5
+    },
+    "type": "orb"
+  },
+  "dexscroll": {
+    "stat": "dex",
+    "name": "Dexterity Scroll",
+    "g": 8000,
+    "explanation": "Adds Dexterity to an armor with a Stat attribute.",
+    "s": true,
+    "skin": "dexscroll",
+    "type": "pscroll"
+  },
+  "pmace": {
+    "a": true,
+    "int": 8,
+    "damage": "magical",
+    "grades": [
+      0,
+      8
+    ],
+    "skin": "pmace",
+    "dex": 4,
+    "upgrade": {
+      "int": 2,
+      "dex": 1,
+      "attack": 6,
+      "range": 5
+    },
+    "name": "Priest's Mace",
+    "g": 89000,
+    "wtype": "mace",
+    "range": 10,
+    "attack": 25,
+    "edge": 3,
+    "type": "weapon"
+  },
+  "orbofint": {
+    "name": "Orb of Intelligence",
+    "g": 240000,
+    "int": 5,
+    "skin": "blueorb",
+    "compound": {
+      "int": 5
+    },
+    "type": "orb"
+  },
+  "stramulet": {
+    "name": "Amulet of Strength",
+    "g": 30000,
+    "skin": "stramulet",
+    "grades": [
+      3,
+      5
+    ],
+    "str": 4,
+    "compound": {
+      "str": 2
+    },
+    "type": "amulet"
+  },
+  "pants1": {
+    "stat": 1,
+    "grade": 1,
+    "resistance": 12,
+    "grades": [
+      0,
+      8
+    ],
+    "skin": "pants1",
+    "tier": 2,
+    "a": 2,
+    "upgrade": {
+      "armor": 2.5,
+      "stat": 1,
+      "resistance": 2.5
+    },
+    "name": "Rugged Pants",
+    "g": 78000,
+    "armor": 20,
+    "edge": 2,
+    "type": "pants",
+    "scroll": true
+  },
+  "stick": {
+    "a": true,
+    "upgrade": {},
+    "name": "Stick",
+    "g": 10,
+    "explanation": "...",
+    "skin": "stick",
+    "type": "misc"
+  },
+  "scroll0": {
+    "name": "Upgrade Scroll",
+    "g": 1000,
+    "grade": 0,
+    "explanation": "Scroll to upgrade a weapon or armor. If the upgrade fails, the item is lost.",
+    "s": true,
+    "skin": "scroll0",
+    "type": "uscroll"
+  },
+  "hboots": {
+    "stat": 1,
+    "grade": 2,
+    "resistance": 6,
+    "grades": [
+      0,
+      0
+    ],
+    "skin": "hboots",
+    "tier": 3,
+    "speed": 9,
+    "a": 2,
+    "upgrade": {
+      "armor": 4.25,
+      "stat": 1,
+      "speed": 1.125,
+      "resistance": 2.125
+    },
+    "name": "Heavy Boots",
+    "g": 1240000,
+    "armor": 12,
+    "edge": 4,
+    "type": "shoes",
+    "scroll": true
+  },
+  "helmet": {
+    "stat": 1,
+    "upgrade": {
+      "armor": 1.25,
+      "stat": 1,
+      "resistance": 1.25
+    },
+    "name": "Helmet",
+    "g": 3200,
+    "armor": 7,
+    "resistance": 8,
+    "grades": [
+      7,
+      9
+    ],
+    "skin": "helmet",
+    "tier": 1,
+    "type": "helmet",
+    "scroll": true
+  },
+  "computer": {
+    "name": "Ancient Computer",
+    "g": 1320000,
+    "explanation": "Networks you to NPC's and extends the CODE capabilities.",
+    "cash": 1600,
+    "skin": "ancientcomputer",
+    "type": "computer"
+  },
+  "mcape": {
+    "stat": 1,
+    "grade": 1,
+    "hp": 80,
+    "resistance": 16,
+    "grades": [
+      0,
+      6
+    ],
+    "lifesteal": 1,
+    "skin": "mcape",
+    "tier": 2,
+    "a": 2,
+    "upgrade": {
+      "armor": 2.5,
+      "hp": 15,
+      "stat": 1,
+      "lifesteal": 0.2,
+      "resistance": 2.5
+    },
+    "name": "Dracul's Cape",
+    "g": 480000,
+    "armor": 24,
+    "edge": 4,
+    "type": "chest",
+    "scroll": true
+  },
+  "xhelmet": {
+    "stat": 1,
+    "grade": 2,
+    "resistance": 32,
+    "grades": [
+      0,
+      0
+    ],
+    "skin": "xhelmet",
+    "tier": 4,
+    "a": 2,
+    "upgrade": {
+      "armor": 5.5,
+      "stat": 1,
+      "resistance": 5.5
+    },
+    "name": "Darkforge Helmet",
+    "g": 3200000,
+    "armor": 28,
+    "edge": 6,
+    "type": "helmet",
+    "scroll": true
+  },
+  "strearring": {
+    "name": "Earring of Strength",
+    "g": 80000,
+    "skin": "strearring",
+    "grades": [
+      3,
+      5
+    ],
+    "str": 3,
+    "compound": {
+      "str": 2
+    },
+    "type": "earring"
+  },
+  "xgloves": {
+    "stat": 1,
+    "grade": 2,
+    "resistance": 16,
+    "grades": [
+      0,
+      0
+    ],
+    "skin": "xgloves",
+    "tier": 4,
+    "a": 2,
+    "upgrade": {
+      "armor": 5.5,
+      "stat": 1,
+      "resistance": 5.5
+    },
+    "name": "Darkforge Gloves",
+    "g": 3400000,
+    "armor": 32,
+    "edge": 6,
+    "type": "gloves",
+    "scroll": true
+  },
+  "phelmet": {
+    "stat": 1,
+    "grade": 1,
+    "resistance": 16,
+    "grades": [
+      0,
+      7
+    ],
+    "skin": "phelmet",
+    "tier": 2,
+    "name": "Pumpkin Head",
+    "a": 2,
+    "upgrade": {
+      "armor": 2.5,
+      "stat": 1,
+      "reflection": 0.5,
+      "resistance": 2.5
+    },
+    "reflection": 1,
+    "g": 32000,
+    "armor": 14,
+    "edge": 3,
+    "type": "helmet",
+    "scroll": true
+  },
+  "orbofres": {
+    "name": "Orb of Resistance",
+    "g": 240000,
+    "skin": "blueorb",
+    "resistance": 40,
+    "compound": {
+      "resistance": 20
+    },
+    "type": "orb"
+  },
+  "xarmor": {
+    "stat": 1,
+    "grade": 2,
+    "resistance": 32,
+    "grades": [
+      0,
+      0
+    ],
+    "skin": "xarmor",
+    "tier": 4,
+    "a": 2,
+    "upgrade": {
+      "armor": 5.5,
+      "stat": 1,
+      "resistance": 5.5
+    },
+    "name": "Darkforge Armor",
+    "g": 4800000,
+    "armor": 48,
+    "edge": 6,
+    "type": "chest",
+    "scroll": true
+  },
+  "gem1": {
+    "a": 2,
+    "s": true,
+    "e": true,
+    "name": "Tiny Ruby",
+    "g": 24000,
+    "skin": "gem1",
+    "explanation": "A hard to find gem. Can be exchanged for random treasures.",
+    "type": "gem"
+  },
+  "hpamulet": {
+    "name": "Amulet of HP",
+    "g": 20000,
+    "hp": 100,
+    "skin": "amulet",
+    "grades": [
+      3,
+      5
+    ],
+    "compound": {
+      "hp": 70
+    },
+    "type": "amulet"
+  },
+  "shoes1": {
+    "stat": 1,
+    "grade": 1,
+    "grades": [
+      0,
+      8
+    ],
+    "skin": "shoes1",
+    "tier": 2,
+    "speed": 7,
+    "a": 2,
+    "upgrade": {
+      "armor": 2.5,
+      "stat": 1,
+      "speed": 0.875
+    },
+    "name": "Sturdy Shoes",
+    "g": 120000,
+    "armor": 8,
+    "edge": 2,
+    "type": "shoes",
+    "scroll": true
+  },
+  "hhelmet": {
+    "stat": 1,
+    "grade": 2,
+    "resistance": 24,
+    "grades": [
+      0,
+      0
+    ],
+    "skin": "hhelmet",
+    "tier": 3,
+    "a": 2,
+    "upgrade": {
+      "armor": 4.25,
+      "stat": 1,
+      "resistance": 4.25
+    },
+    "name": "Heavy Helmet",
+    "g": 320000,
+    "armor": 21,
+    "edge": 4,
+    "type": "helmet",
+    "scroll": true
+  },
+  "staff": {
+    "attack": 25,
+    "upgrade": {
+      "attack": 5,
+      "range": 3
+    },
+    "grades": [
+      7,
+      9
+    ],
+    "name": "Staff",
+    "g": 12400,
+    "skin": "staff",
+    "wtype": "staff",
+    "type": "weapon",
+    "range": 50,
+    "damage": "magical"
+  },
+  "scroll1": {
+    "name": "Upgrade Scroll",
+    "g": 40000,
+    "grade": 1,
+    "explanation": "Scroll to upgrade a high grade weapon or armor.",
+    "s": true,
+    "skin": "scroll1",
+    "type": "uscroll"
+  },
+  "dexamulet": {
+    "dex": 4,
+    "name": "Amulet of Dexterity",
+    "g": 30000,
+    "skin": "dexamulet",
+    "grades": [
+      3,
+      5
+    ],
+    "compound": {
+      "dex": 3
+    },
+    "type": "amulet"
+  },
+  "xboots": {
+    "stat": 1,
+    "grade": 2,
+    "resistance": 8,
+    "grades": [
+      0,
+      0
+    ],
+    "skin": "xboots",
+    "tier": 4,
+    "speed": 10,
+    "a": 2,
+    "upgrade": {
+      "armor": 5.5,
+      "stat": 1,
+      "speed": 1.375,
+      "resistance": 2.75
+    },
+    "name": "Darkforge Boots",
+    "g": 12400000,
+    "armor": 16,
+    "edge": 6,
+    "type": "shoes",
+    "scroll": true
+  },
+  "stoneofgold": {
+    "g": 2970000,
+    "days": 30,
+    "skin_a": "stoneofgold",
+    "name": "Stone of Riches",
+    "skin": "stoneofgold",
+    "explanation": "Helps you find up to 40% more gold from monsters.",
+    "type": "stone",
+    "cash": 3600,
+    "gain": "gold"
+  },
+  "harmor": {
+    "stat": 1,
+    "grade": 2,
+    "resistance": 24,
+    "grades": [
+      0,
+      0
+    ],
+    "skin": "harmor",
+    "tier": 3,
+    "a": 2,
+    "upgrade": {
+      "armor": 4.25,
+      "stat": 1,
+      "resistance": 4.25
+    },
+    "name": "Heavy Armor",
+    "g": 480000,
+    "armor": 36,
+    "edge": 4,
+    "type": "chest",
+    "scroll": true
+  },
+  "tokenofcode": {
+    "name": "Token of Code",
+    "g": 4125,
+    "type": "token",
+    "explanation": "Gives your character 240 minutes of additional CODE. This is a ~4 months old prototype people, but yeah, I'm considering limiting the free CODE hours to 8 or 12 hours a day. Might leave it unlimited too, undecided.",
+    "cash": 5,
+    "s": true,
+    "skin": "tokenofcode",
+    "minutes": 240
+  },
+  "candy1": {
+    "a": 2,
+    "s": true,
+    "e": true,
+    "name": "Candy",
+    "g": 24000,
+    "skin": "candy1",
+    "explanation": "Halloween candy. Can be exchanged for random treasures.",
+    "type": "gem"
+  },
+  "hpot0": {
+    "name": "HP Potion",
+    "g": 20,
+    "s": true,
+    "skin": "hpot0",
+    "type": "pot",
+    "gives": [
+      [
+        "hp",
+        200
       ]
-   },
-   "ringsj":{
-      "dex":1,
-      "g":24000,
-      "grades":[
-         3,
-         5
-      ],
-      "name":"Ring of Small Joys",
-      "str":1,
-      "skin":"ring",
-      "int":1,
-      "compound":{
-         "int":1,
-         "dex":1,
-         "resistance":5,
-         "str":1
-      },
-      "type":"ring",
-      "resistance":5
-   },
-   "stoneofxp":{
-      "g":2970000,
-      "days":30,
-      "skin_a":"stoneofxp_a",
-      "name":"Stone of Wisdom",
-      "skin":"stoneofxp",
-      "explanation":"Increases experience gain by 50%. Needs to be activated. Can be morphed into other stones.",
-      "type":"stone",
-      "cash":3600,
-      "gain":"xp"
-   },
-   "orbofstr":{
-      "name":"Orb of Strength",
-      "g":240000,
-      "skin":"orangeorb",
-      "str":5,
-      "compound":{
-         "str":5
-      },
-      "type":"orb"
-   },
-   "dexscroll":{
-      "stat":"dex",
-      "name":"Dexterity Scroll",
-      "g":8000,
-      "explanation":"Adds Dexterity to an armor with a Stat attribute.",
-      "s":true,
-      "skin":"dexscroll",
-      "type":"pscroll"
-   },
-   "pmace":{
-      "a":true,
-      "int":8,
-      "damage":"magical",
-      "grades":[
-         0,
-         8
-      ],
-      "skin":"pmace",
-      "dex":4,
-      "upgrade":{
-         "int":2,
-         "dex":1,
-         "attack":6,
-         "range":5
-      },
-      "name":"Priest's Mace",
-      "g":89000,
-      "wtype":"mace",
-      "range":10,
-      "attack":25,
-      "edge":3,
-      "type":"weapon"
-   },
-   "orbofint":{
-      "name":"Orb of Intelligence",
-      "g":240000,
-      "int":5,
-      "skin":"blueorb",
-      "compound":{
-         "int":5
-      },
-      "type":"orb"
-   },
-   "stramulet":{
-      "name":"Amulet of Strength",
-      "g":30000,
-      "skin":"stramulet",
-      "grades":[
-         3,
-         5
-      ],
-      "str":4,
-      "compound":{
-         "str":2
-      },
-      "type":"amulet"
-   },
-   "pants1":{
-      "stat":1,
-      "grade":1,
-      "resistance":12,
-      "grades":[
-         0,
-         8
-      ],
-      "skin":"pants1",
-      "tier":2,
-      "a":2,
-      "upgrade":{
-         "armor":2.5,
-         "stat":1,
-         "resistance":2.5
-      },
-      "name":"Rugged Pants",
-      "g":78000,
-      "armor":20,
-      "edge":2,
-      "type":"pants",
-      "scroll":true
-   },
-   "stick":{
-      "a":true,
-      "upgrade":{
-
-      },
-      "name":"Stick",
-      "g":10,
-      "explanation":"...",
-      "skin":"stick",
-      "type":"misc"
-   },
-   "scroll0":{
-      "name":"Upgrade Scroll",
-      "g":1000,
-      "grade":0,
-      "explanation":"Scroll to upgrade a weapon or armor. If the upgrade fails, the item is lost.",
-      "s":true,
-      "skin":"scroll0",
-      "type":"uscroll"
-   },
-   "hboots":{
-      "stat":1,
-      "grade":2,
-      "resistance":6,
-      "grades":[
-         0,
-         0
-      ],
-      "skin":"hboots",
-      "tier":3,
-      "speed":9,
-      "a":2,
-      "upgrade":{
-         "armor":4.25,
-         "stat":1,
-         "speed":1.125,
-         "resistance":2.125
-      },
-      "name":"Heavy Boots",
-      "g":1240000,
-      "armor":12,
-      "edge":4,
-      "type":"shoes",
-      "scroll":true
-   },
-   "helmet":{
-      "stat":1,
-      "upgrade":{
-         "armor":1.25,
-         "stat":1,
-         "resistance":1.25
-      },
-      "name":"Helmet",
-      "g":3200,
-      "armor":7,
-      "resistance":8,
-      "grades":[
-         7,
-         9
-      ],
-      "skin":"helmet",
-      "tier":1,
-      "type":"helmet",
-      "scroll":true
-   },
-   "test20":{
-      "ignore":true,
-      "grades":[
-         2,
-         3
-      ],
-      "upgrade":{
-
-      },
-      "name":"Coat",
-      "g":6000,
-      "skin":"coat",
-      "tier":1,
-      "type":"chest",
-      "scroll":true
-   },
-   "mcape":{
-      "stat":1,
-      "grade":1,
-      "hp":80,
-      "resistance":16,
-      "grades":[
-         0,
-         6
-      ],
-      "lifesteal":1,
-      "skin":"mcape",
-      "tier":2,
-      "a":2,
-      "upgrade":{
-         "armor":2.5,
-         "hp":15,
-         "stat":1,
-         "lifesteal":0.2,
-         "resistance":2.5
-      },
-      "name":"Dracul's Cape",
-      "g":480000,
-      "armor":24,
-      "edge":4,
-      "type":"chest",
-      "scroll":true
-   },
-   "xhelmet":{
-      "stat":1,
-      "grade":2,
-      "resistance":32,
-      "grades":[
-         0,
-         0
-      ],
-      "skin":"xhelmet",
-      "tier":4,
-      "a":2,
-      "upgrade":{
-         "armor":5.5,
-         "stat":1,
-         "resistance":5.5
-      },
-      "name":"Darkforge Helmet",
-      "g":3200000,
-      "armor":28,
-      "edge":6,
-      "type":"helmet",
-      "scroll":true
-   },
-   "strearring":{
-      "name":"Earring of Strength",
-      "g":80000,
-      "skin":"strearring",
-      "grades":[
-         3,
-         5
-      ],
-      "str":3,
-      "compound":{
-         "str":2
-      },
-      "type":"earring"
-   },
-   "xgloves":{
-      "stat":1,
-      "grade":2,
-      "resistance":16,
-      "grades":[
-         0,
-         0
-      ],
-      "skin":"xgloves",
-      "tier":4,
-      "a":2,
-      "upgrade":{
-         "armor":5.5,
-         "stat":1,
-         "resistance":5.5
-      },
-      "name":"Darkforge Gloves",
-      "g":3400000,
-      "armor":32,
-      "edge":6,
-      "type":"gloves",
-      "scroll":true
-   },
-   "phelmet":{
-      "stat":1,
-      "grade":1,
-      "resistance":16,
-      "grades":[
-         0,
-         7
-      ],
-      "skin":"phelmet",
-      "tier":2,
-      "name":"Pumpkin Head",
-      "a":2,
-      "upgrade":{
-         "armor":2.5,
-         "stat":1,
-         "reflection":0.5,
-         "resistance":2.5
-      },
-      "reflection":1,
-      "g":32000,
-      "armor":14,
-      "edge":3,
-      "type":"helmet",
-      "scroll":true
-   },
-   "orbofres":{
-      "name":"Orb of Resistance",
-      "g":240000,
-      "skin":"blueorb",
-      "resistance":40,
-      "compound":{
-         "resistance":20
-      },
-      "type":"orb"
-   },
-   "xarmor":{
-      "stat":1,
-      "grade":2,
-      "resistance":32,
-      "grades":[
-         0,
-         0
-      ],
-      "skin":"xarmor",
-      "tier":4,
-      "a":2,
-      "upgrade":{
-         "armor":5.5,
-         "stat":1,
-         "resistance":5.5
-      },
-      "name":"Darkforge Armor",
-      "g":4800000,
-      "armor":48,
-      "edge":6,
-      "type":"chest",
-      "scroll":true
-   },
-   "gem1":{
-      "a":2,
-      "s":true,
-      "e":true,
-      "name":"Tiny Ruby",
-      "g":24000,
-      "skin":"gem1",
-      "explanation":"A hard to find gem. Can be exchanged for random treasures.",
-      "type":"gem"
-   },
-   "hpamulet":{
-      "name":"Amulet of HP",
-      "g":20000,
-      "hp":100,
-      "skin":"amulet",
-      "grades":[
-         3,
-         5
-      ],
-      "compound":{
-         "hp":70
-      },
-      "type":"amulet"
-   },
-   "shoes1":{
-      "stat":1,
-      "grade":1,
-      "grades":[
-         0,
-         8
-      ],
-      "skin":"shoes1",
-      "tier":2,
-      "speed":7,
-      "a":2,
-      "upgrade":{
-         "armor":2.5,
-         "stat":1,
-         "speed":0.875
-      },
-      "name":"Sturdy Shoes",
-      "g":120000,
-      "armor":8,
-      "edge":2,
-      "type":"shoes",
-      "scroll":true
-   },
-   "hhelmet":{
-      "stat":1,
-      "grade":2,
-      "resistance":24,
-      "grades":[
-         0,
-         0
-      ],
-      "skin":"hhelmet",
-      "tier":3,
-      "a":2,
-      "upgrade":{
-         "armor":4.25,
-         "stat":1,
-         "resistance":4.25
-      },
-      "name":"Heavy Helmet",
-      "g":320000,
-      "armor":21,
-      "edge":4,
-      "type":"helmet",
-      "scroll":true
-   },
-   "staff":{
-      "attack":25,
-      "upgrade":{
-         "attack":5,
-         "range":3
-      },
-      "grades":[
-         7,
-         9
-      ],
-      "name":"Staff",
-      "g":12400,
-      "skin":"staff",
-      "wtype":"staff",
-      "type":"weapon",
-      "range":50,
-      "damage":"magical"
-   },
-   "scroll1":{
-      "name":"Upgrade Scroll",
-      "g":40000,
-      "grade":1,
-      "explanation":"Scroll to upgrade a high grade weapon or armor.",
-      "s":true,
-      "skin":"scroll1",
-      "type":"uscroll"
-   },
-   "dexamulet":{
-      "dex":4,
-      "name":"Amulet of Dexterity",
-      "g":30000,
-      "skin":"dexamulet",
-      "grades":[
-         3,
-         5
-      ],
-      "compound":{
-         "dex":3
-      },
-      "type":"amulet"
-   },
-   "xboots":{
-      "stat":1,
-      "grade":2,
-      "resistance":8,
-      "grades":[
-         0,
-         0
-      ],
-      "skin":"xboots",
-      "tier":4,
-      "speed":10,
-      "a":2,
-      "upgrade":{
-         "armor":5.5,
-         "stat":1,
-         "speed":1.375,
-         "resistance":2.75
-      },
-      "name":"Darkforge Boots",
-      "g":12400000,
-      "armor":16,
-      "edge":6,
-      "type":"shoes",
-      "scroll":true
-   },
-   "stoneofgold":{
-      "g":2970000,
-      "days":30,
-      "skin_a":"stoneofgold",
-      "name":"Stone of Riches",
-      "skin":"stoneofgold",
-      "explanation":"Helps you find up to 40% more gold from monsters.",
-      "type":"stone",
-      "cash":3600,
-      "gain":"gold"
-   },
-   "harmor":{
-      "stat":1,
-      "grade":2,
-      "resistance":24,
-      "grades":[
-         0,
-         0
-      ],
-      "skin":"harmor",
-      "tier":3,
-      "a":2,
-      "upgrade":{
-         "armor":4.25,
-         "stat":1,
-         "resistance":4.25
-      },
-      "name":"Heavy Armor",
-      "g":480000,
-      "armor":36,
-      "edge":4,
-      "type":"chest",
-      "scroll":true
-   },
-   "tokenofcode":{
-      "name":"Token of Code",
-      "g":4125,
-      "type":"token",
-      "explanation":"Gives your character 240 minutes of additional CODE. This is a ~4 months old prototype people, but yeah, I'm considering limiting the free CODE hours to 8 or 12 hours a day. Might leave it unlimited too, undecided.",
-      "cash":5,
-      "s":true,
-      "skin":"tokenofcode",
-      "minutes":240
-   },
-   "candy1":{
-      "a":2,
-      "s":true,
-      "e":true,
-      "name":"Candy",
-      "g":24000,
-      "skin":"candy1",
-      "explanation":"Halloween candy. Can be exchanged for random treasures.",
-      "type":"gem"
-   },
-   "hpot0":{
-      "name":"HP Potion",
-      "g":20,
-      "s":true,
-      "skin":"hpot0",
-      "type":"pot",
-      "gives":[
-         [
-            "hp",
-            200
-         ]
+    ]
+  },
+  "hpot1": {
+    "name": "HP Potion",
+    "g": 100,
+    "s": true,
+    "skin": "hpot1",
+    "type": "pot",
+    "gives": [
+      [
+        "hp",
+        400
       ]
-   },
-   "hpot1":{
-      "name":"HP Potion",
-      "g":100,
-      "s":true,
-      "skin":"hpot1",
-      "type":"pot",
-      "gives":[
-         [
-            "hp",
-            400
-         ]
+    ]
+  },
+  "mpot1": {
+    "name": "MP Potion",
+    "g": 100,
+    "s": true,
+    "skin": "mpot1",
+    "type": "pot",
+    "gives": [
+      [
+        "mp",
+        500
       ]
-   },
-   "mpot1":{
-      "name":"MP Potion",
-      "g":100,
-      "s":true,
-      "skin":"mpot1",
-      "type":"pot",
-      "gives":[
-         [
-            "mp",
-            500
-         ]
+    ]
+  },
+  "mpot0": {
+    "name": "MP Potion",
+    "g": 20,
+    "s": true,
+    "skin": "mpot0",
+    "type": "pot",
+    "gives": [
+      [
+        "mp",
+        300
       ]
-   },
-   "mpot0":{
-      "name":"MP Potion",
-      "g":20,
-      "s":true,
-      "skin":"mpot0",
-      "type":"pot",
-      "gives":[
-         [
-            "mp",
-            300
-         ]
-      ]
-   },
-   "wblade":{
-      "damage":"magical",
-      "g":4890000,
-      "grades":[
-         0,
-         0
-      ],
-      "skin":"wblade",
-      "name":"The Ethereal Blade of Destiny",
-      "a":true,
-      "upgrade":{
-         "rpiercing":4,
-         "attack":6,
-         "range":3,
-         "evasion":1
-      },
-      "rpiercing":10,
-      "evasion":10,
-      "wtype":"wblade",
-      "range":40,
-      "ignore":true,
-      "attack":40,
-      "edge":2,
-      "type":"weapon"
-   },
-   "wbook0":{
-      "name":"Book of Knowledge",
-      "g":12000,
-      "int":6,
-      "skin":"wbook0",
-      "grades":[
-         7,
-         9
-      ],
-      "edge":-1,
-      "compound":{
-         "int":5
-      },
-      "type":"source"
-   },
-   "xptome":{
-      "name":"Tome of Protection",
-      "g":16500,
-      "explanation":"Significantly reduces experience loss on death. If the owner is defeated by another player, the victor receives half the cost of this item.",
-      "cash":20,
-      "s":true,
-      "skin":"xptome",
-      "type":"tome"
-   },
-   "gem0":{
-      "a":true,
-      "s":true,
-      "e":true,
-      "name":"Raw Emerald",
-      "g":240000,
-      "skin":"gem0",
-      "explanation":"A very rare gem. Can be exchanged for random treasures.",
-      "type":"gem"
-   },
-   "xpants":{
-      "stat":1,
-      "grade":2,
-      "resistance":24,
-      "grades":[
-         0,
-         0
-      ],
-      "skin":"xpants",
-      "tier":4,
-      "a":2,
-      "upgrade":{
-         "armor":5.5,
-         "stat":1,
-         "resistance":5.5
-      },
-      "name":"Darkforge Underarmor",
-      "g":7800000,
-      "armor":40,
-      "edge":6,
-      "type":"pants",
-      "scroll":true
-   },
-   "hpbelt":{
-      "name":"Belt of HP",
-      "g":20000,
-      "hp":80,
-      "skin":"belt",
-      "grades":[
-         3,
-         5
-      ],
-      "compound":{
-         "hp":60
-      },
-      "type":"belt"
-   },
-   "dexearring":{
-      "dex":3,
-      "name":"Earring of Dexterity",
-      "g":80000,
-      "skin":"dexearring",
-      "grades":[
-         3,
-         5
-      ],
-      "compound":{
-         "dex":2
-      },
-      "type":"earring"
-   },
-   "intscroll":{
-      "stat":"int",
-      "name":"Intelligence Scroll",
-      "g":8000,
-      "explanation":"Adds Intelligence to an armor with a Stat attribute.",
-      "s":true,
-      "skin":"intscroll",
-      "type":"pscroll"
-   },
-   "coat1":{
-      "stat":1,
-      "grade":1,
-      "resistance":16,
-      "grades":[
-         0,
-         8
-      ],
-      "skin":"coat1",
-      "tier":2,
-      "a":2,
-      "upgrade":{
-         "armor":2.5,
-         "stat":1,
-         "resistance":2.5
-      },
-      "name":"Sturdy Coat",
-      "g":48000,
-      "armor":24,
-      "edge":2,
-      "type":"chest",
-      "scroll":true
-   },
-   "candy0":{
-      "a":2,
-      "s":true,
-      "e":true,
-      "name":"Rare Candy",
-      "g":240000,
-      "skin":"candy0",
-      "explanation":"A rare Halloween candy. Can be exchanged for random treasures.",
-      "type":"gem"
-   },
-   "intamulet":{
-      "name":"Amulet of Intelligence",
-      "g":30000,
-      "int":4,
-      "skin":"intamulet",
-      "grades":[
-         3,
-         5
-      ],
-      "compound":{
-         "int":3
-      },
-      "type":"amulet"
-   },
-   "hgloves":{
-      "stat":1,
-      "grade":2,
-      "resistance":12,
-      "grades":[
-         0,
-         0
-      ],
-      "skin":"hgloves",
-      "tier":3,
-      "a":2,
-      "upgrade":{
-         "armor":4.25,
-         "stat":1,
-         "resistance":4.25
-      },
-      "name":"Heavy Gloves",
-      "g":340000,
-      "armor":24,
-      "edge":4,
-      "type":"gloves",
-      "scroll":true
-   },
-   "offering":{
-      "a":true,
-      "name":"Primordial Shard",
-      "g":198000,
-      "explanation":"Can be offered to the gods during an upgrade. Believed to increase the odds of success by gaining their favor.",
-      "cash":240,
-      "s":true,
-      "skin":"shade_offering",
-      "type":"offering"
-   },
-   "orbofhp":{
-      "name":"Orb of Vitality",
-      "g":120000,
-      "hp":120,
-      "skin":"redorb",
-      "compound":{
-         "hp":120
-      },
-      "type":"orb"
-   },
-   "gloves1":{
-      "stat":1,
-      "grade":1,
-      "resistance":8,
-      "grades":[
-         0,
-         8
-      ],
-      "skin":"gloves1",
-      "tier":2,
-      "a":2,
-      "upgrade":{
-         "armor":2.5,
-         "stat":1,
-         "resistance":2.5
-      },
-      "name":"Sturdy Gloves",
-      "g":34000,
-      "armor":16,
-      "edge":2,
-      "type":"gloves",
-      "scroll":true
-   },
-   "scroll2":{
-      "name":"Upgrade Scroll",
-      "g":1600000,
-      "grade":2,
-      "explanation":"Scroll to upgrade a rare weapon or armor.",
-      "s":true,
-      "skin":"scroll2",
-      "type":"uscroll"
-   },
-   "strscroll":{
-      "stat":"str",
-      "name":"Strength Scroll",
-      "g":8000,
-      "explanation":"Adds Stength to an armor with a Stat attribute.",
-      "s":true,
-      "skin":"strscroll",
-      "type":"pscroll"
-   },
-   "jewellerybox":{
-      "a":true,
-      "s":true,
-      "e":true,
-      "name":"Jewellery Box",
-      "g":80000,
-      "skin":"chest3",
-      "explanation":"Can be exchanged for a random acessory.",
-      "type":"box"
-   },
-   "stand0":{
-      "explanation":"You can become a merchant using this item.",
-      "type":"stand",
-      "name":"Merchant Stand",
-      "g":40000,
-      "skin":"stand0"
-   },
-   "weaponbox":{
-      "a":true,
-      "s":true,
-      "e":true,
-      "name":"Weapon Box",
-      "g":320000,
-      "skin":"chest1",
-      "explanation":"Can be exchanged for a random, rare weapon.",
-      "type":"box"
-   },
-   "armorbox":{
-      "a":true,
-      "s":true,
-      "e":true,
-      "name":"Armor Box",
-      "g":120000,
-      "skin":"chest0",
-      "explanation":"Can be exchanged for a random, rare armor.",
-      "type":"box"
-   },
-   "coat":{
-      "stat":1,
-      "upgrade":{
-         "armor":1.25,
-         "stat":1,
-         "resistance":1.25
-      },
-      "name":"Coat",
-      "g":6000,
-      "armor":12,
-      "resistance":8,
-      "grades":[
-         7,
-         9
-      ],
-      "skin":"coat",
-      "tier":1,
-      "type":"chest",
-      "scroll":true
-   },
-   "blade":{
-      "attack":15,
-      "upgrade":{
-         "attack":4,
-         "range":1.5
-      },
-      "grades":[
-         7,
-         9
-      ],
-      "name":"Blade",
-      "g":8400,
-      "skin":"blade",
-      "wtype":"short_sword",
-      "type":"weapon",
-      "range":5,
-      "damage":"physical"
-   },
-   "shield":{
-      "grades":[
-         4,
-         8
-      ],
-      "upgrade":{
-         "armor":12.5,
-         "resistance":10
-      },
-      "name":"Shield",
-      "g":24000,
-      "skin":"shield",
-      "armor":60,
-      "type":"shield",
-      "resistance":40
-   },
-   "bow":{
-      "attack":20,
-      "upgrade":{
-         "attack":4,
-         "range":8
-      },
-      "grades":[
-         7,
-         9
-      ],
-      "name":"Bow",
-      "g":16000,
-      "skin":"bow",
-      "wtype":"bow",
-      "type":"weapon",
-      "range":60,
-      "damage":"physical"
-   },
-   "cscroll0":{
-      "name":"Compound Scroll",
-      "g":6400,
-      "grade":0,
-      "explanation":"Scroll to combine 3 accessories. Things get challenging after +1.",
-      "s":true,
-      "skin":"cscroll0",
-      "type":"cscroll"
-   },
-   "cscroll1":{
-      "name":"Compound Scroll",
-      "g":240000,
-      "grade":1,
-      "explanation":"Scroll to combine 3 high grade accessories.",
-      "s":true,
-      "skin":"cscroll1",
-      "type":"cscroll"
-   },
-   "cscroll2":{
-      "name":"Compound Scroll",
-      "g":9200000,
-      "grade":2,
-      "explanation":"Scroll to combine 3 rare accessories.",
-      "s":true,
-      "skin":"cscroll2",
-      "type":"cscroll"
-   },
-   "fireblade":{
-      "damage":"physical",
-      "grades":[
-         0,
-         8
-      ],
-      "skin":"fireblade",
-      "a":true,
-      "upgrade":{
-         "attack":4.5,
-         "range":1.5
-      },
-      "name":"Fiery Blade",
-      "g":72000,
-      "wtype":"short_sword",
-      "range":5,
-      "attack":18,
-      "edge":2,
-      "type":"weapon"
-   },
-   "gloves":{
-      "stat":1,
-      "upgrade":{
-         "armor":1.25,
-         "stat":1,
-         "resistance":1.25
-      },
-      "name":"Gloves",
-      "g":3400,
-      "armor":8,
-      "resistance":4,
-      "grades":[
-         7,
-         9
-      ],
-      "skin":"gloves",
-      "tier":1,
-      "type":"gloves",
-      "scroll":true
-   },
-   "basher":{
-      "a":true,
-      "upgrade":{
-         "armor":4,
-         "attack":6,
-         "range":1,
-         "attr0":0.4,
-         "attr1":0.2
-      },
-      "attr0":0.5,
-      "name":"Basher",
-      "armor":20,
-      "wtype":"great_sword",
-      "attr1":1,
-      "range":5,
-      "damage":"physical",
-      "g":72000,
-      "attack":24,
-      "edge":1,
-      "grades":[
-         0,
-         7
-      ],
-      "wspeed":"slow",
-      "skin":"basher",
-      "type":"weapon",
-      "ability":"bash"
-   },
-   "claw":{
-      "attack":10,
-      "upgrade":{
-         "attack":3,
-         "range":1.5
-      },
-      "grades":[
-         7,
-         9
-      ],
-      "name":"Claw",
-      "g":7200,
-      "skin":"claw",
-      "wtype":"fist",
-      "type":"weapon",
-      "range":5,
-      "damage":"physical"
-   },
-   "pants":{
-      "stat":1,
-      "upgrade":{
-         "armor":1.25,
-         "stat":1,
-         "resistance":1.25
-      },
-      "name":"Pants",
-      "g":7800,
-      "armor":10,
-      "resistance":6,
-      "grades":[
-         7,
-         9
-      ],
-      "skin":"pants",
-      "tier":1,
-      "type":"pants",
-      "scroll":true
-   },
-   "computer":{
-      "name":"Ancient Computer",
-      "g":1320000,
-      "explanation":"Networks you to NPC's and extends the CODE capabilities.",
-      "cash":1600,
-      "skin":"ancientcomputer",
-      "type":"computer"
-   },
-   "firestaff":{
-      "damage":"magical",
-      "grades":[
-         0,
-         8
-      ],
-      "skin":"firestaff",
-      "a":true,
-      "upgrade":{
-         "attack":5.5,
-         "range":3
-      },
-      "name":"Fiery Staff",
-      "g":289000,
-      "wtype":"staff",
-      "range":50,
-      "attack":30,
-      "edge":2,
-      "type":"weapon"
-   }
+    ]
+  },
+  "wblade": {
+    "damage": "magical",
+    "g": 4890000,
+    "grades": [
+      0,
+      0
+    ],
+    "skin": "wblade",
+    "name": "The Ethereal Blade of Destiny",
+    "a": true,
+    "upgrade": {
+      "rpiercing": 4,
+      "attack": 6,
+      "range": 3,
+      "evasion": 1
+    },
+    "rpiercing": 10,
+    "evasion": 10,
+    "wtype": "wblade",
+    "range": 40,
+    "ignore": true,
+    "attack": 40,
+    "edge": 2,
+    "type": "weapon"
+  },
+  "wbook0": {
+    "name": "Book of Knowledge",
+    "g": 12000,
+    "int": 6,
+    "skin": "wbook0",
+    "grades": [
+      7,
+      9
+    ],
+    "edge": -1,
+    "compound": {
+      "int": 5
+    },
+    "type": "source"
+  },
+  "xptome": {
+    "name": "Tome of Protection",
+    "g": 16500,
+    "explanation": "Significantly reduces experience loss on death. If the owner is defeated by another player, the victor receives half the cost of this item.",
+    "cash": 20,
+    "s": true,
+    "skin": "xptome",
+    "type": "tome"
+  },
+  "test": {
+    "ignore": true,
+    "explanation": "An item to test item looks, just set the 'skin' property.",
+    "type": "test",
+    "name": "Test",
+    "skin": "test"
+  },
+  "gem0": {
+    "a": true,
+    "s": true,
+    "e": true,
+    "name": "Raw Emerald",
+    "g": 240000,
+    "skin": "gem0",
+    "explanation": "A very rare gem. Can be exchanged for random treasures.",
+    "type": "gem"
+  },
+  "xpants": {
+    "stat": 1,
+    "grade": 2,
+    "resistance": 24,
+    "grades": [
+      0,
+      0
+    ],
+    "skin": "xpants",
+    "tier": 4,
+    "a": 2,
+    "upgrade": {
+      "armor": 5.5,
+      "stat": 1,
+      "resistance": 5.5
+    },
+    "name": "Darkforge Underarmor",
+    "g": 7800000,
+    "armor": 40,
+    "edge": 6,
+    "type": "pants",
+    "scroll": true
+  },
+  "hpbelt": {
+    "name": "Belt of HP",
+    "g": 20000,
+    "hp": 80,
+    "skin": "belt",
+    "grades": [
+      3,
+      5
+    ],
+    "compound": {
+      "hp": 60
+    },
+    "type": "belt"
+  },
+  "dexearring": {
+    "dex": 3,
+    "name": "Earring of Dexterity",
+    "g": 80000,
+    "skin": "dexearring",
+    "grades": [
+      3,
+      5
+    ],
+    "compound": {
+      "dex": 2
+    },
+    "type": "earring"
+  },
+  "intscroll": {
+    "stat": "int",
+    "name": "Intelligence Scroll",
+    "g": 8000,
+    "explanation": "Adds Intelligence to an armor with a Stat attribute.",
+    "s": true,
+    "skin": "intscroll",
+    "type": "pscroll"
+  },
+  "coat1": {
+    "stat": 1,
+    "grade": 1,
+    "resistance": 16,
+    "grades": [
+      0,
+      8
+    ],
+    "skin": "coat1",
+    "tier": 2,
+    "a": 2,
+    "upgrade": {
+      "armor": 2.5,
+      "stat": 1,
+      "resistance": 2.5
+    },
+    "name": "Sturdy Coat",
+    "g": 48000,
+    "armor": 24,
+    "edge": 2,
+    "type": "chest",
+    "scroll": true
+  },
+  "candy0": {
+    "a": 2,
+    "s": true,
+    "e": true,
+    "name": "Rare Candy",
+    "g": 240000,
+    "skin": "candy0",
+    "explanation": "A rare Halloween candy. Can be exchanged for random treasures.",
+    "type": "gem"
+  },
+  "intamulet": {
+    "name": "Amulet of Intelligence",
+    "g": 30000,
+    "int": 4,
+    "skin": "intamulet",
+    "grades": [
+      3,
+      5
+    ],
+    "compound": {
+      "int": 3
+    },
+    "type": "amulet"
+  },
+  "hgloves": {
+    "stat": 1,
+    "grade": 2,
+    "resistance": 12,
+    "grades": [
+      0,
+      0
+    ],
+    "skin": "hgloves",
+    "tier": 3,
+    "a": 2,
+    "upgrade": {
+      "armor": 4.25,
+      "stat": 1,
+      "resistance": 4.25
+    },
+    "name": "Heavy Gloves",
+    "g": 340000,
+    "armor": 24,
+    "edge": 4,
+    "type": "gloves",
+    "scroll": true
+  },
+  "offering": {
+    "a": true,
+    "name": "Primordial Shard",
+    "g": 198000,
+    "explanation": "Can be offered to the gods during an upgrade. Believed to increase the odds of success by gaining their favor.",
+    "cash": 240,
+    "s": true,
+    "skin": "shade_offering",
+    "type": "offering"
+  },
+  "orbofhp": {
+    "name": "Orb of Vitality",
+    "g": 120000,
+    "hp": 120,
+    "skin": "redorb",
+    "compound": {
+      "hp": 120
+    },
+    "type": "orb"
+  },
+  "gloves1": {
+    "stat": 1,
+    "grade": 1,
+    "resistance": 8,
+    "grades": [
+      0,
+      8
+    ],
+    "skin": "gloves1",
+    "tier": 2,
+    "a": 2,
+    "upgrade": {
+      "armor": 2.5,
+      "stat": 1,
+      "resistance": 2.5
+    },
+    "name": "Sturdy Gloves",
+    "g": 34000,
+    "armor": 16,
+    "edge": 2,
+    "type": "gloves",
+    "scroll": true
+  },
+  "scroll2": {
+    "name": "Upgrade Scroll",
+    "g": 1600000,
+    "grade": 2,
+    "explanation": "Scroll to upgrade a rare weapon or armor.",
+    "s": true,
+    "skin": "scroll2",
+    "type": "uscroll"
+  },
+  "strscroll": {
+    "stat": "str",
+    "name": "Strength Scroll",
+    "g": 8000,
+    "explanation": "Adds Stength to an armor with a Stat attribute.",
+    "s": true,
+    "skin": "strscroll",
+    "type": "pscroll"
+  },
+  "jewellerybox": {
+    "a": true,
+    "s": true,
+    "e": true,
+    "name": "Jewellery Box",
+    "g": 80000,
+    "skin": "chest3",
+    "explanation": "Can be exchanged for a random acessory.",
+    "type": "box"
+  },
+  "stand0": {
+    "explanation": "You can become a merchant using this item.",
+    "type": "stand",
+    "name": "Merchant Stand",
+    "g": 40000,
+    "skin": "stand0"
+  },
+  "weaponbox": {
+    "a": true,
+    "s": true,
+    "e": true,
+    "name": "Weapon Box",
+    "g": 320000,
+    "skin": "chest1",
+    "explanation": "Can be exchanged for a random, rare weapon.",
+    "type": "box"
+  },
+  "armorbox": {
+    "a": true,
+    "s": true,
+    "e": true,
+    "name": "Armor Box",
+    "g": 120000,
+    "skin": "chest0",
+    "explanation": "Can be exchanged for a random, rare armor.",
+    "type": "box"
+  },
+  "coat": {
+    "stat": 1,
+    "upgrade": {
+      "armor": 1.25,
+      "stat": 1,
+      "resistance": 1.25
+    },
+    "name": "Coat",
+    "g": 6000,
+    "armor": 12,
+    "resistance": 8,
+    "grades": [
+      7,
+      9
+    ],
+    "skin": "coat",
+    "tier": 1,
+    "type": "chest",
+    "scroll": true
+  },
+  "blade": {
+    "attack": 15,
+    "upgrade": {
+      "attack": 4,
+      "range": 1.5
+    },
+    "grades": [
+      7,
+      9
+    ],
+    "name": "Blade",
+    "g": 8400,
+    "skin": "blade",
+    "wtype": "short_sword",
+    "type": "weapon",
+    "range": 5,
+    "damage": "physical"
+  },
+  "shield": {
+    "grades": [
+      4,
+      8
+    ],
+    "upgrade": {
+      "armor": 12.5,
+      "resistance": 10
+    },
+    "name": "Shield",
+    "g": 24000,
+    "skin": "shield",
+    "armor": 60,
+    "type": "shield",
+    "resistance": 40
+  },
+  "bow": {
+    "attack": 20,
+    "upgrade": {
+      "attack": 4,
+      "range": 8
+    },
+    "grades": [
+      7,
+      9
+    ],
+    "name": "Bow",
+    "g": 16000,
+    "skin": "bow",
+    "wtype": "bow",
+    "type": "weapon",
+    "range": 60,
+    "damage": "physical"
+  },
+  "cscroll0": {
+    "name": "Compound Scroll",
+    "g": 6400,
+    "grade": 0,
+    "explanation": "Scroll to combine 3 accessories. Things get challenging after +1.",
+    "s": true,
+    "skin": "cscroll0",
+    "type": "cscroll"
+  },
+  "cscroll1": {
+    "name": "Compound Scroll",
+    "g": 240000,
+    "grade": 1,
+    "explanation": "Scroll to combine 3 high grade accessories.",
+    "s": true,
+    "skin": "cscroll1",
+    "type": "cscroll"
+  },
+  "cscroll2": {
+    "name": "Compound Scroll",
+    "g": 9200000,
+    "grade": 2,
+    "explanation": "Scroll to combine 3 rare accessories.",
+    "s": true,
+    "skin": "cscroll2",
+    "type": "cscroll"
+  },
+  "fireblade": {
+    "damage": "physical",
+    "grades": [
+      0,
+      8
+    ],
+    "skin": "fireblade",
+    "a": true,
+    "upgrade": {
+      "attack": 4.5,
+      "range": 1.5
+    },
+    "name": "Fiery Blade",
+    "g": 72000,
+    "wtype": "short_sword",
+    "range": 5,
+    "attack": 18,
+    "edge": 2,
+    "type": "weapon"
+  },
+  "gloves": {
+    "stat": 1,
+    "upgrade": {
+      "armor": 1.25,
+      "stat": 1,
+      "resistance": 1.25
+    },
+    "name": "Gloves",
+    "g": 3400,
+    "armor": 8,
+    "resistance": 4,
+    "grades": [
+      7,
+      9
+    ],
+    "skin": "gloves",
+    "tier": 1,
+    "type": "gloves",
+    "scroll": true
+  },
+  "basher": {
+    "a": true,
+    "upgrade": {
+      "armor": 4,
+      "attack": 6,
+      "range": 1,
+      "attr0": 0.4,
+      "attr1": 0.2
+    },
+    "attr0": 0.5,
+    "name": "Basher",
+    "armor": 20,
+    "wtype": "great_sword",
+    "attr1": 1,
+    "range": 5,
+    "damage": "physical",
+    "g": 72000,
+    "attack": 24,
+    "edge": 1,
+    "grades": [
+      0,
+      7
+    ],
+    "wspeed": "slow",
+    "skin": "basher",
+    "type": "weapon",
+    "ability": "bash"
+  },
+  "claw": {
+    "attack": 10,
+    "upgrade": {
+      "attack": 3,
+      "range": 1.5
+    },
+    "grades": [
+      7,
+      9
+    ],
+    "name": "Claw",
+    "g": 7200,
+    "skin": "claw",
+    "wtype": "fist",
+    "type": "weapon",
+    "range": 5,
+    "damage": "physical"
+  },
+  "pants": {
+    "stat": 1,
+    "upgrade": {
+      "armor": 1.25,
+      "stat": 1,
+      "resistance": 1.25
+    },
+    "name": "Pants",
+    "g": 7800,
+    "armor": 10,
+    "resistance": 6,
+    "grades": [
+      7,
+      9
+    ],
+    "skin": "pants",
+    "tier": 1,
+    "type": "pants",
+    "scroll": true
+  },
+  "firestaff": {
+    "damage": "magical",
+    "grades": [
+      0,
+      8
+    ],
+    "skin": "firestaff",
+    "a": true,
+    "upgrade": {
+      "attack": 5.5,
+      "range": 3
+    },
+    "name": "Fiery Staff",
+    "g": 289000,
+    "wtype": "staff",
+    "range": 50,
+    "attack": 30,
+    "edge": 2,
+    "type": "weapon"
+  }
 }
