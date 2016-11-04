@@ -16,8 +16,9 @@ var till_level = 0; // Kills till level = 0, XP till level = 1
 
 var cp = false; //Set to true in order to allow compounding of items
 var whitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj'];
+var use_better_scrolls = false; //240,000 Gold Scroll = true [only will use for +2 and higher], 6,400 Gold Scroll = false [will only use base scroll no matter what]
 var maxLevel = 3;
-//compound settings [current issues = buys slightly over what it needs for scrolls / need at least one scroll in inventory (anywhere) ]
+//compound settings
 
 var purchase_pots = false; //Set to true in order to allow potion purchases
 var buy_hp = false; //Set to true in order to allow hp potion purchases
@@ -187,40 +188,31 @@ setInterval(function() {
 
 }, 200); // Loop Delay
 
-var collection;
-var count;
-
 function compound_items() {
-  collection = new Map();
-  count = 2;
-  character.items.forEach(group);
+  let to_compound = character.items.reduce((collection, item, index) => {
+    if (item && item.level < maxLevel && whitelist.includes(item.name)) {
+      let key = item.name + item.level;
+      !collection.has(key) ? collection.set(key, [item.level, index]) : collection.get(key).push(index);
+    }
+    return collection;
+  }, new Map());
 
-  let [cscroll0_slot, cscroll0] = find_item(i => i.name == 'cscroll0');
-  if (cscroll0 && cscroll0.q < count)
-    parent.buy('cscroll0', count - cscroll0.q);
-  for (let key of collection.keys()) {
-    let c = collection.get(key);
+  for (var c of to_compound.values()) {
+    let scroll_name = use_better_scrolls && c[0] > 1 ? 'cscroll1' : 'cscroll0';
+
     for (let i = 1; i + 2 < c.length; i += 3) {
+      let [scroll, _] = find_item(i => i.name == scroll_name);
+      if (scroll == -1) {
+        parent.buy(scroll_name);
+        return;
+      }
       parent.socket.emit('compound', {
         items: [c[i], c[i + 1], c[i + 2]],
-        scroll_num: cscroll0_slot,
+        scroll_num: scroll,
         offering_num: null,
         clevel: c[0]
       });
     }
-  }
-}
-
-function group(item, index) {
-  if (item && item.level < maxLevel && whitelist.includes(item.name)) {
-    let key = item.name + item.level;
-
-    if (!collection.has(key))
-      collection.set(key, [item.level, index]);
-    else
-      collection.get(key).push(index);
-
-    count++;
   }
 }
 
