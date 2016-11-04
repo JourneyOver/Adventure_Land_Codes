@@ -143,13 +143,13 @@ function GetInjured(leader) {
     if (c.type == "character" && c.party && c.party == leader && !c.rip && can_attack(c)) {
       //Check if target is injured enough.
       if (c.hp < c.max_hp * percentage)
-        res[res.length] = c;
+        res.push(c);
     }
   }
 
   //Add yourself to the party if you don't have full health.
   if (character.hp < character.max_hp * percentage)
-    res[res.length] = character;
+    	res.push(character);
 
   return res;
 }
