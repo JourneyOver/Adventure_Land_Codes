@@ -1,4 +1,4 @@
-//Version 1.6.0
+//Version 1.6.2
 
 var mode = 0; //kite (move in straight line while attacking) [default] = 0, standing still (will move if target is out of range) = 1, circle kite (walks in circles around enemy) = 2, Front of target (Moves to front of target before attacking) = 3, Don't Move at all (will not move even if target is out of range) = 4
 var targetting = 2; //Monster Range  = 0, Character Range = 1, Tank Range[default] = 2
@@ -12,6 +12,20 @@ var gui_tl_gold = false; //Set to true in order to turn on GUI for kill (or xp) 
 var gui_timer = false; //Set to true in order to turn on GUI for time till level [if set to true and then turned to false you'll have to refresh game]
 var till_level = 0; // Kills till level = 0, XP till level = 1
 //GUI Settings
+
+var cp = false; //Set to true in order to allow compounding of items
+var whitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj'];
+var maxLevel = 3;
+//compound settings [current issues = buys slightly over what it needs for scrolls / need at least one scroll in inventory (anywhere) ]
+
+var purchase_pots = false; //Set to true in order to allow potion purchases
+var buy_hp = false; //Set to true in order to allow hp potion purchases
+var buy_mp = false; //Set to true in order to allow mp potion purchases
+var hp_potion = 'hpot0'; //+200 HP Potion = 'hpot0', +400 HP Potion = 'hpot1' [always keep '' around it]
+var mp_potion = 'mpot0'; //+300 MP Potion = 'mpot0', +500 MP Potion = 'mpot1' [always keep '' around it]
+var pots_minimum = 50; //If you have less than this, you will buy
+var pots_to_buy = 1000; //This is how many you will buy
+//Automatic Potion Purchasing settings!
 
 var prevx = 0;
 var prevy = 0;
@@ -27,15 +41,6 @@ var stuck = 1;
 //show_json(parent.M);
 //JSONs
 
-var purchase_pots = false; //Set to true in order to allow potion purchases
-var buy_hp = false; //Set to true in order to allow hp potion purchases
-var buy_mp = false; //Set to true in order to allow mp potion purchases
-var hp_potion = 'hpot0'; //+200 HP Potion = 'hpot0', +400 HP Potion = 'hpot1' [always keep '' around it]
-var mp_potion = 'mpot0'; //+300 MP Potion = 'mpot0', +500 MP Potion = 'mpot1' [always keep '' around it]
-var pots_minimum = 50; //If you have less than this, you will buy
-var pots_to_buy = 1000; //This is how many you will buy
-//Automatic Potion Purchasing!
-
 //Grind Code below --------------------------
 setInterval(function() {
 
@@ -47,6 +52,10 @@ setInterval(function() {
   //Updates GUI for time till level
   if (gui_timer) {
     update_xptimer();
+  }
+
+  if (cp) {
+    compound_items();
   }
 
   //Purchases Potions when below threshold
@@ -175,6 +184,43 @@ setInterval(function() {
   //Sets new coords to prev coords
 
 }, 200); // Loop Delay
+
+var collection;
+var count;
+
+function compound_items() {
+  collection = new Map();
+  count = 2;
+  character.items.forEach(group);
+
+  let [cscroll0_slot, cscroll0] = find_item(i => i.name == 'cscroll0');
+  if (cscroll0 && cscroll0.q < count)
+    parent.buy('cscroll0', count - cscroll0.q);
+  for (let key of collection.keys()) {
+    let c = collection.get(key);
+    for (let i = 1; i + 2 < c.length; i += 3) {
+      parent.socket.emit('compound', {
+        items: [c[i], c[i + 1], c[i + 2]],
+        scroll_num: cscroll0_slot,
+        offering_num: null,
+        clevel: c[0]
+      });
+    }
+  }
+}
+
+function group(item, index) {
+  if (item && item.level < maxLevel && whitelist.includes(item.name)) {
+    let key = item.name + item.level;
+
+    if (!collection.has(key))
+      collection.set(key, [item.level, index]);
+    else
+      collection.get(key).push(index);
+
+    count++;
+  }
+}
 
 function purchase_potions(buyHP, buyMP) {
   let [hpslot, hppot] = find_item(i => i.name == hp_potion);
@@ -397,8 +443,13 @@ function ncomma(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-initGUI();
-init_xptimer(5);
+if (gui_tl_gold) {
+  initGUI();
+}
+
+if (gui_timer) {
+  init_xptimer(5);
+}
 
 //Unusable:
 //sleep()

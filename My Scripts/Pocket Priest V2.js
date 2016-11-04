@@ -3,15 +3,21 @@
 // It looks at their max hp vs current hp and heals the person with the highest percentage loss.
 // Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.3.0
+// Version 1.3.5
 
 var heal_dist = 0; //Stay at a distance and move when out of range of target/leader (only when leader is attacking something) = 0, Stay always on top of leader = 1
+var useCursing = true; //set to false to turn priest skill curse off
 //Main Settings
 
 var gui_tl_gold = false; //Set to true in order to turn on GUI for kill (or xp) till level + gold per hour (and gold per scripted session gained/lost) [if set to true and then turned to false you'll have to refresh game]
 var gui_timer = false; //Set to true in order to turn on GUI for time till level [if set to true and then turned to false you'll have to refresh game]
 var till_level = 0; // Kills till level = 0, XP till level = 1
 //GUI Settings
+
+var cp = false; //Set to true in order to allow compounding of items
+var whitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj'];
+var maxLevel = 3;
+//compound settings [current issues = buys slightly over what it needs for scrolls / need at least one scroll in inventory (anywhere) ]
 
 var purchase_pots = false; //Set to true in order to allow potion purchases
 var buy_hp = false; //Set to true in order to allow hp potion purchases
@@ -33,6 +39,11 @@ setInterval(function() {
   //Updates GUI for time till level
   if (gui_timer) {
     update_xptimer();
+  }
+
+  //Compound Items
+  if (cp) {
+    compound_items();
   }
 
   //Loot available chests
@@ -66,13 +77,11 @@ setInterval(function() {
   //Heal a party member
   if (injured.length > 0) {
     let target = injured[0];
-
     for (let i = 1; i < injured.length; i++) {
       //Target the party member with the lowest amount of hp
       if (injured[i].max_hp - injured[i].hp > target.max_hp - target.hp)
         target = injured[i];
     }
-
     heal(target);
     set_message("Healing " + target.name);
   }
@@ -82,23 +91,25 @@ setInterval(function() {
     change_target(get_target_of(leader));
     target = get_target();
 
-    //If there is a valid target, attempt to curse it.
     if (target && in_attack_range(target) && get_target_of(target) && get_target_of(target).party == character.party) {
-      curse(target);
-      set_message("Cursing " + target.mtype);
 
       //If you can attack the target, do so.
       if (can_attack(target))
-        attack(target);
+      //If there is a valid target, attempt to curse it.
+        if (useCursing && target.hp > 6000) {
+          curse(target);
+          set_message("Cursing " + target.mtype);
+        }
+      attack(target);
       set_message("Attacking " + target.mtype);
     }
   }
 
   //Move when out of range of target/leader (only when leader is attacking)
   if (heal_dist === 0)
-    if (!in_attack_range(target))
+    (target && !in_attack_range(target))
     //Move only if you are not already moving.
-      move_to(target, character.range);
+  move_to(target, character.range);
   if (heal_dist === 1)
   //Stay ontop of leader.
     if (!character.moving)
@@ -106,6 +117,43 @@ setInterval(function() {
       move(leader.real_x, leader.real_y);
 
 }, 1000 / 4);
+
+var collection;
+var count;
+
+function compound_items() {
+  collection = new Map();
+  count = 2;
+  character.items.forEach(group);
+
+  let [cscroll0_slot, cscroll0] = find_item(i => i.name == 'cscroll0');
+  if (cscroll0 && cscroll0.q < count)
+    parent.buy('cscroll0', count - cscroll0.q);
+  for (let key of collection.keys()) {
+    let c = collection.get(key);
+    for (let i = 1; i + 2 < c.length; i += 3) {
+      parent.socket.emit('compound', {
+        items: [c[i], c[i + 1], c[i + 2]],
+        scroll_num: cscroll0_slot,
+        offering_num: null,
+        clevel: c[0]
+      });
+    }
+  }
+}
+
+function group(item, index) {
+  if (item && item.level < maxLevel && whitelist.includes(item.name)) {
+    let key = item.name + item.level;
+
+    if (!collection.has(key))
+      collection.set(key, [item.level, index]);
+    else
+      collection.get(key).push(index);
+
+    count++;
+  }
+}
 
 function move_to(char, distance) {
   if (!char) return;
@@ -474,5 +522,10 @@ function ncomma(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-initGUI();
-init_xptimer(5);
+if (gui_tl_gold) {
+  initGUI();
+}
+
+if (gui_timer) {
+  init_xptimer(5);
+}
