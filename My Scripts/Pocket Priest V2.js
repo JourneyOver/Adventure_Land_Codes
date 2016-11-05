@@ -88,7 +88,7 @@ setInterval(function() {
     }
 
     heal(target);
-    set_message("Healing " + target.name);
+    set_message("Healing: " + target.name);
   }
 
   // Do damage.
@@ -98,13 +98,13 @@ setInterval(function() {
   if (target && get_target_of(target) && in_attack_range(target) && get_target_of(target).party == character.party) {
     if (useCursing && target.hp > 6000) {
       curse(target);
-      set_message("Cursing " + target.mtype);
+      set_message("Cursing: " + target.mtype);
     }
 
     // If you can attack the target, do so.
     if (can_attack(target))
       attack(target);
-    set_message("Attacking " + target.mtype);
+    set_message("Attacking: " + target.mtype);
   }
 
   //Move when out of range of target/leader (only when leader is attacking)

@@ -81,7 +81,7 @@ setInterval(function() {
   if (currentTarget && can_attack(currentTarget) && targetTarget == leader) {
     // Current target isn't empty and attackable.
     attack(currentTarget);
-    set_message("Attacking " + currentTarget.mtype);
+    set_message("Attacking: " + currentTarget.mtype);
   }
 
   //Move to leader.
