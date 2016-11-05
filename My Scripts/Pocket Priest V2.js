@@ -3,9 +3,9 @@
 // It looks at their max hp vs current hp and heals the person with the highest percentage loss.
 // Base code and Auto Compounding Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.3.5
+// Version 1.3.6
 
-var heal_dist = 0; //Stay at a distance and move when out of range of target/leader (only when leader is attacking something) = 0, Stay always on top of leader = 1
+var heal_dist = 1; //Stay at a distance and move when out of range of target/leader (only when leader is attacking something) = 0, Stay always on top of leader [default] = 1
 var useCursing = true; //set to false to turn priest skill curse off
 //Main Settings
 
@@ -109,7 +109,6 @@ setInterval(function() {
 
   //Move when out of range of target/leader (only when leader is attacking)
   if (heal_dist === 0 && target && !in_attack_range(target))
-  //Move only if you are not already moving.
     move_to(target, character.range);
   else if (heal_dist === 1 && !character.moving)
   //Stay ontop of leader.

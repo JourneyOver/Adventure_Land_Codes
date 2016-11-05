@@ -1,5 +1,5 @@
 // Auto Compounding Courtesy of: Mark
-// Version 1.6.2
+// Version 1.6.3
 
 var mode = 0; //kite (move in straight line while attacking) [default] = 0, standing still (will move if target is out of range) = 1, circle kite (walks in circles around enemy) = 2, Front of target (Moves to front of target before attacking) = 3, Don't Move at all (will not move even if target is out of range) = 4
 var targetting = 2; //Monster Range  = 0, Character Range = 1, Tank Range[default] = 2
@@ -29,13 +29,13 @@ var pots_minimum = 50; //If you have less than this, you will buy
 var pots_to_buy = 1000; //This is how many you will buy
 //Automatic Potion Purchasing settings!
 
-var prevx = 0;
-var prevy = 0;
+var prevx = 0; //do not change
+var prevy = 0; //do not change
 //Previous coords
 
-var angle;
-var flipcd = 0;
-var stuck = 1;
+var angle; //do not change
+var flipcd = 0; //do not change
+var stuck = 1; //do not change
 //Distance Maintainence Variables
 
 //show_json(character);
@@ -97,10 +97,11 @@ setInterval(function() {
     if (target) {
       change_target(target);
       angle = Math.atan2(target.real_y - chary, target.real_x - charx);
-    } else if (!target) {
+    } else if (!target || (target.target && target.target != character.name)) {
       target = get_nearest_available_monster({
         min_xp: min_xp_from_mob2,
-        max_att: max_att_from_mob2
+        max_att: max_att_from_mob2,
+        no_attack: true
       });
       if (target) {
         change_target(target);
@@ -127,20 +128,11 @@ setInterval(function() {
   set_message("Attacking: " + target.mtype);
   //Attack
 
-  /*  var parmem = get_nearest_solo_player();
-    if (parmem)
-      parent.socket.emit("party", {
-        event: 'invite',
-        id: parmem.id
-      });
-    //Invite to Party */
-
   var distx = target.real_x - charx;
   var disty = target.real_y - chary;
   if (!angle && target)
     angle = Math.atan2(disty, distx);
   //Enemy Distance and Angle
-
 
   if (mode === 0) {
     if (distx > 0) //Player is left of enemy
@@ -178,7 +170,7 @@ setInterval(function() {
     move(new_x, new_y);
     //Credit to /u/idrum4316
   } else if (mode == 3) {
-    move(target.real_x, target.real_y + 5);
+    move(target.real_x + 5 , target.real_y + 5);
   } else if (mode == 4) {}
   //Following/Maintaining Distance
 
@@ -245,24 +237,12 @@ function isBetween(num, compare, range) {
   return num >= compare - range && num <= compare + range;
 }
 
-function get_nearest_solo_player() {
-  var min_d = 999999,
-    target = null;
-  for (var id in parent.entities) {
-    var current = parent.entities[id];
-    if (current.player === false || current.dead || current.party)
-      continue;
-    var c_dist = parent.distance(character, current);
-    if (c_dist < min_d)
-      min_d = c_dist, target = current;
-    else if (current.player === true)
-      target = current;
-  }
-  return target;
-  //Credit to /u/Sulsaries
-}
-
 function get_nearest_available_monster(args) {
+  //args:
+  // max_att - max attack
+  // min_xp - min XP
+  // target: Only return monsters that target this "name" or player object
+  // no_target: Only pick monsters that don't have any target
   var min_d = 400,
     target = null;
   for (id in parent.entities) {
