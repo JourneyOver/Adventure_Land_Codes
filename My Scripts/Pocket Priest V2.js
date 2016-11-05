@@ -71,51 +71,49 @@ setInterval(function() {
 
   //Get the Party leader
   let leader = get_player(character.party);
+  // This particular code only works when the priest in a party and within the searchrange of the leader.
+  if (!leader) return;
 
   //Get the injured party members.
   let injured = GetInjured(leader.name);
 
-  //Heal a party member
+  // Heal a party member
   if (injured.length > 0) {
     let target = injured[0];
+
     for (let i = 1; i < injured.length; i++) {
-      //Target the party member with the lowest amount of hp
+      // Target the party member with the lowest amount of hp
       if (injured[i].max_hp - injured[i].hp > target.max_hp - target.hp)
         target = injured[i];
     }
+
     heal(target);
     set_message("Healing " + target.name);
   }
-  //Do damage.
-  else {
-    //Get the target of the leader.
-    change_target(get_target_of(leader));
-    target = get_target();
 
-    if (target && in_attack_range(target) && get_target_of(target) && get_target_of(target).party == character.party) {
+  // Do damage.
+  target = get_target_of(leader);
 
-      //If you can attack the target, do so.
-      if (can_attack(target))
-      //If there is a valid target, attempt to curse it.
-        if (useCursing && target.hp > 6000) {
-          curse(target);
-          set_message("Cursing " + target.mtype);
-        }
-      attack(target);
-      set_message("Attacking " + target.mtype);
+  // If there is a valid target, attempt to curse it.
+  if (target && get_target_of(target) && in_attack_range(target) && get_target_of(target).party == character.party) {
+    if (useCursing && target.hp > 6000) {
+      curse(target);
+      set_message("Cursing " + target.mtype);
     }
+
+    // If you can attack the target, do so.
+    if (can_attack(target))
+      attack(target);
+    set_message("Attacking " + target.mtype);
   }
 
   //Move when out of range of target/leader (only when leader is attacking)
-  if (heal_dist === 0)
-    (target && !in_attack_range(target))
-    //Move only if you are not already moving.
-  move_to(target, character.range);
-  if (heal_dist === 1)
+  if (heal_dist === 0 && target && !in_attack_range(target))
+  //Move only if you are not already moving.
+    move_to(target, character.range);
+  else if (heal_dist === 1 && !character.moving)
   //Stay ontop of leader.
-    if (!character.moving)
-    //Move only if you are not already moving.
-      move(leader.real_x, leader.real_y);
+    move(leader.real_x, leader.real_y);
 
 }, 1000 / 4);
 
