@@ -1,2 +1,3 @@
 ### Don't upload these ###
 *.APIKEY
+*.txt
