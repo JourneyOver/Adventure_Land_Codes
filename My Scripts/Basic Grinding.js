@@ -6,11 +6,8 @@
 // Main Settings Start //
 ////////////////////////
 
-var mode = 0; //kite (move in straight line while attacking) [default] = 0, standing still (will move if target is out of range) = 1, Front of target (Moves to front of target before attacking) = 2, Don't Move at all (will not move even if target is out of range) = 3
+var mode = 0; //Standing still (will move if target is out of range) = 0, Front of target (Moves to front of target before attacking) = 1, Don't move at all (will not move even if target is out of range) = 2
 // Movement //
-
-var targetting = 2; //Monster Range  = 0, Character Range = 1, Tank Range[default] = 2
-// Attacking Distance //
 
 var mon1xp = 1000; //Min xp the enemy must have for you to attack it
 var mon1atk = 100; //Max damage the enemy must have for you to attack it
@@ -51,15 +48,6 @@ var pots_to_buy = 1000; //This is how many you will buy
 ////////////////////////////
 // Optional Settings End //
 //////////////////////////
-
-var prevx = 0;
-var prevy = 0;
-//Previous coords
-
-var angle;
-var stuck = 1;
-var stuckcd = 0;
-//Distance Maintainence Variables
 
 //show_json(character);
 //show_json(get_targeted_monster());
@@ -107,6 +95,7 @@ setInterval(function() {
   //Loot Chests
 
   var target = get_targeted_monster();
+  if (mode == 2 && target && !in_attack_range(target)) target = null;
   if (!target || (target.target && target.target != character.name)) { //Find Priority Monster
     target = get_nearest_available_monster({
       min_xp: mon1xp,
@@ -115,7 +104,6 @@ setInterval(function() {
     });
     if (target) {
       change_target(target);
-      angle = Math.atan2(character.real_y - target.real_y, character.real_x - target.real_x);
     } else if (!target || (target.target && target.target != character.name)) { //Find Alternate Monster
       target = get_nearest_available_monster({
         min_xp: mon2xp,
@@ -124,7 +112,6 @@ setInterval(function() {
       });
       if (target) {
         change_target(target);
-        angle = Math.atan2(character.real_y - target.real_y, character.real_x - target.real_x);
       } else {
         set_message("No Monsters");
         return;
@@ -138,53 +125,21 @@ setInterval(function() {
   set_message("Attacking: " + target.mtype);
   //Attack
 
-  var enemydist;
-  if (targetting === 0)
-    enemydist = parent.G.monsters[target.mtype].range + 5;
-  else if (targetting == 1)
-    enemydist = character.range - 10;
-  else if (targetting === 2)
-    enemydist = 30;
-  //Targetting
-
-  if (mode === 0) {
-    move_to_position(target, enemydist);
-  } else if (mode == 1) {
+  if (mode == 0) {
+    // Walk half the distance
     if (!in_attack_range(target)) {
       move(
         character.real_x + (target.real_x - character.real_x) / 2,
         character.real_y + (target.real_y - character.real_y) / 2
       );
     }
-    // Walk half the distance
-  } else if (mode == 2) {
+  } else if (mode == 1) {
+    // Move to front of target
     move(target.real_x + 5, target.real_y + 5);
-  } else if (mode == 3) {}
+  }
   //Following/Maintaining Distance
 
-  prevx = Math.ceil(character.real_x);
-  prevy = Math.ceil(character.real_y);
-  //Sets new coords to prev coords
-
 }, 200); // Loop Delay
-
-function move_to_position(target, enemydist) //Movement Algorithm
-{
-  if (!angle && target)
-    angle = Math.atan2(character.real_y - target.real_y, character.real_x - target.real_x);
-  //Set Angle Just in Case
-
-  var distmov = Math.sqrt(Math.pow(character.real_x - prevx, 2) + Math.pow(character.real_y - prevy, 2));
-  //Distance Since Previous
-
-  if (distmov < stuck && stuckcd > 10) {
-    angle = angle + (Math.PI * 2 * 0.125);
-    stuckcd = 0;
-  }
-  stuckcd++;
-
-  move(target.real_x + enemydist * Math.cos(angle), target.real_y + enemydist * Math.sin(angle));
-}
 
 function compound_items() {
   let to_compound = character.items.reduce((collection, item, index) => {
@@ -239,10 +194,6 @@ function find_item(filter) {
   return [-1, null];
 }
 
-function isBetween(num, compare, range) {
-  return num >= compare - range && num <= compare + range;
-}
-
 function get_nearest_available_monster(args) {
   //args:
   // max_att - max attack
@@ -262,7 +213,7 @@ function get_nearest_available_monster(args) {
 }
 
 //GUI Stuff
-var minute_refresh; // how long before the tracker resets
+var minute_refresh; // how long before the tracker refreshes
 var last_target = null;
 var gold = character.gold;
 var date = new Date();
@@ -270,7 +221,7 @@ var p = parent;
 
 function init_xptimer(minref) {
   minute_refresh = minref || 1;
-  p.add_log(minute_refresh.toString() + ' min until refresh!', 0x00FFFF);
+  p.add_log(minute_refresh.toString() + ' min until tracker refresh!', 0x00FFFF);
 
   let $ = p.$;
   let brc = $('#bottomrightcorner');

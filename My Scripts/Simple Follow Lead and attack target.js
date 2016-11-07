@@ -154,7 +154,7 @@ function find_item(filter) {
 }
 
 //GUI Stuff
-var minute_refresh; // how long before the tracker resets
+var minute_refresh; // how long before the tracker refreshes
 var last_target = null;
 var gold = character.gold;
 var date = new Date();
@@ -162,7 +162,7 @@ var p = parent;
 
 function init_xptimer(minref) {
   minute_refresh = minref || 1;
-  p.add_log(minute_refresh.toString() + ' min until refresh!', 0x00FFFF);
+  p.add_log(minute_refresh.toString() + ' min until tracker refresh!', 0x00FFFF);
 
   let $ = p.$;
   let brc = $('#bottomrightcorner');
