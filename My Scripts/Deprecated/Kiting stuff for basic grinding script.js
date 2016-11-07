@@ -33,6 +33,7 @@ var stuckcd = 0;
 setInterval(function() {
 
   var target = get_targeted_monster();
+  if (mode == 2 && target && !in_attack_range(target)) target = null;
   if (!target || (target.target && target.target != character.name)) { //Find Priority Monster
     target = get_nearest_available_monster({
       min_xp: mon1xp,
