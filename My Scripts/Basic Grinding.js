@@ -1,6 +1,6 @@
 // Basic Grinding
 // Auto Compounding stuff Courtesy of: Mark
-// Version 1.7.0
+// Version 1.7.1
 
 //////////////////////////
 // Main Settings Start //
@@ -102,6 +102,7 @@ setInterval(function() {
       max_att: mon1atk,
       no_attack: true
     });
+    if (mode == 2 && target && !in_attack_range(target)) target = null;
     if (target) {
       change_target(target);
     } else if (!target || (target.target && target.target != character.name)) { //Find Alternate Monster
@@ -110,6 +111,7 @@ setInterval(function() {
         max_att: mon2atk,
         no_attack: true
       });
+      if (mode == 2 && target && !in_attack_range(target)) target = null;
       if (target) {
         change_target(target);
       } else {

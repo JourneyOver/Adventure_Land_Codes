@@ -40,6 +40,7 @@ setInterval(function() {
       max_att: mon1atk,
       no_attack: true
     });
+    if (mode == 2 && target && !in_attack_range(target)) target = null;
     if (target) {
       change_target(target);
       angle = Math.atan2(character.real_y - target.real_y, character.real_x - target.real_x);
@@ -49,6 +50,7 @@ setInterval(function() {
         max_att: mon2atk,
         no_attack: true
       });
+      if (mode == 2 && target && !in_attack_range(target)) target = null;
       if (target) {
         change_target(target);
         angle = Math.atan2(character.real_y - target.real_y, character.real_x - target.real_x);
