@@ -1,6 +1,6 @@
 // Basic Grinding
 // Auto Compounding stuff Courtesy of: Mark
-// Version 1.6.5
+// Version 1.7.0
 
 //////////////////////////
 // Main Settings Start //
