@@ -1,33 +1,56 @@
+// Basic Grinding
 // Auto Compounding stuff Courtesy of: Mark
-// Version 1.6.4
+// Version 1.6.5
+
+//////////////////////////
+// Main Settings Start //
+////////////////////////
 
 var mode = 0; //kite (move in straight line while attacking) [default] = 0, standing still (will move if target is out of range) = 1, Front of target (Moves to front of target before attacking) = 2, Don't Move at all (will not move even if target is out of range) = 3
+// Movement //
+
 var targetting = 2; //Monster Range  = 0, Character Range = 1, Tank Range[default] = 2
-var min_xp_from_mob = 1000; //set to minimum xp you want to be getting from each kill -- lowest amount of xp a mob has to have to be attacked
-var max_att_from_mob = 100; //set to maximum damage you want to take from each hit -- most attack you're willing to fight
-var min_xp_from_mob2 = 500; //set to minimum xp you want to be getting from each kill if can't find min from first target -- lowest amount of xp a mob has to have to be attacked
-var max_att_from_mob2 = 50; //set to maximum damage you want to take from each hit if can't find max from first target -- most attack you're willing to fight
-//Main Settings
+// Attacking Distance //
 
-var gui_tl_gold = false; //Set to true in order to turn on GUI for kill (or xp) till level + gold per hour (and gold per scripted session gained/lost) [if set to true and then turned to false you'll have to refresh game]
-var gui_timer = false; //Set to true in order to turn on GUI for time till level [if set to true and then turned to false you'll have to refresh game]
+var mon1xp = 1000; //Min xp the enemy must have for you to attack it
+var mon1atk = 100; //Max damage the enemy must have for you to attack it
+// Preferred Monster Stats //
+
+var mon2xp = 500; //Min xp the enemy must have for you to attack it
+var mon2atk = 50; //Max damage the enemy must have for you to attack it
+// Alternate Monster Stats //
+
+////////////////////////
+// Main Settings End //
+//////////////////////
+
+//////////////////////////////
+// Optional Settings Start //
+////////////////////////////
+
+var gui_tl_gold = false; //Enable kill (or xp) till level & GPH [scripted session] = true, Disable kill (or xp) till level & GPH [scripted session] = false
+var gui_timer = false; //Enable time till level [scripted session] = true, Disable time till level [scripted session] = false
 var till_level = 0; // Kills till level = 0, XP till level = 1
-//GUI Settings
+// GUI [if either GUI setting is turned on and then you want to turn them off you'll have to refresh the game] //
 
-var cp = false; //Set to true in order to allow compounding of items
+var cp = false; //Enable compounding [will compound items once you collect a set of 3] = true, Disable compounding [will not compound items] = false
 var whitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj', 'amuletofm', 'orbofstr', 'orbofint', 'orbofres', 'orbofhp'];
 var use_better_scrolls = false; //240,000 Gold Scroll = true [only will use for +2 and higher], 6,400 Gold Scroll = false [will only use base scroll no matter what]
-var maxLevel = 3;
-//compound settings
+var maxLevel = 3; //Max level it will stop compounding items at if enabled
+// Compounding //
 
-var purchase_pots = false; //Set to true in order to allow potion purchases
-var buy_hp = false; //Set to true in order to allow hp potion purchases
-var buy_mp = false; //Set to true in order to allow mp potion purchases
+var purchase_pots = false; //Enable Potion Purchasing = true, Disable Potion Purchasing = false
+var buy_hp = false; //Allow HP Pot Purchasing = true, Disallow HP Pot Purchasing = false
+var buy_mp = false; //Allow MP Pot Purchasing = true, Disallow MP Pot Purchasing = false
 var hp_potion = 'hpot0'; //+200 HP Potion = 'hpot0', +400 HP Potion = 'hpot1' [always keep '' around it]
 var mp_potion = 'mpot0'; //+300 MP Potion = 'mpot0', +500 MP Potion = 'mpot1' [always keep '' around it]
-var pots_minimum = 50; //If you have less than this, you will buy
+var pots_minimum = 50; //If you have less than this, you will buy more
 var pots_to_buy = 1000; //This is how many you will buy
-//Automatic Potion Purchasing settings!
+// Potion Maintenance //
+
+////////////////////////////
+// Optional Settings End //
+//////////////////////////
 
 var prevx = 0;
 var prevy = 0;
@@ -86,8 +109,8 @@ setInterval(function() {
   var target = get_targeted_monster();
   if (!target || (target.target && target.target != character.name)) { //Find Priority Monster
     target = get_nearest_available_monster({
-      min_xp: min_xp_from_mob,
-      max_att: max_att_from_mob,
+      min_xp: mon1xp,
+      max_att: mon1atk,
       no_attack: true
     });
     if (target) {
@@ -95,8 +118,8 @@ setInterval(function() {
       angle = Math.atan2(character.real_y - target.real_y, character.real_x - target.real_x);
     } else if (!target || (target.target && target.target != character.name)) { //Find Alternate Monster
       target = get_nearest_available_monster({
-        min_xp: min_xp_from_mob2,
-        max_att: max_att_from_mob2,
+        min_xp: mon2xp,
+        max_att: mon2atk,
         no_attack: true
       });
       if (target) {

@@ -1,26 +1,35 @@
+// Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.4.2
+// Version 1.4.3
 
-var gui_tl_gold = false; //Set to true in order to turn on GUI for kill (or xp) till level + gold per hour (and gold per scripted session gained/lost) [if set to true and then turned to false you'll have to refresh game]
-var gui_timer = false; //Set to true in order to turn on GUI for time till level [if set to true and then turned to false you'll have to refresh game]
+//////////////////////////////
+// Optional Settings Start //
+////////////////////////////
+
+var gui_tl_gold = false; //Enable Kill (or XP) till level & GPH [scripted session] = true, Disable Kill (or XP) till level & GPH [scripted session] = false
+var gui_timer = false; //Enable time till level [scripted session] = true, Disable time till level [scripted session] = false
 var till_level = 0; // Kills till level = 0, XP till level = 1
-//GUI Settings
+// GUI [if either GUI setting is turned on and then you want to turn them off you'll have to refresh the game] //
 
-var purchase_pots = false; //Set to true in order to allow potion purchases
-var buy_hp = false; //Set to true in order to allow hp potion purchases
-var buy_mp = false; //Set to true in order to allow mp potion purchases
-var hp_potion = 'hpot0'; //+200 HP Potion = 'hpot0', +400 HP Potion = 'hpot1' [always keep '' around it]
-var mp_potion = 'mpot0'; //+300 MP Potion = 'mpot0', +500 MP Potion = 'mpot1' [always keep '' around it]
-var pots_minimum = 50; //If you have less than this, you will buy
-var pots_to_buy = 1000; //This is how many you will buy
-//Automatic Potion Purchasing!
-
-var cp = false; //Set to true in order to allow compounding of items
+var cp = false; //Enable compounding [will compound items once you collect a set of 3] = true, Disable compounding [will not compound items] = false
 var whitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj', 'amuletofm', 'orbofstr', 'orbofint', 'orbofres', 'orbofhp'];
 var use_better_scrolls = false; //240,000 Gold Scroll = true [only will use for +2 and higher], 6,400 Gold Scroll = false [will only use base scroll no matter what]
-var maxLevel = 3;
-//compound settings
+var maxLevel = 3; //Max level it will stop compounding items at if enabled
+// Compounding //
+
+var purchase_pots = false; //Enable Potion Purchasing = true, Disable Potion Purchasing = false
+var buy_hp = false; //Allow HP Pot Purchasing = true, Disallow HP Pot Purchasing = false
+var buy_mp = false; //Allow MP Pot Purchasing = true, Disallow MP Pot Purchasing = false
+var hp_potion = 'hpot0'; //+200 HP Potion = 'hpot0', +400 HP Potion = 'hpot1' [always keep '' around it]
+var mp_potion = 'mpot0'; //+300 MP Potion = 'mpot0', +500 MP Potion = 'mpot1' [always keep '' around it]
+var pots_minimum = 50; //If you have less than this, you will buy more
+var pots_to_buy = 1000; //This is how many you will buy
+// Potion Maintenance //
+
+////////////////////////////
+// Optional Settings End //
+//////////////////////////
 
 //Grind Code below --------------------------
 setInterval(function() {
