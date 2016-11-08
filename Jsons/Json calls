@@ -8,6 +8,13 @@ show_json(parent.G.monsters)
 show_json(parent.G.items)
 show_json(parent.G.npcs)
 
+show_json(parent.G.maps[character.map].doors)
+
+Example -- parent.socket.emit("transport", {
+    to: 'batcave',
+    s: null
+});
+
 
 show_json(character.items)
 show_json(character.slots)
