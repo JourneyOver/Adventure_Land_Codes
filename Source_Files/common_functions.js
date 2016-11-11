@@ -396,7 +396,7 @@ function calculate_move(f, c, j, a, h) {
   }
 }
 
-function calculate_move(x, j, h, e, d) {
+function calculate_movex(x, j, h, e, d) {
   var r = h < d;
   var y = j < e;
   var k = x.x_lines || [];
@@ -463,6 +463,18 @@ function calculate_move(x, j, h, e, d) {
     x: e,
     y: d
   }
+}
+
+function calculate_move(e, g, f, d, c) {
+  var b = calculate_movex(e, g, f, d, c);
+  if (b.x != d && b.y != c) {
+    var a = calculate_movex(e, b.x, b.y, d, b.y);
+    if (a.x == b.x) {
+      var a = calculate_movex(e, a.x, a.y, a.x, c)
+    }
+    return a
+  }
+  return b
 }
 
 function recalculate_move(a) {
@@ -635,6 +647,23 @@ function clone(d, b) {
   throw "type not supported"
 }
 
+function safe_stringify(d, b) {
+  var a = [];
+  try {
+    return JSON.stringify(d, function(e, f) {
+      if (f != null && typeof f == "object") {
+        if (a.indexOf(f) >= 0) {
+          return
+        }
+        a.push(f)
+      }
+      return f
+    }, b)
+  } catch (c) {
+    return "safe_stringify_exception"
+  }
+}
+
 function smart_eval(code, args) {
   if (!code) {
     return
@@ -688,6 +717,13 @@ function delete_indices(c, a) {
   a.sort(ascending_comp);
   for (var b = a.length - 1; b >= 0; b--) {
     c.splice(a[b], 1)
+  }
+}
+
+function array_delete(c, a) {
+  var b = c.indexOf(a);
+  if (b > -1) {
+    c.splice(b, 1)
   }
 }
 

@@ -187,8 +187,8 @@ function add_invite(a) {
 function add_update_notes() {
   update_notes.forEach(function(b) {
     var a = "gray";
-    if (b.indexOf("Halloween") != -1) {
-      a = "orange"
+    if (b.indexOf("Merchant!") != -1) {
+      a = "#60BED9"
     }
     add_log(b, a)
   })
@@ -202,7 +202,7 @@ function clear_game_logs() {
 }
 
 function add_log(c, a) {
-  if (mode.dom_tests) {
+  if (mode.dom_tests || inside == "payments") {
     return
   }
   if (game_logs.length > 1000) {
@@ -241,6 +241,36 @@ function add_chat(b, g, d) {
   }
   $(a).append("<div class='chatentry' style='color: " + (d || "gray") + "'>" + c + html_escape(g) + "</div>");
   $(a).scrollTop($(a)[0].scrollHeight)
+}
+
+function add_pmchat(g, a, d) {
+  var f = "pm" + g,
+    c = "";
+  if (!in_arr(f, cwindows)) {
+    open_chat_window("pm", g, a == character.name)
+  }
+  if (a != character.name && in_arr(f, docked)) {
+    $("#chatt" + f).addClass("newmessage")
+  }
+  var b = "";
+  b = "<span style='color:white'>" + a + ":</span> ";
+  $("#chatd" + f).append("<div style='color: " + (c || "gray") + "'>" + b + html_escape(d) + "</div>");
+  $("#chatd" + f).scrollTop($("#chatd" + f)[0].scrollHeight)
+}
+
+function add_partychat(a, d) {
+  var f = "party",
+    c = "";
+  if (!in_arr(f, cwindows)) {
+    open_chat_window("party", "", a == character.name)
+  }
+  if (a != character.name && in_arr(f, docked)) {
+    $("#chatt" + f).addClass("newmessage")
+  }
+  var b = "";
+  b = "<span style='color:white'>" + a + ":</span> ";
+  $("#chatd" + f).append("<div style='color: " + (c || "gray") + "'>" + b + html_escape(d) + "</div>");
+  $("#chatd" + f).scrollTop($("#chatd" + f)[0].scrollHeight)
 }
 
 function refresh_page() {
@@ -566,11 +596,13 @@ function party_say(b, a) {
     party: true
   })
 }
+var last_say = "normal";
 
 function say(g, f) {
   if (!g || !g.length) {
     return
   }
+  last_say = "normal";
   if (g[0] == "/") {
     g = g.substr(1, 2000);
     var d = g.split(" "),
@@ -813,6 +845,10 @@ function esc_pressed() {
           } else {
             if (inventory) {
               draw_trigger(render_inventory)
+            } else {
+              if (skillsui) {
+                draw_trigger(render_skills)
+              }
             }
           }
         }
@@ -952,6 +988,26 @@ function new_sprite(h, b, j) {
   f.stype = b;
   f.updates = 0;
   return f
+}
+
+function recreate_dtextures() {
+  (window.dtextures || []).forEach(function(c) {
+    if (c) {
+      c.destroy()
+    }
+  });
+  dtile_width = max(width, screen.width);
+  dtile_height = max(height, screen.height);
+  for (var b = 0; b < 3; b++) {
+    var a = new PIXI.extras.TilingSprite(M["default"][5 + b] || M["default"][5], dtile_width / scale + 3 * dtile_size, dtile_height / scale + 3 * dtile_size);
+    dtextures[b] = PIXI.RenderTexture.create(dtile_width + 4 * dtile_size, dtile_height + 4 * dtile_size, PIXI.SCALE_MODES.NEAREST, 1);
+    renderer.render(a, dtextures[b]);
+    a.destroy()
+  }
+  console.log("recreated dtextures");
+  if (dtile) {
+    dtile.texture = dtextures[water_frame()]
+  }
 }
 
 function water_frame() {
@@ -1142,94 +1198,125 @@ function draw_trigger(a) {
 
 function tint_logic() {
   var c = new Date(),
-    o = [];
-  for (var f = 0; f < tints.length; f++) {
-    var d = tints[f];
-    if (d.type == "dissipate") {
+    s = [];
+  for (var h = 0; h < tints.length; h++) {
+    var d = tints[h],
+      a = 240,
+      j = 95,
+      p = 0,
+      f = 50,
+      n = 205,
+      l = 50;
+    if (d.type == "skill") {
       if (c > d.end) {
-        $(d.selector).parent().css("background", "black");
-        o.push(f)
+        $(d.selector).parent().find("img").css("opacity", 1);
+        s.push(h);
+        $(d.selector).css("height", "0px").css("background-color", "rgb(" + a + "," + j + "," + p + ")")
       } else {
-        var a = d.r,
-          h = d.g,
-          m = d.b,
-          l = 20;
-        if (d.i < l) {
-          a = round(a - (a / 2 / l) * d.i);
-          h = round(h - (h / 2 / l) * d.i);
-          m = round(m - (m / 2 / l) * d.i);
-          if (d.i == l - 1) {
-            d.mid = new Date()
-          }
-        } else {
-          var k = mssince(d.mid),
-            n = -mssince(d.end);
-          var j = min(1, max(0, 1 * k / (k + n + 1)));
-          a = round((1 - j) * a / 2);
-          h = round((1 - j) * h / 2);
-          m = round((1 - j) * m / 2)
+        if (!d.added) {
+          d.added = true;
+          $(d.selector).css("height", "1px")
         }
-        $(d.selector).parent().css("background", "rgb(" + a + "," + m + "," + m + ")")
+        var m = mssince(d.start),
+          q = -mssince(d.end);
+        var t = 2 * 46 * m / (m + q + 1),
+          k = m / (m + q + 1);
+        $(d.selector).css("background-color", "rgb(" + round(a + (f - a) * k) + "," + round(j + (n - j) * k) + "," + round(p + (l - p) * k) + ")");
+        $(d.selector).css({
+          "-webkit-transform": "scaleY(" + t + ")",
+          "-moz-transform": "scaleY(" + t + ")",
+          "-ms-transform": "scaleY(" + t + ")",
+          "-o-transform": "scaleY(" + t + ")",
+          transform: "scaleY(" + t + ")",
+        })
       }
-      d.i++
     } else {
-      if (d.type == "brute") {
+      if (d.type == "dissipate") {
         if (c > d.end) {
-          if (tint_c[d.key] == d.cur) {
-            $(d.selector).children(".thetint").remove();
-            $(d.selector).css("background", d.reset_to)
-          }
-          o.push(f)
+          $(d.selector).parent().css("background", "black");
+          s.push(h)
         } else {
-          if (tint_c[d.key] != d.cur) {
-            continue
-          }
-          if (!d.added) {
-            d.added = true;
-            $(d.selector).append("<div style='position: absolute; " + (d.pos || "bottom") + ": 0px; left: 0px; right: 0px; height: 1px; background: " + d.color + "; z-index: 0' class='thetint'></div>")
-          }
-          var k = mssince(d.start),
-            n = -mssince(d.end);
-          var p = 60.1 * k / (k + n + 1);
-          $(d.selector).children(".thetint").css({
-            "-webkit-transform": "scaleY(" + p + ")",
-            "-moz-transform": "scaleY(" + p + ")",
-            "-ms-transform": "scaleY(" + p + ")",
-            "-o-transform": "scaleY(" + p + ")",
-            transform: "scaleY(" + p + ")",
-          })
-        }
-      } else {
-        if (d.type == "fill") {
-          if (c > d.end) {
-            d.type = "glow";
-            $(d.selector).css("background", d.reset_to);
-            if (d.on_end) {
-              d.on_end()
+          var a = d.r,
+            j = d.g,
+            p = d.b,
+            o = 20;
+          if (d.i < o) {
+            a = round(a - (a / 2 / o) * d.i);
+            j = round(j - (j / 2 / o) * d.i);
+            p = round(p - (p / 2 / o) * d.i);
+            if (d.i == o - 1) {
+              d.mid = new Date()
             }
-            o.push(f)
           } else {
-            var k = mssince(d.start),
-              n = -mssince(d.end);
-            var q = round(100 * k / (k + n + 1));
-            if (d.reverse) {
-              q = 100 - q
+            var m = mssince(d.mid),
+              q = -mssince(d.end);
+            var k = min(1, max(0, 1 * m / (m + q + 1)));
+            a = round((1 - k) * a / 2);
+            j = round((1 - k) * j / 2);
+            p = round((1 - k) * p / 2)
+          }
+          $(d.selector).parent().css("background", "rgb(" + a + "," + p + "," + p + ")")
+        }
+        d.i++
+      } else {
+        if (d.type == "brute") {
+          if (c > d.end) {
+            if (tint_c[d.key] == d.cur) {
+              $(d.selector).children(".thetint").remove();
+              $(d.selector).css("background", d.reset_to)
             }
-            q = max(1, q);
-            $(d.selector).css("background", "-webkit-gradient(linear, " + d.start_d + ", " + d.end_d + ", from(" + d.color + "), to(" + d.back_to + "), color-stop(" + (q - 1) + "%," + d.color + "),color-stop(" + q + "%, " + d.back_to + ")")
+            s.push(h)
+          } else {
+            if (tint_c[d.key] != d.cur) {
+              continue
+            }
+            if (!d.added) {
+              d.added = true;
+              $(d.selector).append("<div style='position: absolute; " + (d.pos || "bottom") + ": 0px; left: 0px; right: 0px; height: 1px; background: " + d.color + "; z-index: 0' class='thetint'></div>")
+            }
+            var m = mssince(d.start),
+              q = -mssince(d.end);
+            var t = 60.1 * m / (m + q + 1);
+            $(d.selector).children(".thetint").css({
+              "-webkit-transform": "scaleY(" + t + ")",
+              "-moz-transform": "scaleY(" + t + ")",
+              "-ms-transform": "scaleY(" + t + ")",
+              "-o-transform": "scaleY(" + t + ")",
+              transform: "scaleY(" + t + ")",
+            })
           }
         } else {
-          if (d.type == "glow") {} else {
-            if (d.type == "half") {
-              $(d.selector).css("background", "-webkit-gradient(linear, left top, right top, from(#f0f), to(#0f0), color-stop(49%,#f0f),color-stop(50%, #0f0)")
+          if (d.type == "fill") {
+            if (c > d.end) {
+              d.type = "glow";
+              $(d.selector).css("background", d.reset_to);
+              if (d.on_end) {
+                d.on_end()
+              }
+              s.push(h)
+            } else {
+              var m = mssince(d.start),
+                q = -mssince(d.end);
+              var u = round(100 * m / (m + q + 1));
+              if (d.reverse) {
+                u = 100 - u
+              }
+              u = max(1, u);
+              $(d.selector).css("background", "-webkit-gradient(linear, " + d.start_d + ", " + d.end_d + ", from(" + d.color + "), to(" + d.back_to + "), color-stop(" + (u - 1) + "%," + d.color + "),color-stop(" + u + "%, " + d.back_to + ")")
+            }
+          } else {
+            if (d.type == "glow") {} else {
+              if (d.type == "half") {
+                $(d.selector).css("background", "-webkit-gradient(linear, left top, right top, from(#f0f), to(#0f0), color-stop(49%,#f0f),color-stop(50%, #0f0)")
+              }
             }
           }
         }
       }
     }
   }
-  if (o) {
-    delete_indices(tints, o)
+  if (s) {
+    delete_indices(tints, s)
   }
 }
 
@@ -1329,7 +1416,9 @@ function pot_timeout(a) {
       key: "p",
       cur: tint_c.p
     })
-  })
+  });
+  skill_timeout("use_hp", a);
+  skill_timeout("use_mp", a)
 }
 
 function pvp_timeout(a) {
@@ -1386,8 +1475,24 @@ function pvp_timeout(c, h) {
     })
   })
 }
+var next_skill = {};
 
-function skill_timeout(a) {}
+function skill_timeout(b, a) {
+  var c = "";
+  next_skill[b] = future_ms(a);
+  for (N in skillmap) {
+    if (skillmap[N] && (skillmap[N].name == b || skillmap[N].name == "skill_" + b)) {
+      c = N
+    }
+  }
+  draw_trigger(function() {
+    $(".skidloader" + c).parent().find("img").css("opacity", 0.5);
+    add_tint(".skidloader" + c, {
+      ms: -mssince(next_skill[b]),
+      type: "skill"
+    })
+  })
+}
 
 function empty_rect(b, g, f, a, d, c) {
   if (!c) {
@@ -2209,23 +2314,6 @@ function hide_loader() {}
 
 function alert_json(a) {
   alert(JSON.stringify(a))
-}
-
-function safe_stringify(d, b) {
-  var a = [];
-  try {
-    return JSON.stringify(d, function(f, g) {
-      if (g != null && typeof g == "object") {
-        if (a.indexOf(g) >= 0) {
-          return
-        }
-        a.push(g)
-      }
-      return g
-    }, b)
-  } catch (c) {
-    return "safe_stringify_exception"
-  }
 }
 
 function game_stringify(d, b) {

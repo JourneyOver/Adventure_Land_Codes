@@ -16,8 +16,7 @@ body {
   user-select: none
 }
 
-div[contenteditable],
-span[contenteditable] {
+div[contenteditable], span[contenteditable] {
   -webkit-touch-callout: auto;
   -webkit-user-select: auto;
   -khtml-user-select: auto;
@@ -42,8 +41,7 @@ span[contenteditable] {
   background: black
 }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -61,6 +59,10 @@ canvas {
 
 .psuccess {
   color: #5dac40
+}
+
+.pfail {
+  color: #ac393e
 }
 
 .iqui {
@@ -145,8 +147,7 @@ canvas {
   color: white
 }
 
-#gamelog,
-#chatlog {
+#gamelog, #chatlog {
   height: 208px;
   width: 300px;
   background: #000;
@@ -157,6 +158,16 @@ canvas {
   padding: 10px;
   overflow-y: scroll;
   border: 5px solid gray
+}
+
+.chatlog {
+  line-height: 24px;
+  font-size: 24px;
+  text-align: left;
+  vertical-align: middle;
+  padding: 10px;
+  overflow-y: scroll;
+  height: 190px
 }
 
 #chatinput {
@@ -175,8 +186,19 @@ canvas {
   padding: 3px
 }
 
-.ccinput,
-.ccinput:focus {
+.chatinput {
+  width: 314px;
+  height: 30px;
+  font-size: 24px;
+  font-family: Pixel;
+  display: inline-block;
+  background: #404040;
+  color: white;
+  border: 0;
+  padding: 3px
+}
+
+.ccinput, .ccinput:focus {
   border: 0;
   outline: 0;
   background: 0;
@@ -184,6 +206,10 @@ canvas {
   color: white;
   font-size: 36px;
   font-family: Pixel
+}
+
+.newmessage {
+  color: green
 }
 
 .tint {
@@ -243,6 +269,16 @@ canvas {
   bottom: 0;
   left: 0;
   position: fixed
+}
+
+.slimbutton {
+  display: inline-block;
+  border: 2px solid gray;
+  font-size: 24px;
+  line-height: 24px;
+  padding: 5px 10px 5px 10px;
+  background: black;
+  text-align: center
 }
 
 .gamebutton {
@@ -321,19 +357,14 @@ a.gamebutton {
   letter-spacing: 1px
 }
 
-.engagebutton,
-.dengagebutton {
+.engagebutton, .dengagebutton {
   position: absolute;
   right: 5px;
   bottom: 5px;
   z-index: 200
 }
 
-.loginorselection,
-#features,
-#backbutton,
-#topui,
-#codeui {
+.loginorselection, #features, #backbutton, #topui, #codeui {
   background: black;
   border: 5px solid gray;
   padding: 10px
@@ -392,8 +423,7 @@ a.gamebutton {
   background: #2e4c28
 }
 
-.textbutton,
-.whiteheader {
+.textbutton, .whiteheader {
   font-size: 24px
 }
 
@@ -405,8 +435,7 @@ a.gamebutton {
   color: #787878
 }
 
-.input,
-.button {
+.input, .button {
   border: none!important
 }
 
@@ -439,9 +468,7 @@ a.gamebutton {
   border: 2px solid gray
 }
 
-input:focus,
-button:focus,
-div:focus {
+input:focus, button:focus, div:focus {
   outline: none!important;
   box-shadow: none!important
 }

@@ -168,6 +168,7 @@
     "aa": 1,
     "hit": "explode_a",
     "hp": 120000,
+    "prefix": "the",
     "frequency": 1.2,
     "damage_type": "magical",
     "xp": 80000,
@@ -181,6 +182,7 @@
   "mvampire": {
     "hit": "explode_c",
     "hp": 240000,
+    "prefix": "",
     "frequency": 1.2,
     "damage_type": "magical",
     "xp": 200000,
@@ -232,6 +234,7 @@
   "fvampire": {
     "hit": "explode_c",
     "hp": 240000,
+    "prefix": "",
     "frequency": 1.2,
     "damage_type": "magical",
     "xp": 200000,

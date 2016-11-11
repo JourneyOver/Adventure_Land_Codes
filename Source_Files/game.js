@@ -22,7 +22,6 @@ var log_flags = {
   timers: 1,
 };
 var ptimers = true;
-var cached_map = location.search.indexOf("fast") != -1;
 var mdraw_mode = "redraw",
   mdraw_border = 40;
 var mdraw_tiling_sprites = false;
@@ -48,11 +47,11 @@ var mouse_only = true;
 var show_names = 0;
 var the_code = "";
 var character_id = "",
-  server_name = "";
+  server_name = "",
+  ipass = "";
 var character = null,
   map = null,
   game_loaded = false;
-var inventory = [];
 var tints = [];
 var entities = {},
   future_entities = {
@@ -76,7 +75,9 @@ var map_npcs = [],
   map_doors = [];
 var map_tiles = [],
   map_entities = [],
-  dtile_size = 32;
+  dtile_size = 32,
+  dtile_width = 0,
+  dtile_height = 0;
 var water_tiles = [],
   last_water_frame = -1;
 var drawings = [];
@@ -87,7 +88,8 @@ var tile_sprites = {},
 var topleft_npc = false,
   inventory = false,
   code = false,
-  pvp = false;
+  pvp = false,
+  skillsui = false;
 var topright_npc = false;
 var transports = false;
 var code_run = false,
@@ -176,8 +178,8 @@ function disconnect() {
   game_loaded = false;
   if (window.disconnect_reason == "limits") {
     a = "REJECTED";
-    add_log("Hey there, Adventurer! To make the game fun for everyone, as requested by our community, you can only connect with 3 characters to the game. If you wish to support our game, a 'Stone of Wisdom' currently allows you to bypass limitations for the wearer.", "#83BDCF");
-    add_log("Ps. This is the second version of our prototype limits enforcer. If it's unfair, please email hello@adventure.land", "#CF888A")
+    add_log("Hey there, Adventurer! To make the game fun for everyone, as requested by our community, you can only connect with 2 characters to a normal server, 1 additional character to a PVP server and 1 merchant. If you wish to support our game, a 'Stone of Wisdom' currently allows you to bypass limitations for the wearer.", "#83BDCF");
+    add_log("Ps. This is the third version of our prototype limits enforcer. If it's unfair, please email hello@adventure.land", "#CF888A")
   } else {
     if (window.disconnect_reason) {
       add_log("Disconnect Reason: " + window.disconnect_reason, "gray")
@@ -831,7 +833,19 @@ function init_socket() {
     }
     position_map();
     rip_logic();
-    pvp_warning("start")
+    pvp_warning("start");
+    load_skills();
+    if (is_sdk || 1) {
+      render_skillbar()
+    }
+    ipass = data.ipass;
+    if (ipass) {
+      setInterval(function() {
+        if (game_loaded) {
+          $.getJSON("http://" + server_addr + ":" + server_port + "/character?checkin=1&ipass=" + ipass + "&id=" + character_id + "&callback=?")
+        }
+      }, 30000)
+    }
   });
   socket.on("ping_ack", function() {
     add_log("Ping: " + mssince(ping_sent) + "ms", "gray")
@@ -927,7 +941,11 @@ function init_socket() {
         })
       }
       sfx("chat");
-      add_chat(data.owner, data.message, "#CD7879")
+      var cid = "pm" + (data.to || data.owner);
+      add_pmchat(data.to || data.owner, data.owner, data.message);
+      if (in_arr(cid, docked)) {
+        add_chat(data.owner, data.message, "#CD7879")
+      }
     })
   });
   socket.on("partym", function(data) {
@@ -940,7 +958,10 @@ function init_socket() {
         })
       }
       sfx("chat");
-      add_chat(data.owner, data.message, "#46A0C6")
+      add_partychat(data.owner, data.message);
+      if (in_arr("party", docked)) {
+        add_chat(data.owner, data.message, "#46A0C6")
+      }
     })
   });
   socket.on("drop", function(data) {
@@ -1168,6 +1189,9 @@ function init_socket() {
       }
     }
     render_party(data.list);
+    if (party_list.length == 0 && (data.list || []).length && !in_arr("party", cwindows)) {
+      open_chat_window("party")
+    }
     party_list = data.list || []
   });
   socket.on("blocker", function(data) {
@@ -2001,15 +2025,15 @@ function create_map() {
     stage.filters = [e]
   }
   if (cached_map) {
-    for (var s = 0; s <= M.tiles.length; s++) {
-      if (s == M.tiles.length) {
+    for (var r = 0; r <= M.tiles.length; r++) {
+      if (r == M.tiles.length) {
         element = M["default"]
       } else {
-        element = M.tiles[s]
+        element = M.tiles[r]
       }
-      sprite_last[current_map][s] = 0;
-      if (!tile_sprites[current_map][s]) {
-        tile_sprites[current_map][s] = [];
+      sprite_last[current_map][r] = 0;
+      if (!tile_sprites[current_map][r]) {
+        tile_sprites[current_map][r] = [];
         if (!element) {
           continue
         }
@@ -2018,66 +2042,63 @@ function create_map() {
         } else {
           element[4] = element[3]
         }
-        var A = new PIXI.Rectangle(element[1], element[2], element[3], element[4]);
-        var n = new PIXI.Texture(C[G.tilesets[element[0]]], A);
+        var z = new PIXI.Rectangle(element[1], element[2], element[3], element[4]);
+        var n = new PIXI.Texture(C[G.tilesets[element[0]]], z);
         element[5] = n;
         if (element[0] == "water") {
           element[5].type = "water";
-          A = new PIXI.Rectangle(element[1] + 48, element[2], element[3], element[4]);
-          n = new PIXI.Texture(C[G.tilesets[element[0]]], A);
+          z = new PIXI.Rectangle(element[1] + 48, element[2], element[3], element[4]);
+          n = new PIXI.Texture(C[G.tilesets[element[0]]], z);
           element[6] = n;
-          A = new PIXI.Rectangle(element[1] + 48 + 48, element[2], element[3], element[4]);
-          n = new PIXI.Texture(C[G.tilesets[element[0]]], A);
+          z = new PIXI.Rectangle(element[1] + 48 + 48, element[2], element[3], element[4]);
+          n = new PIXI.Texture(C[G.tilesets[element[0]]], z);
           element[7] = n
         }
         if (element[0] == "puzzle" || element[0] == "custom_a") {
           element[5].type = "water";
-          A = new PIXI.Rectangle(element[1] + 16, element[2], element[3], element[4]);
-          n = new PIXI.Texture(C[G.tilesets[element[0]]], A);
+          z = new PIXI.Rectangle(element[1] + 16, element[2], element[3], element[4]);
+          n = new PIXI.Texture(C[G.tilesets[element[0]]], z);
           element[6] = n;
-          A = new PIXI.Rectangle(element[1] + 16 + 16, element[2], element[3], element[4]);
-          n = new PIXI.Texture(C[G.tilesets[element[0]]], A);
+          z = new PIXI.Rectangle(element[1] + 16 + 16, element[2], element[3], element[4]);
+          n = new PIXI.Texture(C[G.tilesets[element[0]]], z);
           element[7] = n
         }
       }
     }
     window.rtextures = [0, 0, 0];
     window.dtextures = [0, 0, 0];
+    if (dtile_size) {
+      recreate_dtextures()
+    }
     for (var b = 0; b < 3; b++) {
       rtextures[b] = PIXI.RenderTexture.create(M.max_x - M.min_x, M.max_y - M.min_y, PIXI.SCALE_MODES.NEAREST, 1);
-      if (dtile_size) {
-        var r = new PIXI.extras.TilingSprite(M["default"][5 + b] || M["default"][5], screen.width / scale + 3 * dtile_size, screen.height / scale + 3 * dtile_size);
-        dtextures[b] = PIXI.RenderTexture.create(screen.width + 4 * dtile_size, screen.height + 4 * dtile_size, PIXI.SCALE_MODES.NEAREST, 1);
-        renderer.render(r, dtextures[b]);
-        r.destroy()
-      }
       var a = new PIXI.Container();
-      for (var s = 0; s < M.placements.length; s++) {
-        var B = M.placements[s];
-        if (B[3] === undefined) {
-          var m = M.tiles[B[0]],
+      for (var r = 0; r < M.placements.length; r++) {
+        var A = M.placements[r];
+        if (A[3] === undefined) {
+          var m = M.tiles[A[0]],
             d = m[3],
-            t = m[4];
-          if (sprite_last[current_map][B[0]] >= tile_sprites[current_map][B[0]].length) {
-            tile_sprites[current_map][B[0]][sprite_last[current_map][B[0]]] = new_map_tile(m)
+            s = m[4];
+          if (sprite_last[current_map][A[0]] >= tile_sprites[current_map][A[0]].length) {
+            tile_sprites[current_map][A[0]][sprite_last[current_map][A[0]]] = new_map_tile(m)
           }
-          var f = tile_sprites[current_map][B[0]][sprite_last[current_map][B[0]]++];
+          var f = tile_sprites[current_map][A[0]][sprite_last[current_map][A[0]]++];
           if (f.textures) {
             f.texture = f.textures[b], water_tiles.push(f)
           }
-          f.x = B[1] - M.min_x;
-          f.y = B[2] - M.min_y;
+          f.x = A[1] - M.min_x;
+          f.y = A[2] - M.min_y;
           a.addChild(f)
         } else {
-          var m = M.tiles[B[0]],
+          var m = M.tiles[A[0]],
             d = m[3],
-            t = m[4];
-          for (var c = B[1]; c <= B[3]; c += d) {
-            for (y = B[2]; y <= B[4]; y += t) {
-              if (sprite_last[current_map][B[0]] >= tile_sprites[current_map][B[0]].length) {
-                tile_sprites[current_map][B[0]][sprite_last[current_map][B[0]]] = new_map_tile(m)
+            s = m[4];
+          for (var c = A[1]; c <= A[3]; c += d) {
+            for (y = A[2]; y <= A[4]; y += s) {
+              if (sprite_last[current_map][A[0]] >= tile_sprites[current_map][A[0]].length) {
+                tile_sprites[current_map][A[0]][sprite_last[current_map][A[0]]] = new_map_tile(m)
               }
-              var f = tile_sprites[current_map][B[0]][sprite_last[current_map][B[0]]++];
+              var f = tile_sprites[current_map][A[0]][sprite_last[current_map][A[0]]++];
               if (f.textures) {
                 f.texture = f.textures[b], water_tiles.push(f)
               }
@@ -2104,15 +2125,15 @@ function create_map() {
     }
     map.addChild(tiles)
   } else {
-    for (var s = 0; s <= M.tiles.length; s++) {
-      if (s == M.tiles.length) {
+    for (var r = 0; r <= M.tiles.length; r++) {
+      if (r == M.tiles.length) {
         element = M["default"]
       } else {
-        element = M.tiles[s]
+        element = M.tiles[r]
       }
-      sprite_last[current_map][s] = 0;
-      if (!tile_sprites[current_map][s]) {
-        tile_sprites[current_map][s] = [];
+      sprite_last[current_map][r] = 0;
+      if (!tile_sprites[current_map][r]) {
+        tile_sprites[current_map][r] = [];
         if (!element) {
           continue
         }
@@ -2121,28 +2142,28 @@ function create_map() {
         } else {
           element[4] = element[3]
         }
-        var A = new PIXI.Rectangle(element[1], element[2], element[3], element[4]);
-        var n = new PIXI.Texture(C[G.tilesets[element[0]]], A);
+        var z = new PIXI.Rectangle(element[1], element[2], element[3], element[4]);
+        var n = new PIXI.Texture(C[G.tilesets[element[0]]], z);
         element[5] = n;
         if (element[0] == "water") {
           element[5].type = "water";
-          A = new PIXI.Rectangle(element[1] + 48, element[2], element[3], element[4]);
-          n = new PIXI.Texture(C[G.tilesets[element[0]]], A);
+          z = new PIXI.Rectangle(element[1] + 48, element[2], element[3], element[4]);
+          n = new PIXI.Texture(C[G.tilesets[element[0]]], z);
           element[6] = n;
-          A = new PIXI.Rectangle(element[1] + 48 + 48, element[2], element[3], element[4]);
-          n = new PIXI.Texture(C[G.tilesets[element[0]]], A);
+          z = new PIXI.Rectangle(element[1] + 48 + 48, element[2], element[3], element[4]);
+          n = new PIXI.Texture(C[G.tilesets[element[0]]], z);
           element[7] = n
         }
         if (element[0] == "puzzle" || element[0] == "custom_a") {
           element[5].type = "water";
-          A = new PIXI.Rectangle(element[1] + 16, element[2], element[3], element[4]);
-          n = new PIXI.Texture(C[G.tilesets[element[0]]], A);
+          z = new PIXI.Rectangle(element[1] + 16, element[2], element[3], element[4]);
+          n = new PIXI.Texture(C[G.tilesets[element[0]]], z);
           element[6] = n;
-          A = new PIXI.Rectangle(element[1] + 16 + 16, element[2], element[3], element[4]);
-          n = new PIXI.Texture(C[G.tilesets[element[0]]], A);
+          z = new PIXI.Rectangle(element[1] + 16 + 16, element[2], element[3], element[4]);
+          n = new PIXI.Texture(C[G.tilesets[element[0]]], z);
           element[7] = n
         }
-        tile_sprites[current_map][s][sprite_last[current_map][s]] = new_map_tile(element)
+        tile_sprites[current_map][r][sprite_last[current_map][r]] = new_map_tile(element)
       }
     }
   }
@@ -2155,34 +2176,34 @@ function create_map() {
       k.type = "group";
       var j = 999999999,
         l = 99999999,
-        u = -999999999;
-      for (var s = 0; s < M.groups[o].length; s++) {
-        var B = M.groups[o][s],
-          m = M.tiles[B[0]];
-        if (B[1] < l) {
-          l = B[1]
+        t = -999999999;
+      for (var r = 0; r < M.groups[o].length; r++) {
+        var A = M.groups[o][r],
+          m = M.tiles[A[0]];
+        if (A[1] < l) {
+          l = A[1]
         }
-        if (B[2] < j) {
-          j = B[2]
+        if (A[2] < j) {
+          j = A[2]
         }
-        if (B[2] + m[4] > u) {
-          u = B[2] + m[4]
+        if (A[2] + m[4] > t) {
+          t = A[2] + m[4]
         }
       }
-      for (var s = 0; s < M.groups[o].length; s++) {
-        var B = M.groups[o][s];
-        var f = new PIXI.Sprite(M.tiles[B[0]][5]);
-        f.x = B[1] - l;
-        f.y = B[2] - j;
-        if (B[2] < j) {
-          j = B[2]
+      for (var r = 0; r < M.groups[o].length; r++) {
+        var A = M.groups[o][r];
+        var f = new PIXI.Sprite(M.tiles[A[0]][5]);
+        f.x = A[1] - l;
+        f.y = A[2] - j;
+        if (A[2] < j) {
+          j = A[2]
         }
         k.addChild(f)
       }
       k.x = l;
       k.y = j;
       k.real_x = l;
-      k.real_y = u;
+      k.real_y = t;
       k.displayGroup = player_layer;
       map.addChild(k);
       map_entities.push(k)
@@ -2190,21 +2211,21 @@ function create_map() {
   }
   map_info = G.maps[current_map];
   npcs = map_info.npcs;
-  for (var s = 0; s < npcs.length; s++) {
-    var v = npcs[s],
-      m = G.npcs[v.id];
+  for (var r = 0; r < npcs.length; r++) {
+    var u = npcs[r],
+      m = G.npcs[u.id];
     if (m.type == "full") {
       continue
     }
-    console.log("NPC: " + v.name);
-    var g = add_npc(m, v.position, v.name, v.id);
+    console.log("NPC: " + u.name);
+    var g = add_npc(m, u.position, u.name, u.id);
     map.addChild(g);
     map_npcs.push(g);
     map_entities.push(g)
   }
   doors = map_info.doors || [];
-  for (var s = 0; s < doors.length; s++) {
-    var q = doors[s];
+  for (var r = 0; r < doors.length; r++) {
+    var q = doors[r];
     var g = add_door(q);
     console.log("Door: " + q);
     map.addChild(g);
@@ -2212,10 +2233,10 @@ function create_map() {
     map_entities.push(g)
   }
   signs = map_info.signs || [];
-  for (var s = 0; s < signs.length; s++) {
-    var z = signs[s];
-    var g = add_sign(z);
-    console.log("Sign: " + z);
+  for (var r = 0; r < signs.length; r++) {
+    var v = signs[r];
+    var g = add_sign(v);
+    console.log("Sign: " + v);
     map.addChild(g);
     map_entities.push(g)
   }
@@ -2224,6 +2245,9 @@ function create_map() {
 
 function retile_the_map() {
   if (cached_map) {
+    if (dtile_width < width || dtile_height < height) {
+      recreate_dtextures()
+    }
     if (last_water_frame != water_frame()) {
       last_water_frame = water_frame();
       tiles.texture = rtextures[last_water_frame];
@@ -2414,7 +2438,7 @@ var fps_counter = null,
   last_frame, fps = 0;
 
 function calculate_fps() {
-  if (mode.dom_tests_pixi) {
+  if (mode.dom_tests_pixi || inside == "payments") {
     return
   }
   frames += 1;
@@ -2467,7 +2491,7 @@ function load_game(a) {
     for (name in G.animations) {
       generate_textures(name, "animation")
     }
-    if (!mode.dom_tests_pixi) {
+    if (!mode.dom_tests_pixi && inside != "payments") {
       fps_counter = new PIXI.Text("0", {
         fontFamily: "sans-serif",
         fontSize: 32,

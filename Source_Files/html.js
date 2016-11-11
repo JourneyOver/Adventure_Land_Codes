@@ -6,13 +6,18 @@ var u_item = null,
   c_offering = null,
   c_last = 0,
   e_item = null;
-var slots = [null, {
-  type: "utility",
-  name: "use_hp"
-}, {
-  type: "utility",
-  name: "use_mp"
-}, ];
+var skillmap = {
+    "1": {
+      name: "use_hp"
+    },
+    "2": {
+      name: "use_mp"
+    },
+    R: {
+      name: "skill_burst"
+    }
+  },
+  skillbar = [];
 var settings_shown = 0;
 
 function show_settings() {
@@ -25,11 +30,76 @@ function show_settings() {
   $("#pagewrapped").css("margin-top", Math.floor(($(window).height() - $("#pagewrapped").height()) / 2) + "px");
   resize()
 }
+var docked = [],
+  cwindows = [];
 
-function open_chat_window(b, c) {
-  var a = "<div style='position:fixed; bottom: 400px; left: 400px' id='chatw" + b + (c || "") + "'>";
-  a += "</div>";
-  $("body").append(a)
+function close_chat_window(a, c) {
+  var b = a + (c || "");
+  $("#chatw" + b).remove();
+  array_delete(docked, b);
+  array_delete(cwindows, b);
+  redock()
+}
+
+function toggle_chat_window(a, c) {
+  var b = a + (c || "");
+  if (in_arr(b, docked)) {
+    array_delete(docked, b);
+    $(".chatb" + b).html("#");
+    $("#chatw" + b).css("bottom", "auto");
+    $("#chatw" + b).css("top", 400);
+    $("#chatw" + b).css("left", 400);
+    $("#chatw" + b).css("z-index", 70 + cwindows.length - docked.length);
+    $("#chatw" + b).draggable();
+    $("#chatt" + b).removeClass("newmessage")
+  } else {
+    $(".chatb" + b).html("+");
+    $("#chatw" + b).draggable("destroy");
+    $("#chatw" + b).css("top", "auto");
+    $("#chatw" + b).css("left", 0);
+    docked.push(b)
+  }
+  redock()
+}
+
+function chat_title_click(a, c) {
+  var b = a + (c || "");
+  if (in_arr(b, docked)) {
+    toggle_chat_window(a, c)
+  }
+}
+
+function redock() {
+  for (var a = 0; a < docked.length; a++) {
+    var b = docked[a];
+    $("#chatw" + b).css("bottom", 15 + a * 32);
+    $("#chatw" + b).css("z-index", 70 - a)
+  }
+}
+
+function open_chat_window(e, h, b) {
+  if (!h) {
+    h = ""
+  }
+  var a = h,
+    g = e + h,
+    d = 70 + cwindows.length - docked.length,
+    f = 'last_say="' + g + '"; if(event.keyCode==13) private_say("' + h + '",$(this).rfval())';
+  if (e == "party") {
+    a = "Party", f = 'last_say="' + g + '"; if(event.keyCode==13) party_say($(this).rfval())'
+  }
+  var c = "<div style='position:fixed; bottom: 0px; left: 0px; background: black; border: 5px solid gray; z-index: " + d + "' id='chatw" + g + "' onclick='last_say=\"" + g + "\"'>";
+  c += "<div style='border-bottom: 5px solid gray; text-align: center; font-size: 24px; line-height: 24px; padding: 2px 6px 2px 6px;'><span style='float:left' class='clickable chatb" + g + "'		 onclick='toggle_chat_window(\"" + e + '","' + h + "\")'>+</span> <span id='chatt" + g + "' onclick='chat_title_click(\"" + e + '","' + h + "\")'>" + a + "</span> <span style='float: right' class='clickable' onclick='close_chat_window(\"" + e + '","' + h + "\")'>x</span></div>";
+  c += "<div id='chatd" + g + "' class='chatlog'></div>";
+  c += "<div style=''><input type='text' class='chatinput' id='chati" + g + "' onkeypress='" + f + "'/></div>";
+  c += "</div>";
+  $("body").append(c);
+  docked.push(g);
+  cwindows.push(g);
+  if (b) {
+    toggle_chat_window(e, h)
+  }
+  redock()
 }
 
 function hide_settings() {
@@ -71,20 +141,21 @@ function bold_prop_line(c, b, a) {
 }
 
 function render_party(b) {
-  var a = "";
+  var a = "<div style='background-color: black; border: 5px solid gray; padding: 6px; font-size: 24px; display: inline-block' class='enableclicks'>";
   if (b) {
-    a += "<div class='gamebutton block'>PARTY</div>";
+    a += "<div class='slimbutton block'>PARTY</div>";
     b.forEach(function(c) {
-      a += "<div class='gamebutton block mt5 enableclicks' style='border-color:#703987' onclick='party_click(\"" + c + "\")'>" + c + "</div>"
+      a += "<div class='slimbutton block mt5' style='border-color:#703987' onclick='party_click(\"" + c + "\")'>" + c + "</div>"
     });
-    a += "<div class='gamebutton block mt5' class='enableclicks'";
+    a += "<div class='slimbutton block mt5'";
     a += 'onclick=\'socket.emit("party",{event:"leave"})\'>LEAVE</div>'
   }
+  a += "</div>";
   $("#partylist").html(a);
-  if (!a) {
+  if (!b.length) {
     $("#partylist").hide()
   } else {
-    $("#partylist").show()
+    $("#partylist").css("display", "inline-block")
   }
 }
 
@@ -157,45 +228,33 @@ function render_info(h, f) {
 }
 
 function render_slots(f) {
-  function c(n, h, m) {
-    if (f.slots[n]) {
-      var j = f.slots[n],
-        k = false;
-      if (in_arr(n, trade_slots)) {
-        k = true
-      }
-      var l = "item" + randomStr(10),
-        i = G.items[j.name],
-        g = G.positions[i.skin];
+  function c(m, g, l) {
+    if (f.slots[m]) {
+      var j = f.slots[m];
+      var k = "item" + randomStr(10),
+        h = G.items[j.name],
+        i = j.skin || h.skin;
       if (j.expires) {
-        g = G.positions[i.skin_a]
+        i = h.skin_a
       }
       e += item_container({
-        pack: g[0],
-        x: g[1],
-        y: g[2],
-        size: 40,
-        skin: j.skin,
-        onclick: "slot_click('" + n + "')",
-        def: i,
-        id: l,
+        skin: i,
+        onclick: "slot_click('" + m + "')",
+        def: h,
+        id: k,
         draggable: f.me,
-        quantity: j.q,
-        level: j.level,
-        upgrade: i.upgrade,
-        sname: f.me && n,
-        shade: h,
-        s_op: m,
-        slot: n,
-        trade: k
-      })
+        sname: f.me && m,
+        shade: g,
+        s_op: l,
+        slot: m
+      }, j)
     } else {
       e += item_container({
         size: 40,
         draggable: f.me,
-        shade: h,
-        s_op: m,
-        slot: n
+        shade: g,
+        s_op: l,
+        slot: m
       })
     }
   }
@@ -225,19 +284,19 @@ function render_slots(f) {
   c("mainhand", "shade_mainhand");
   c("chest", "shade_chest");
   c("offhand", "shade_offhand");
-  c("orb1", "shade_orb");
+  c("cape", "shade20_cape");
   e += "</div>";
   e += "<div>";
   c("ring1", "shade_ring");
   c("pants", "shade_pants", 0.3);
   c("ring2", "shade_ring");
-  c("orb2", "shade_orb");
+  c("orb", "shade20_orb");
   e += "</div>";
   e += "<div>";
   c("belt", "shade_belt");
   c("shoes", "shade_shoes");
   c("gloves", "shade_gloves");
-  c("orb3", "shade_orb");
+  c("elixir", "shade20_elixir");
   e += "</div>";
   if (f.trades && !f.stand) {
     e += "<div>";
@@ -252,53 +311,6 @@ function render_slots(f) {
   }
   e += "</div>";
   $("#topleftcornerui").append(e)
-}
-
-function skills_bar() {
-  function b(h, d) {
-    if (0 && player.slots[h]) {
-      var f = player.slots[h];
-      var g = "item" + randomStr(10),
-        e = G.items[f.name],
-        c = G.positions[e.skin];
-      a += item_container({
-        pack: c[0],
-        x: c[1],
-        y: c[2],
-        size: 40,
-        def: e,
-        id: g,
-        draggable: player.me,
-        quantity: f.q,
-        level: f.level,
-        upgrade: e.upgrade,
-        sname: player.me && h,
-        shade: shade,
-        s_op: op
-      });
-      collection.push({
-        id: g,
-        item: e,
-        name: f.name,
-        actual: f
-      })
-    } else {
-      a += item_container({
-        size: 40
-      })
-    }
-  }
-  var a = "";
-  a += "<div>";
-  b("Q");
-  a += "</div><div>";
-  b("W");
-  a += "</div><div>";
-  b("E");
-  a += "</div><div>";
-  b("R");
-  a += "</div>";
-  return a
 }
 
 function render_transports_npc() {
@@ -330,81 +342,75 @@ function render_gold_npc() {
 }
 var last_rendered_items = "items0";
 
-function render_items_npc(m) {
-  if (!m) {
-    m = last_rendered_items
+function render_items_npc(l) {
+  if (!l) {
+    l = last_rendered_items
   }
-  last_rendered_items = m;
+  last_rendered_items = l;
   reset_inventory(1);
   topleft_npc = "items";
   rendered_target = topleft_npc;
-  var h = [],
-    n = 0,
-    l = character.user[m] || [];
-  var f = "<div style='background-color: black; border: 5px solid gray; padding: 2px; font-size: 24px; display: inline-block' class='dcontain'>";
-  for (var d = 0; d < Math.ceil(max(character.isize, l.length) / 7); d++) {
-    f += "<div>";
+  var g = [],
+    m = 0,
+    k = character.user[l] || [];
+  var e = "<div style='background-color: black; border: 5px solid gray; padding: 2px; font-size: 24px; display: inline-block' class='dcontain'>";
+  for (var d = 0; d < Math.ceil(max(character.isize, k.length) / 7); d++) {
+    e += "<div>";
     for (var c = 0; c < 7; c++) {
-      var k = null;
-      if (n < l.length) {
-        k = l[n++]
+      var h = null;
+      if (m < k.length) {
+        h = k[m++]
       } else {
-        n++
+        m++
       }
-      if (k) {
-        var a = "citem" + (n - 1),
-          o = G.items[k.name],
-          e = G.positions[o.skin];
-        if (k.expires) {
-          e = G.positions[o.skin_a]
+      if (h) {
+        var a = "citem" + (m - 1),
+          o = G.items[h.name],
+          n = o.skin;
+        if (h.expires) {
+          n = o.skin_a
         }
-        f += item_container({
-          pack: e[0],
-          x: e[1],
-          y: e[2],
-          size: 40,
+        e += item_container({
+          skin: n,
           def: o,
           id: "str" + a,
           draggable: true,
-          quantity: k.q,
-          strnum: n - 1,
-          snum: n - 1,
-          level: k.level,
-          upgrade: o.upgrade
-        });
-        h.push({
+          strnum: m - 1,
+          snum: m - 1
+        }, h);
+        g.push({
           id: a,
           item: o,
-          name: k.name,
-          actual: k,
-          num: n - 1
+          name: h.name,
+          actual: h,
+          num: m - 1
         })
       } else {
-        f += item_container({
+        e += item_container({
           size: 40,
           draggable: true,
-          strnum: n - 1
+          strnum: m - 1
         })
       }
     }
-    f += "</div>"
+    e += "</div>"
   }
-  f += "</div><div id='storage-item' style='display: inline-block; vertical-align: top; margin-left: 5px'></div>";
-  $("#topleftcornerui").html(f);
-  for (var d = 0; d < h.length; d++) {
-    var b = h[d];
+  e += "</div><div id='storage-item' style='display: inline-block; vertical-align: top; margin-left: 5px'></div>";
+  $("#topleftcornerui").html(e);
+  for (var d = 0; d < g.length; d++) {
+    var b = g[d];
 
-    function g(i) {
+    function f(i) {
       return function() {
         render_item("#storage-item", i)
       }
     }
-    $("#str" + b.id).on("click", g(b)).addClass("clickable")
+    $("#str" + b.id).on("click", f(b)).addClass("clickable")
   }
 }
 
 function render_inventory() {
-  var h = 0,
+  var g = 0,
     b = "text-align: right";
   if (inventory) {
     $("#bottomleftcorner").html("");
@@ -412,60 +418,53 @@ function render_inventory() {
     inventory = false;
     return
   }
-  var f = "<div style='background-color: black; border: 5px solid gray; padding: 2px; font-size: 24px; display: inline-block' class='dcontain'>";
+  var e = "<div style='background-color: black; border: 5px solid gray; padding: 2px; font-size: 24px; display: inline-block' class='dcontain'>";
   if (c_enabled) {
-    f += "<div style='padding: 4px; display: inline-block' class='clickable' onclick='shells_click()'>";
-    f += "<span class='cbold' style='color: " + colors.cash + "'>SHELLS</span>: <span class='cashnum'>" + to_pretty_num(character.cash || 0) + "</span></div>";
+    e += "<div style='padding: 4px; display: inline-block' class='clickable' onclick='shells_click()'>";
+    e += "<span class='cbold' style='color: " + colors.cash + "'>SHELLS</span>: <span class='cashnum'>" + to_pretty_num(character.cash || 0) + "</span></div>";
     b = " display: inline-block; float: right"
   }
-  f += "<div style='padding: 4px;" + b + "'><span class='cbold' style='color: gold'>GOLD</span>: <span class='goldnum'>" + to_pretty_num(character.gold) + "</span></div>";
-  f += "<div style='border-bottom: 5px solid gray; margin-bottom: 2px; margin-left: -5px; margin-right: -5px'></div>";
+  e += "<div style='padding: 4px;" + b + "'><span class='cbold' style='color: gold'>GOLD</span>: <span class='goldnum'>" + to_pretty_num(character.gold) + "</span></div>";
+  e += "<div style='border-bottom: 5px solid gray; margin-bottom: 2px; margin-left: -5px; margin-right: -5px'></div>";
   for (var d = 0; d < Math.ceil(max(character.isize, character.items.length) / 7); d++) {
-    f += "<div>";
+    e += "<div>";
     for (var c = 0; c < 7; c++) {
-      var g = null;
-      if (h < character.items.length) {
-        g = character.items[h++]
+      var f = null;
+      if (g < character.items.length) {
+        f = character.items[g++]
       } else {
-        h++
+        g++
       }
-      if (g) {
-        var a = "citem" + (h - 1),
-          k = G.items[g.name],
-          e = G.positions[k.skin];
-        if (g.expires) {
-          e = G.positions[k.skin_a]
+      if (f) {
+        var a = "citem" + (g - 1),
+          k = G.items[f.name],
+          h = f.skin || k.skin;
+        if (f.expires) {
+          h = k.skin_a
         }
-        f += item_container({
-          pack: e[0],
-          x: e[1],
-          y: e[2],
-          size: 40,
-          onclick: "inventory_click(" + (h - 1) + ")",
-          skin: g.skin,
+        e += item_container({
+          skin: h,
+          onclick: "inventory_click(" + (g - 1) + ")",
           def: k,
           id: a,
           draggable: true,
-          quantity: g.q,
-          num: h - 1,
-          cnum: h - 1,
-          level: g.level,
-          upgrade: k.upgrade
-        })
+          num: g - 1,
+          cnum: g - 1
+        }, f)
       } else {
-        f += item_container({
+        e += item_container({
           size: 40,
           draggable: true,
-          cnum: h - 1
+          cnum: g - 1
         })
       }
     }
-    f += "</div>"
+    e += "</div>"
   }
-  f += "</div><div id='inventory-item' style='display: inline-block; vertical-align: top; margin-left: 5px'></div>";
+  e += "</div><div id='inventory-item' style='display: inline-block; vertical-align: top; margin-left: 5px'></div>";
   inventory = true;
   $("body").append("<div id='theinventory' style='position: fixed; z-index: 100; bottom: 0px; left: 0px'></div>");
-  $("#theinventory").html(f)
+  $("#theinventory").html(e)
 }
 
 function render_exchange_shrine() {
@@ -478,7 +477,6 @@ function render_exchange_shrine() {
   a += "<div class='ering ering2'>";
   a += "<div class='ering ering3'>";
   a += item_container({
-    size: 40,
     shade: "shade_exchange",
     cid: "eitem",
     s_op: 0.3,
@@ -502,7 +500,6 @@ function render_upgrade_shrine() {
   a += "<div class='mb5' align='center'>";
   a += "<div>";
   a += item_container({
-    size: 40,
     draggable: false,
     droppable: true,
     shade: "shade_uweapon",
@@ -511,7 +508,6 @@ function render_upgrade_shrine() {
   a += "</div>";
   a += "<div>";
   a += item_container({
-    size: 40,
     draggable: false,
     droppable: true,
     shade: "shade_offering",
@@ -519,7 +515,6 @@ function render_upgrade_shrine() {
     s_op: 0.24
   });
   a += item_container({
-    size: 40,
     draggable: false,
     droppable: true,
     shade: "shade_scroll",
@@ -543,21 +538,18 @@ function render_compound_shrine() {
   a += "<div class='mb5' align='center'>";
   a += "<div>";
   a += item_container({
-    size: 40,
     draggable: false,
     droppable: true,
     shade: "shade_cring",
     cid: "compound0"
   });
   a += item_container({
-    size: 40,
     draggable: false,
     droppable: true,
     shade: "shade_cring",
     cid: "compound1"
   });
   a += item_container({
-    size: 40,
     draggable: false,
     droppable: true,
     shade: "shade_cring",
@@ -566,7 +558,6 @@ function render_compound_shrine() {
   a += "</div>";
   a += "<div>";
   a += item_container({
-    size: 40,
     draggable: false,
     droppable: true,
     shade: "shade_offering",
@@ -574,7 +565,6 @@ function render_compound_shrine() {
     s_op: 0.24
   });
   a += item_container({
-    size: 40,
     draggable: false,
     droppable: true,
     shade: "shade_cscroll",
@@ -588,59 +578,55 @@ function render_compound_shrine() {
   $("#topleftcornerui").html(a)
 }
 
-function render_merchant(l) {
+function render_merchant(k) {
   reset_inventory(1);
   topleft_npc = "merchant";
   rendered_target = topleft_npc;
-  var m = 0,
-    h = [];
-  var f = "<div style='background-color: black; border: 5px solid gray; padding: 2px; font-size: 24px; display: inline-block'>";
+  var l = 0,
+    g = [];
+  var e = "<div style='background-color: black; border: 5px solid gray; padding: 2px; font-size: 24px; display: inline-block'>";
   for (var d = 0; d < 4; d++) {
-    f += "<div>";
+    e += "<div>";
     for (var c = 0; c < 5; c++) {
-      if (m < l.items.length && l.items[m++] && (c_enabled || !G.items[l.items[m - 1]].cash)) {
-        var k = l.items[m - 1];
+      if (l < k.items.length && k.items[l++] && (c_enabled || !G.items[k.items[l - 1]].cash)) {
+        var h = k.items[l - 1];
         var a = "item" + randomStr(10),
-          n = G.items[k],
-          e = G.positions[n.skin];
-        f += item_container({
-          pack: e[0],
-          x: e[1],
-          y: e[2],
-          size: 40,
-          def: n,
+          m = G.items[h];
+        e += item_container({
+          skin: m.skin_a || m.skin,
+          def: m,
           id: a,
           draggable: false,
-          on_rclick: "buy('" + k + "')"
+          on_rclick: "buy('" + h + "')"
         });
-        h.push({
+        g.push({
           id: a,
-          item: n,
-          name: k,
-          value: n.g,
-          cash: n.cash
+          item: m,
+          name: h,
+          value: m.g,
+          cash: m.cash
         })
       } else {
-        f += item_container({
+        e += item_container({
           size: 40,
           draggable: false,
           droppable: true
         })
       }
     }
-    f += "</div>"
+    e += "</div>"
   }
-  f += "</div><div id='merchant-item' style='display: inline-block; vertical-align: top; margin-left: 5px'></div>";
-  $("#topleftcornerui").html(f);
-  for (var d = 0; d < h.length; d++) {
-    var b = h[d];
+  e += "</div><div id='merchant-item' style='display: inline-block; vertical-align: top; margin-left: 5px'></div>";
+  $("#topleftcornerui").html(e);
+  for (var d = 0; d < g.length; d++) {
+    var b = g[d];
 
-    function g(i) {
+    function f(i) {
       return function() {
         render_item("#merchant-item", i)
       }
     }
-    $("#" + b.id).on("click", g(b)).addClass("clickable")
+    $("#" + b.id).on("click", f(b)).addClass("clickable")
   }
 }
 
@@ -834,6 +820,22 @@ function render_item(e, i) {
   }
 }
 
+function on_skill(b) {
+  var a = {
+    name: b
+  };
+  if (skillmap[b]) {
+    a = skillmap[b]
+  }
+  if (a.name == "use_hp") {
+    use("hp")
+  } else {
+    if (a.name == "use_mp") {
+      use("mp")
+    }
+  }
+}
+
 function allow_drop(a) {
   a.preventDefault()
 }
@@ -1014,27 +1016,27 @@ function on_drop(m) {
     d = q.data("slot"),
     a = q.data("strnum"),
     o = q.data("trigrc"),
-    i = q.data("skillnum");
+    h = q.data("skillid");
   var s = c.data("inum"),
     p = c.data("sname"),
-    h = c.data("snum");
-  if (s !== undefined && i !== undefined) {
+    i = c.data("snum");
+  if (s !== undefined && h !== undefined) {
     s = parseInt(s);
     if ((s || s === 0) && character.items[s] && G.items[character.items[s].name].gives) {
-      slots[parseInt(i)] = {
+      skillmap[h] = {
         type: "item",
         name: character.items[s].name
       };
-      load_skills()
+      render_skillbar()
     }
   } else {
     if (o != undefined && s != undefined) {
       on_rclick(c.get(0))
     } else {
-      if (h != undefined && a != undefined) {
+      if (i != undefined && a != undefined) {
         socket.emit("bank", {
           operation: "move",
-          a: h,
+          a: i,
           b: a,
           pack: last_rendered_items
         });
@@ -1049,11 +1051,11 @@ function on_drop(m) {
           });
           l = true
         } else {
-          if (b != undefined && h != undefined) {
+          if (b != undefined && i != undefined) {
             socket.emit("bank", {
               operation: "swap",
               inv: b,
-              str: h,
+              str: i,
               pack: last_rendered_items
             });
             l = true
@@ -1102,7 +1104,8 @@ function on_drop(m) {
                         }
                       } else {
                         socket.emit("equip", {
-                          num: s
+                          num: s,
+                          slot: d
                         }), l = true
                       }
                     }
@@ -1127,143 +1130,277 @@ function on_drop(m) {
   }
 }
 
-function item_container(o) {
-  var e = "",
-    p = "",
-    a = 3,
-    m = o.pack,
-    l = "",
+function item_container(r, l) {
+  var g = "",
+    d = "",
+    q = 3,
     h = "",
-    n = "",
-    g = "",
-    d = o.bcolor || "gray",
-    c = "";
-  if (o.skin) {
-    m = G.positions[o.skin][0], o.x = G.positions[o.skin][1], o.y = G.positions[o.skin][2]
+    c = "",
+    m = "",
+    a = "",
+    n = r.bcolor || "gray",
+    s = "",
+    j = r.size || 40;
+  if (r.level && r.level > 8) {
+    n = "#C5C5C5"
   }
-  m = G.itemsets[m || "pack_1a"];
-  var b = o.size / m.size;
-  if (o.level && o.level > 8) {
-    d = "#C5C5C5"
+  if (r.draggable || !("draggable" in r)) {
+    h += " draggable='true' ondragstart='on_drag_start(event)'";
+    c += "ondrop='on_drop(event)' ondragover='allow_drop(event)'"
   }
-  if (o.draggable || !("draggable" in o)) {
-    l += " draggable='true' ondragstart='on_drag_start(event)'";
-    h += "ondrop='on_drop(event)' ondragover='allow_drop(event)'"
+  if (r.droppable) {
+    r.trigrc = true;
+    c += "ondrop='on_drop(event)' ondragover='allow_drop(event)'"
   }
-  if (o.droppable) {
-    o.trigrc = true;
-    h += "ondrop='on_drop(event)' ondragover='allow_drop(event)'"
+  if (r.onclick) {
+    c += ' onclick="' + r.onclick + '" class="clickable" '
   }
-  if (o.onclick) {
-    h += ' onclick="' + o.onclick + '" class="clickable" '
+  if (r.cnum != undefined) {
+    a = "data-cnum='" + r.cnum + "' "
   }
-  if (o.cnum != undefined) {
-    g = "data-cnum='" + o.cnum + "' "
+  if (r.trigrc != undefined) {
+    a = "data-trigrc='1'"
   }
-  if (o.trigrc != undefined) {
-    g = "data-trigrc='1'"
+  if (r.strnum != undefined) {
+    a = "data-strnum='" + r.strnum + "' "
   }
-  if (o.strnum != undefined) {
-    g = "data-strnum='" + o.strnum + "' "
+  if (r.slot != undefined) {
+    a = "data-slot='" + r.slot + "' "
   }
-  if (o.slot != undefined) {
-    g = "data-slot='" + o.slot + "' "
+  if (r.cid) {
+    c += " id='" + r.cid + "' "
   }
-  if (o.cid) {
-    h += " id='" + o.cid + "' "
+  g += "<div " + a + "style='position: relative; display:inline-block; border: 2px solid " + n + "; margin: 2px; height: " + (j + 2 * q) + "px; width: " + (j + 2 * q) + "px; background: black; vertical-align: top' " + c + ">";
+  if (r.skid && !r.skin) {
+    g += "<div class='truui' style='border-color: gray; color: white'>" + r.skid + "</div>"
   }
-  e += "<div " + g + "style='position: relative; display:inline-block; border: 2px solid " + d + "; margin: 2px; height: " + (o.size + 2 * a) + "px; width: " + (o.size + 2 * a) + "px; background: black; vertical-align: top' " + h + ">";
-  if (o.shade) {
-    var k = G.itemsets[G.positions[o.shade][0] || "pack_1a"],
-      f = o.size / k.size;
-    var j = G.positions[o.shade][1],
-      i = G.positions[o.shade][2];
-    e += "<div style='position: absolute; top: -2px; left: -2px; padding:" + (a + 2) + "px'>";
-    e += "<div style='overflow: hidden; height: " + (o.size) + "px; width: " + (o.size) + "px;'>";
-    e += "<img style='width: " + (k.columns * k.size * f) + "px; height: " + (k.rows * k.size * f) + "px; margin-top: -" + (i * o.size) + "px; margin-left: -" + (j * o.size) + "px; opacity: " + (o.s_op || 0.2) + ";' src='" + k.file + "' draggable='false' />";
-    e += "</div>";
-    e += "</div>"
+  if (r.shade) {
+    var o = G.itemsets[G.positions[r.shade][0] || "pack_1a"],
+      b = j / o.size;
+    var k = G.positions[r.shade][1],
+      i = G.positions[r.shade][2];
+    g += "<div style='position: absolute; top: -2px; left: -2px; padding:" + (q + 2) + "px'>";
+    g += "<div style='overflow: hidden; height: " + (j) + "px; width: " + (j) + "px;'>";
+    g += "<img style='width: " + (o.columns * o.size * b) + "px; height: " + (o.rows * o.size * b) + "px; margin-top: -" + (i * j) + "px; margin-left: -" + (k * j) + "px; opacity: " + (r.s_op || 0.2) + ";' src='" + o.file + "' draggable='false' />";
+    g += "</div>";
+    g += "</div>"
   }
-  if (o.def) {
-    if (o.level && o.level > 7) {
-      c += " glow" + o.level
+  if (r.skin) {
+    var p = G.itemsets[G.positions[r.skin][0] || "pack_1a"],
+      f = G.positions[r.skin][1],
+      e = G.positions[r.skin][2];
+    var t = j / p.size;
+    if (r.level && r.level > 7) {
+      s += " glow" + r.level
     }
-    if (o.num != undefined) {
-      n = "class='rclick" + c + "' data-inum='" + o.num + "'"
+    if (r.num != undefined) {
+      m = "class='rclick" + s + "' data-inum='" + r.num + "'"
     }
-    if (o.snum != undefined) {
-      n = "class='rclick" + c + "' data-snum='" + o.snum + "'"
+    if (r.snum != undefined) {
+      m = "class='rclick" + s + "' data-snum='" + r.snum + "'"
     }
-    if (o.sname != undefined) {
-      n = "class='rclick" + c + "' data-sname='" + o.sname + "'"
+    if (r.sname != undefined) {
+      m = "class='rclick" + s + "' data-sname='" + r.sname + "'"
     }
-    if (o.on_rclick) {
-      n = "class='rclick" + c + "' data-onrclick=\"" + o.on_rclick + '"'
+    if (r.on_rclick) {
+      m = "class='rclick" + s + "' data-onrclick=\"" + r.on_rclick + '"'
     }
-    e += "<div " + n + " style='background: black; position: absolute; top: -2px; left: -2px; border: 2px solid " + d + ";";
-    e += "padding:" + (a) + "px' id='" + o.id + "' " + l + ">";
-    e += "<div style='overflow: hidden; height: " + (o.size) + "px; width: " + (o.size) + "px;'>";
-    e += "<img style='width: " + (m.columns * m.size * b) + "px; height: " + (m.rows * m.size * b) + "px; margin-top: -" + (o.y * o.size) + "px; margin-left: -" + (o.x * o.size) + "px;' src='" + m.file + "' draggable='false' />";
-    e += "</div>";
-    if (o.quantity && o.quantity != 1) {
-      e += "<div class='iqui'>" + o.quantity + "</div>"
+    g += "<div " + m + " style='background: black; position: absolute; bottom: -2px; left: -2px; border: 2px solid " + n + ";";
+    g += "padding:" + (q) + "px; overflow: hidden' id='" + r.id + "' " + h + ">";
+    g += "<div style='overflow: hidden; height: " + (j) + "px; width: " + (j) + "px;'>";
+    g += "<img style='width: " + (p.columns * p.size * t) + "px; height: " + (p.rows * p.size * t) + "px; margin-top: -" + (e * j) + "px; margin-left: -" + (f * j) + "px;' src='" + p.file + "' draggable='false' />";
+    g += "</div>";
+    if (l) {
+      if (l.q && l.q != 1) {
+        g += "<div class='iqui'>" + l.q + "</div>"
+      }
+      if (l.level) {
+        g += "<div class='iuui level" + l.level + "' style='border-color: " + n + "'>" + (l.level == 10 && "X" || l.level) + "</div>"
+      }
     }
-    if (o.level) {
-      e += "<div class='iuui level" + o.level + "' style='border-color: " + d + "'>" + (o.level == 10 && "X" || o.level) + "</div>"
+    if (r.slot && in_arr(r.slot, trade_slots)) {
+      g += "<div class='truui' style='border-color: " + n + ";'>$</div>"
     }
-    if (o.trade) {
-      e += "<div class='truui' style='border-color: " + d + ";'>$</div>"
+    if (r.skid) {
+      g += "<div class='skidloader" + r.skid + "' style='position: absolute; bottom: 0px; right: 0px; width: 4px; height: 0px; background-color: yellow'></div>";
+      g += "<div class='truui' style='border-color: gray; color: white'>" + r.skid + "</div>"
     }
-    e += "</div>"
+    g += "</div>"
   }
-  e += "</div>";
-  return e
-}
-
-function skill_container(f) {
-  var d = "",
-    a = 3,
-    i = 40,
-    c = 40 / 16,
-    b = default_item_pack;
-  d += "<div style='position: relative; display:inline-block; border: 2px solid gray; margin: 2px; height: " + (i + 2 * a) + "px; width: " + (i + 2 * a) + "px; background: black; vertical-align: top' data-skillnum='" + f.num + "' ondrop='on_drop(event)' ondragover='allow_drop(event)' >";
-  d += "<div class='truui' style='border-color: gray; color: white'>" + f.id + "</div>";
-  if (slots[f.num]) {
-    var e = slots[f.num],
-      h = G.positions[e.name][1],
-      g = G.positions[e.name][2];
-    d += "<div style='overflow: hidden; height: " + (i) + "px; width: " + (i) + "px;'>";
-    d += "<img style='width: " + (256 * c) + "px; height: " + (2048 * c) + "px; margin-top: -" + (g * i) + "px; margin-left: -" + (h * i) + "px;' src='" + b + "' draggable='false' />";
-    d += "</div>"
-  }
-  d += "</div>";
-  return d
+  g += "</div>";
+  return g
 }
 
 function load_skills() {
-  $("#topmid").html("");
-  var a = "";
-  a += skill_container({
-    id: "1",
-    num: 1
+  if (0) {} else {
+    if (character.ctype == "warrior") {
+      skillbar = ["1", "2", "3", "Q", "R"]
+    } else {
+      if (character.ctype == "merchant") {
+        skillbar = ["1", "2", "3", "4", "5"]
+      } else {
+        skillbar = ["1", "2", "3", "4", "R"]
+      }
+    }
+    if (character.ctype == "warrior") {
+      skillmap = {
+        "1": {
+          name: "use_hp"
+        },
+        "2": {
+          name: "use_mp"
+        },
+        Q: {
+          name: "skill_taunt"
+        },
+        R: {
+          name: "skill_charge"
+        }
+      }
+    } else {
+      if (character.ctype == "mage") {
+        skillmap = {
+          "1": {
+            name: "use_hp"
+          },
+          "2": {
+            name: "use_mp"
+          },
+          R: {
+            name: "skill_burst"
+          }
+        }
+      } else {
+        if (character.ctype == "priest") {
+          skillmap = {
+            "1": {
+              name: "use_hp"
+            },
+            "2": {
+              name: "use_mp"
+            },
+            R: {
+              name: "skill_curse"
+            }
+          }
+        } else {
+          if (character.ctype == "ranger") {
+            skillmap = {
+              "1": {
+                name: "use_hp"
+              },
+              "2": {
+                name: "use_mp"
+              },
+              R: {
+                name: "skill_supershot"
+              }
+            }
+          } else {
+            if (character.ctype == "rogue") {
+              skillmap = {
+                "1": {
+                  name: "use_hp"
+                },
+                "2": {
+                  name: "use_mp"
+                },
+                R: {
+                  name: "skill_invis"
+                }
+              }
+            } else {
+              if (character.ctype == "merchant") {
+                skillmap = {
+                  "1": {
+                    name: "use_hp"
+                  },
+                  "2": {
+                    name: "use_mp"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+function render_skillbar(b) {
+  if (b) {
+    $("#skillbar").html("").hide();
+    return
+  }
+  var a = "<div style='background-color: black; border: 5px solid gray; padding: 2px; display: inline-block' class='enableclicks'>";
+  skillbar.forEach(function(d) {
+    var c = skillmap[d];
+    if (c) {
+      a += item_container({
+        skid: d,
+        skin: c.name,
+        draggable: false
+      }, c)
+    } else {
+      a += item_container({
+        skid: d,
+        draggable: false
+      })
+    }
+    a += "<div></div>"
   });
-  a += skill_container({
-    id: "2",
-    num: 2
+  a += "</div>";
+  $("#skillbar").html(a).css("display", "inline-block")
+}
+
+function render_skills() {
+  var e = 0,
+    a = "text-align: right";
+  if (skillsui) {
+    $("#theskills").remove();
+    skillsui = false;
+    render_skillbar();
+    return
+  }
+  var d = "<div id='skills-item' style='display: inline-block; vertical-align: top; margin-right: 5px'></div>";
+  d += "<div style='background-color: black; border: 5px solid gray; padding: 2px; font-size: 24px; display: inline-block'>";
+  d += "<div class='textbutton' style='margin-left: 5px'>SLOTS</div>";
+  d += "<div>";
+  ["1", "2", "3", "4", "5", "6", "7"].forEach(function(f) {
+    d += item_container({
+      skid: f,
+      skin: skillmap[f] && skillmap[f].name
+    }, skillmap[f])
   });
-  a += skill_container({
-    id: "3",
-    num: 3
+  d += "</div>";
+  d += "<div>";
+  ["Q", "W", "E", "R", "TAB", "X", "8"].forEach(function(f) {
+    d += item_container({
+      skid: f,
+      skin: skillmap[f] && skillmap[f].name
+    }, skillmap[f])
   });
-  a += skill_container({
-    id: "Q",
-    num: 4
-  });
-  a += skill_container({
-    id: "R",
-    num: 5
-  });
-  $("#topmid").show().html(a)
+  d += "</div>";
+  d += "<div class='textbutton' style='margin-left: 5px'>ABILITIES <span style='float:right; color: #99D9B9; margin-right: 5px'>WORK IN PROGRESS!</span></div>";
+  for (var c = 0; c < 2; c++) {
+    d += "<div>";
+    for (var b = 0; b < 7; b++) {
+      d += item_container({})
+    }
+    d += "</div>"
+  }
+  d += "<div class='textbutton' style='margin-left: 5px'>SKILLS</div>";
+  d += "<div>";
+  for (var b = 0; b < 7; b++) {
+    d += item_container({})
+  }
+  d += "</div>";
+  d += "</div>";
+  skillsui = true;
+  render_skillbar(1);
+  $("body").append("<div id='theskills' style='position: fixed; z-index: 310; bottom: 0px; right: 0px'></div>");
+  $("#theskills").html(d)
 }
 
 function load_class_info(a, c) {
@@ -1327,15 +1464,15 @@ function load_class_info(a, c) {
             b += "<div><span style='color: white'>Primary Attribute:</span> <span style='color: " + colors.dex + "'>Dexterity</span></div>";
             b += "<div><span style='color: white'>Description:</span> <span style='color: gray'>Rangers are for the most advanced players. They are mainly archers. Early on they are very weak and hard to play. But a strong ranger can probably rule all other classes. +Work in progress!</span></div>"
           } else {
-            if (a == "ranger") {
+            if (a == "merchant") {
               if (c == "male") {
-                b += "<div style='float: left; margin-right: 10px; margin-top: -10px; width: 52px; height: 72px; overflow: hidden'><img style='margin-left: -" + (52 * 4) + "px; width: 624px; height: 576px;' src='/images/tiles/characters/custom1.png'/></div>"
+                b += "<div style='float: left; margin-right: 10px; margin-top: -10px; width: 52px; height: 72px; overflow: hidden'><img style='margin-left: -" + (52 * 7) + "px; width: 624px; height: 576px;' src='/images/tiles/characters/npc5.png'/></div>"
               } else {
-                b += "<div style='float: left; margin-right: 10px; margin-top: -10px; width: 52px; height: 72px; overflow: hidden'><img style='margin-left: -" + (52 * 7) + "px; width: 624px; height: 576px;' src='/images/tiles/characters/chara3.png'/></div>"
+                b += "<div style='float: left; margin-right: 10px; margin-top: -10px; width: 52px; height: 72px; overflow: hidden'><img style='margin-left: -" + (52 * 4) + "px; width: 624px; height: 576px;' src='/images/tiles/characters/npc6.png'/></div>"
               }
-              b += "<div><span style='color: white'>Class:</span> <span style='color: " + colors[c] + "'>Ranger</span></div>";
-              b += "<div><span style='color: white'>Primary Attribute:</span> <span style='color: " + colors.dex + "'>Dexterity</span></div>";
-              b += "<div><span style='color: white'>Description:</span> <span style='color: gray'>Rangers are for the most advanced players. They are mainly archers. Early on they are very weak and hard to play. But a strong ranger can probably rule all other classes. +Work in progress!</span></div>"
+              b += "<div><span style='color: white'>Class:</span> <span style='color: " + colors[c] + "'>Merchant</span></div>";
+              b += "<div><span style='color: white'>Primary Attribute:</span> <span style='color: #804000'>None</span></div>";
+              b += "<div><span style='color: white'>Description:</span> <span style='color: gray'>While your main characters are out there adventuring, merchants can wait in town and market your loots. Server and character limits don't apply to merchants. They gain experience when they sell or buy something.</span></div>"
             } else {
               return
             }

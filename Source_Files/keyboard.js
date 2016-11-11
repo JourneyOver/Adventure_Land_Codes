@@ -98,10 +98,46 @@ function keyboard_logic() {
         })
       }
       if (a.keyCode == 49) {
-        use("hp")
+        on_skill("1")
       }
       if (a.keyCode == 50) {
-        use("mp")
+        on_skill("2")
+      }
+      if (a.keyCode == 51) {
+        on_skill("3")
+      }
+      if (a.keyCode == 52) {
+        on_skill("4")
+      }
+      if (a.keyCode == 53) {
+        on_skill("5")
+      }
+      if (a.keyCode == 54) {
+        on_skill("6")
+      }
+      if (a.keyCode == 55) {
+        on_skill("7")
+      }
+      if (a.keyCode == 56) {
+        on_skill("8")
+      }
+      if (a.keyCode == 81) {
+        on_skill("Q")
+      }
+      if (a.keyCode == 87) {
+        on_skill("W")
+      }
+      if (a.keyCode == 69) {
+        on_skill("E")
+      }
+      if (a.keyCode == 82) {
+        on_skill("R")
+      }
+      if (a.keyCode == 88) {
+        on_skill("X")
+      }
+      if (a.keyCode == 9) {
+        on_skill("TAB")
       }
       if (a.keyCode == 73) {
         render_inventory()
@@ -124,7 +160,11 @@ function keyboard_logic() {
     }
     if (a.keyCode == 13 && window.character && !window.inventory) {
       $(":focus").blur();
-      $("#chatinput").focus();
+      if (last_say != "normal" && in_arr(last_say, cwindows) && !in_arr(last_say, docked)) {
+        $("#chati" + last_say).focus()
+      } else {
+        $("#chatinput").focus()
+      }
       a.preventDefault()
     }
     pressed[a.keyCode] = last_press++;
