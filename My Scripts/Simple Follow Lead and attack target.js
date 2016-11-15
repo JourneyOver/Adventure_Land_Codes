@@ -1,7 +1,7 @@
 // Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.4.3
+// Version 1.4.4
 
 //////////////////////////////
 // Optional Settings Start //
@@ -180,7 +180,7 @@ function init_xptimer(minref) {
     textAlign: 'center',
     display: 'table',
     overflow: 'hidden',
-    /*  marginBottom: '16px' */
+    marginBottom: '-5px'
   });
 
   //vertical centering in css is fun
@@ -192,7 +192,7 @@ function init_xptimer(minref) {
     .html('Estimated time until level up:<br><span id="xpcounter" style="font-size: 40px !important; line-height: 28px">Loading...</span><br><span id="xprate">(Kill something!)</span>')
     .appendTo(xpt_container);
 
-  brc.prepend(xpt_container);
+  brc.children().first().after(xpt_container);
 }
 
 var last_minutes_checked = new Date();

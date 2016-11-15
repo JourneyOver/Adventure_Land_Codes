@@ -40,8 +40,11 @@ There may be updates from time to time from @DSdavidDS if he still plans on thro
 
 [s3609381 Scripts][8690d847]
 
+[Kobergj Scripts][f9271940]
+
   [8690d847]: https://github.com/s3609381/AdventureLand "s3609381 Scripts"
   [4547b56c]: https://github.com/Dreemlan/Adventure-Land "Dreemlan Scripts"
   [d0515cb7]: https://github.com/TrentWDB/AdventureLandScripts "TrentWDB Scripts"
   [d2824ab2]: https://github.com/ishaanbharal/AdventureLand_Party "@ishaan1 Scripts"
   [c3819301]: https://github.com/marcopoloq/adventure.land "Marcopoloq Scripts"
+  [f9271940]: https://github.com/kobergj/AdventureLandCODE "Kobergj Scripts"

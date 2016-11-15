@@ -4,11 +4,11 @@ setInterval(function() {
   update_xptimer();
 }, 1000 / 4);
 
-var minute_refresh; // how long before the tracker resets
+var minute_refresh; // how long before the clock resets
 
 function init_xptimer(minref) {
   minute_refresh = minref || 1;
-  parent.add_log(minute_refresh.toString() + ' min until refresh!', 0x00FFFF);
+  parent.add_log(minute_refresh.toString() + ' min until tracker refresh!', 0x00FFFF);
 
   let $ = parent.$;
   let brc = $('#bottomrightcorner');
@@ -26,7 +26,7 @@ function init_xptimer(minref) {
     textAlign: 'center',
     display: 'table',
     overflow: 'hidden',
-    marginBottom: '16px'
+    marginBottom: '-5px'
   });
 
   //vertical centering in css is fun
@@ -38,7 +38,7 @@ function init_xptimer(minref) {
     .html('Estimated time until level up:<br><span id="xpcounter" style="font-size: 40px !important; line-height: 28px">Loading...</span><br><span id="xprate">(Kill something!)</span>')
     .appendTo(xpt_container);
 
-  brc.prepend(xpt_container);
+  brc.children().first().after(xpt_container);
 }
 
 var last_minutes_checked = new Date();

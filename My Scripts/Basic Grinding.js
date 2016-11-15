@@ -1,8 +1,6 @@
 // Basic Grinding
 // Auto Compounding stuff Courtesy of: Mark
-// Version 1.8.0
-
-//NOTE: Currently new targeting method does not work correctly on Warrior class..Will fix issue(s) if I ever come back to the game.
+// Version 1.8.1
 
 //////////////////////////
 // Main Settings Start //
@@ -11,13 +9,13 @@
 var mode = 0; //Standing still (will move if target is out of range) = 0, Front of target (Moves to front of target before attacking) = 1, Don't move at all (will not move even if target is out of range) = 2
 // Movement //
 
-var mtype = 'goo'; //Monster Type of the enemy you want to attack
-// Preferred Monster [always keep '' around name] //
+var mon1xp = 1000; //Min xp the enemy must have for you to attack it
+var mon1atk = 100; //Max damage the enemy must have for you to attack it
+// Preferred Monster Stats //
 
-//If you don't know the monster type of an enemy you can find it here -- http://adventure.draiv.in/
-
-var mtype2 = 'bee'; //Monster Type of the enemy you want to attack if you can't find the first
-// Alternate Monster [always keep '' around name] //
+var mon2xp = 500; //Min xp the enemy must have for you to attack it
+var mon2atk = 50; //Max damage the enemy must have for you to attack it
+// Alternate Monster Stats //
 
 ////////////////////////
 // Main Settings End //
@@ -98,19 +96,28 @@ setInterval(function() {
 
   var target = get_targeted_monster();
   if (mode == 2 && target && !in_attack_range(target)) target = null;
-  if (!target || (target.target && target.target != character.name)) {
-    target = get_closest_monster({
-      m_type_priority: mtype,
-      m_type_secondary: mtype2,
-      no_attack: true,
-      targeting_mode: 2
+  if (!target || (target.target && target.target != character.name)) { //Find Priority Monster
+    target = get_nearest_available_monster({
+      min_xp: mon1xp,
+      max_att: mon1atk,
+      no_attack: true
     });
     if (mode == 2 && target && !in_attack_range(target)) target = null;
     if (target) {
       change_target(target);
-    } else {
-      set_message("No Monsters");
-      return;
+    } else if (!target || (target.target && target.target != character.name)) { //Find Alternate Monster
+      target = get_nearest_available_monster({
+        min_xp: mon2xp,
+        max_att: mon2atk,
+        no_attack: true
+      });
+      if (mode == 2 && target && !in_attack_range(target)) target = null;
+      if (target) {
+        change_target(target);
+      } else {
+        set_message("No Monsters");
+        return;
+      }
     }
   }
   //Monster Searching
@@ -189,38 +196,26 @@ function find_item(filter) {
   return [-1, null];
 }
 
-function get_closest_monster(args) {
+function get_nearest_available_monster(args) {
   //args:
-  // m_type_priority - the monster you want to attack (bosses)
-  // m_type_secondary -the monster you attack when your boss is not there
+  // max_att - max attack
+  // min_xp - min XP
   // target: Only return monsters that target this "name" or player object
-  var min_d = 999999,
+  // no_target: Only pick monsters that don't have any target
+  var min_d = 400,
     target = null;
-  var mode = -1;
-  if (args.targeting_mode) {
-    mode = args.targeting_mode
-    if (mode == 2) min_d = 999999;
-  }
-  if (args.m_type_priority == null && args.m_type_secondary == null) return null;
-  if (args && args.target && args.target.name) args.target = args.target.name;
   for (id in parent.entities) {
     var current = parent.entities[id];
-    if (current.type != "monster" || current.dead || (current.target && current.target != character.name)) continue;
-    if (args.no_target && current.target && current.target != null && current.target != character.name) continue;
+    if (current.type != "monster" || args.min_xp && current.xp < args.min_xp || args.max_att && current.attack > args.max_att || current.dead || (current.target && current.target != character.name)) continue;
+    if (args.no_target && current.target && current.target != character.name) continue;
     var c_dist = parent.distance(character, current);
-    if (current.mtype == args.m_type_priority) {
-      if (mode != 2) return current;
-      else if (mode == 2 && c_dist < character.range) return current;
-    } else if (c_dist < min_d && current.mtype == args.m_type_secondary) {
-      min_d = c_dist;
-      target = current;
-    }
+    if (c_dist < min_d) min_d = c_dist, target = current;
   }
   return target;
 }
 
 //GUI Stuff
-var minute_refresh; // how long before the tracker refreshes
+var minute_refresh; // how long before the clock refreshes
 var last_target = null;
 var gold = character.gold;
 var date = new Date();
@@ -246,7 +241,7 @@ function init_xptimer(minref) {
     textAlign: 'center',
     display: 'table',
     overflow: 'hidden',
-    /*  marginBottom: '16px' */
+    marginBottom: '-5px'
   });
 
   //vertical centering in css is fun
@@ -258,7 +253,7 @@ function init_xptimer(minref) {
     .html('Estimated time until level up:<br><span id="xpcounter" style="font-size: 40px !important; line-height: 28px">Loading...</span><br><span id="xprate">(Kill something!)</span>')
     .appendTo(xpt_container);
 
-  brc.prepend(xpt_container);
+  brc.children().first().after(xpt_container);
 }
 
 var last_minutes_checked = new Date();
