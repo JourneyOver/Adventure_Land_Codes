@@ -2,7 +2,7 @@
 // Auto Compounding stuff Courtesy of: Mark
 // Version 1.8.0
 
-//NOTE: Currently does not work correctly on Warrior class..Will fix issue(s) if I ever come back to the game.
+//NOTE: Currently new targeting method does not work correctly on Warrior class..Will fix issue(s) if I ever come back to the game.
 
 //////////////////////////
 // Main Settings Start //
