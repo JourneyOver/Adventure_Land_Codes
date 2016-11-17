@@ -1,14 +1,11 @@
 // Pocket Priest V2
 // Base code and Auto Compounding Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.3.8
+// Version 1.4.0
 
 //////////////////////////
 // Main Settings Start //
 ////////////////////////
-
-var heal_dist = 1; //Stay at a distance and move when out of range of target/leader (only when leader is attacking something) = 0, Stay always on top of leader [default] = 1
-// Heal/Attack/Curse Distance //
 
 var useCursing = true; //Enable Cursing = true, Disable Cursing = false
 // Cursing [Will only curse targets above 6,000 HP] //
@@ -26,11 +23,12 @@ var gui_timer = false; //Enable time till level [scripted session] = true, Disab
 var till_level = 0; // Kills till level = 0, XP till level = 1
 // GUI [if either GUI setting is turned on and then you want to turn them off you'll have to refresh the game] //
 
-var cp = false; //Enable compounding [will compound items once you collect a set of 3] = true, Disable compounding [will not compound items] = false
-var whitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj', 'amuletofm', 'orbofstr', 'orbofint', 'orbofres', 'orbofhp'];
-var use_better_scrolls = false; //240,000 Gold Scroll = true [only will use for +2 and higher], 6,400 Gold Scroll = false [will only use base scroll no matter what]
-var maxLevel = 3; //Max level it will stop compounding items at if enabled
-// Compounding //
+var uc = false; //Enable Upgrading & Compounding of items = true, Disable Upgrading & Compounding of items = false
+var umaxlevel = 8; //Max level it will stop upgrading items at if enabled
+var cmaxlevel = 3; //Max level it will stop comppounding items at if enabled
+var uwhitelist = []; //Add items that you want to be upgraded as they come into your inventory [always add ' ' around item and , after item]
+var cwhitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj', 'amuletofm', 'orbofstr', 'orbofint', 'orbofres', 'orbofhp']; //Add items that you want to be compounded [always add ' ' around item and , after item]
+// Upgrading & Compounding [will only upgrade & Compound items that are in your inventory & in the whitelists] //
 
 var purchase_pots = false; //Enable Potion Purchasing = true, Disable Potion Purchasing = false
 var buy_hp = false; //Allow HP Pot Purchasing = true, Disallow HP Pot Purchasing = false
@@ -58,9 +56,9 @@ setInterval(function() {
     update_xptimer();
   }
 
-  //Compound Items
-  if (cp) {
-    compound_items();
+  //Upgrade and Compound Items
+  if (uc) {
+    upgrade(umaxlevel, cmaxlevel);
   }
 
   //Loot available chests
@@ -123,61 +121,104 @@ setInterval(function() {
     set_message("Attacking: " + target.mtype);
   }
 
-  //Move when out of range of target/leader (only when leader is attacking)
-  if (heal_dist === 0 && target && !in_attack_range(target))
-    move_to(target, character.range);
-  else if (heal_dist === 1 && !character.moving)
-  //Stay ontop of leader.
+  //Move to leader.
+  if (!character.moving)
+  // Move only if you are not already moving.
     move(leader.real_x, leader.real_y);
 
-}, 1000 / 4);
+}, 250);
 
-function compound_items() {
-  let to_compound = character.items.reduce((collection, item, index) => {
-    if (item && item.level < maxLevel && whitelist.includes(item.name)) {
-      let key = item.name + item.level;
-      !collection.has(key) ? collection.set(key, [item.level, index]) : collection.get(key).push(index);
-    }
-    return collection;
-  }, new Map());
+function upgrade(ulevel, clevel) {
+  for (let i = 0; i < character.items.length; i++) {
+    let c = character.items[i];
+    if (c) {
+      if (uwhitelist.includes(c.name) && c.level < ulevel) {
+        let grades = item_info(c).grades;
+        let scrollname;
+        if (c.level < grades[0])
+          scrollname = 'scroll0';
+        else if (c.level < grades[1])
+          scrollname = 'scroll1';
+        //else
+        //scrollname = 'scroll2';
 
-  for (var c of to_compound.values()) {
-    let scroll_name = use_better_scrolls && c[0] > 1 ? 'cscroll1' : 'cscroll0';
+        let [scroll_slot, scroll] = find_item_filter(i => i.name === scrollname);
+        if (!scroll) {
+          parent.buy(scrollname);
+          return;
+        }
 
-    for (let i = 1; i + 2 < c.length; i += 3) {
-      let [scroll, _] = find_item(i => i.name == scroll_name);
-      if (scroll == -1) {
-        parent.buy(scroll_name);
+        parent.socket.emit('upgrade', {
+          item_num: i,
+          scroll_num: scroll_slot,
+          offering_num: null,
+          clevel: c.level
+        });
         return;
+      } else if (cwhitelist.includes(c.name) && c.level < clevel) {
+        let [item2_slot, item2] = find_item_filter((item) => c.name === item.name && c.level === item.level, i + 1);
+        let [item3_slot, item3] = find_item_filter((item) => c.name === item.name && c.level === item.level, item2_slot + 1);
+        if (item2 && item3) {
+          let cscrollname;
+          if (c.level < 2)
+            cscrollname = 'cscroll0';
+          else
+            cscrollname = 'cscroll1';
+
+          let [cscroll_slot, cscroll] = find_item_filter(i => i.name === cscrollname);
+          if (!cscroll) {
+            parent.buy(cscrollname);
+            return;
+          }
+
+          parent.socket.emit('compound', {
+            items: [i, item2_slot, item3_slot],
+            scroll_num: cscroll_slot,
+            offering_num: null,
+            clevel: c.level
+          });
+          return;
+        }
       }
-      parent.socket.emit('compound', {
-        items: [c[i], c[i + 1], c[i + 2]],
-        scroll_num: scroll,
-        offering_num: null,
-        clevel: c[0]
-      });
     }
   }
 }
 
-function move_to(char, distance) {
-  if (!char) return;
-  var dist_x = character.real_x - char.real_x;
-  var dist_y = character.real_y - char.real_y;
+//Purchase Potions
+function purchase_potions(buyHP, buyMP) {
+  let [hpslot, hppot] = find_item_filter(i => i.name == hp_potion);
+  let [mpslot, mppot] = find_item_filter(i => i.name == mp_potion);
 
-  var from_char = sqrt(dist_x * dist_x + dist_y * dist_y);
-
-  var perc = from_char / distance;
-
-  if (perc > 1.01) {
-    move(
-      character.real_x - (dist_x - dist_x / perc),
-      character.real_y - (dist_y - dist_y / perc)
-    );
-    return true;
+  if (buyHP && (!hppot || hppot.q < pots_minimum)) {
+    parent.buy(hp_potion, pots_to_buy);
+    set_message("Buying hp pots.");
   }
-  return false;
-};
+  if (buyMP && (!mppot || mppot.q < pots_minimum)) {
+    parent.buy(mp_potion, pots_to_buy);
+    set_message("Buying mp pots.");
+  }
+}
+
+// Returns the grade of the item.
+function item_info(item) {
+  return parent.G.items[item.name];
+}
+
+// Returns the item slot and the item given the slot to start from and a filter.
+function find_item_filter(filter, search_slot) {
+  let slot = search_slot;
+  if (!slot)
+    slot = 0
+
+  for (let i = slot; i < character.items.length; i++) {
+    let item = character.items[i];
+
+    if (item && filter(item))
+      return [i, character.items[i]];
+  }
+
+  return [-1, null];
+}
 
 var lastcurse;
 
@@ -216,32 +257,6 @@ function GetInjured(leader) {
     res.push(character);
 
   return res;
-}
-
-//Purchase Potions
-function purchase_potions(buyHP, buyMP) {
-  let [hpslot, hppot] = find_item(i => i.name == hp_potion);
-  let [mpslot, mppot] = find_item(i => i.name == mp_potion);
-
-  if (buyHP && (!hppot || hppot.q < pots_minimum)) {
-    parent.buy(hp_potion, pots_to_buy);
-    set_message("Buying hp pots.");
-  }
-  if (buyMP && (!mppot || mppot.q < pots_minimum)) {
-    parent.buy(mp_potion, pots_to_buy);
-    set_message("Buying mp pots.");
-  }
-}
-
-function find_item(filter) {
-  for (let i = 0; i < character.items.length; i++) {
-    let item = character.items[i];
-
-    if (item && filter(item))
-      return [i, character.items[i]];
-  }
-
-  return [-1, null];
 }
 
 //GUI Stuff
