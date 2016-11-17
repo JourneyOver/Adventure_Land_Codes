@@ -1,7 +1,7 @@
 // Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.5.0
+// Version 1.5.1
 
 //////////////////////////////
 // Optional Settings Start //
@@ -158,8 +158,8 @@ function upgrade(ulevel, clevel) {
 }
 
 function purchase_potions(buyHP, buyMP) {
-  let [hpslot, hppot] = find_item(i => i.name == hp_potion);
-  let [mpslot, mppot] = find_item(i => i.name == mp_potion);
+  let [hpslot, hppot] = find_item_filter(i => i.name == hp_potion);
+  let [mpslot, mppot] = find_item_filter(i => i.name == mp_potion);
 
   if (buyHP && (!hppot || hppot.q < pots_minimum)) {
     parent.buy(hp_potion, pots_to_buy);
