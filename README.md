@@ -3,21 +3,34 @@
 
 Would like to thank for help on my codes/this repo/code snippits/testing things or whatever you may have helped with!
 & in no perticuler order.
-1. @Sulsaries
-2. @Vehn
-3. @Gigan
-4. @Deliagwath
-5. @Yeury
-6. @Four
-7. @Dreemlan
-8. @Termii|Kevin
-9. @Draivin
-10. @DSdavidDS
-11. @Mark
-12. @Sekirei
-13. And anyone else who I may have missed, I thank you all! :)
 
-# 
+1.@Sulsaries
+
+2.@Vehn
+
+3.@Gigan
+
+4.@Deliagwath
+
+5.@Yeury
+
+6.@Four
+
+7.@Dreemlan
+
+8.@Termii|Kevin
+
+9.@Draivin
+
+10.@DSdavidDS
+
+11.@Mark
+
+12.@Sekirei
+
+And anyone else who I may have missed, I thank you all! :)
+
+#
 ### Adventure Land Codes
 
 ## Get more functions from --
