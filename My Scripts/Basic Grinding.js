@@ -34,7 +34,7 @@ var till_level = 0; // Kills till level = 0, XP till level = 1
 
 var uc = false; //Enable Upgrading & Compounding of items = true, Disable Upgrading & Compounding of items = false
 var umaxlevel = 8; //Max level it will stop upgrading items at if enabled
-var cmaxlevel = 3; //Max level it will stop comppounding items at if enabled
+var cmaxlevel = 3; //Max level it will stop compounding items at if enabled
 var uwhitelist = []; //Add items that you want to be upgraded as they come into your inventory [always add ' ' around item and , after item]
 var cwhitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj', 'amuletofm', 'orbofstr', 'orbofint', 'orbofres', 'orbofhp']; //Add items that you want to be compounded [always add ' ' around item and , after item]
 // Upgrading & Compounding [will only upgrade & Compound items that are in your inventory & in the whitelists] //
