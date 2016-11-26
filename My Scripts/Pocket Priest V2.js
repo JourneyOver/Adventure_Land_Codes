@@ -1,7 +1,7 @@
 // Pocket Priest V2
 // Base code and Auto Compounding Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.4.0
+// Version 1.4.1
 
 //////////////////////////
 // Main Settings Start //
@@ -124,7 +124,7 @@ setInterval(function() {
   //Move to leader.
   if (!character.moving)
   // Move only if you are not already moving.
-    move(leader.real_x, leader.real_y);
+    move(leader.real_x - 30, leader.real_y - 30);
 
 }, 250);
 
