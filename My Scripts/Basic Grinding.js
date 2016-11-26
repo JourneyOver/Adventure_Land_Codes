@@ -52,6 +52,7 @@ var pots_to_buy = 1000; //This is how many you will buy
 // Optional Settings End //
 //////////////////////////
 
+//draw_circle(character.real_x,character.real_y,character.range);
 //show_json(character);
 //show_json(get_targeted_monster());
 //show_json(parent.M);
