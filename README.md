@@ -1,8 +1,5 @@
-# <p align="center"> # NEW NOTICE: </p>
-<p align="center"> As some of you may recall, I have quit this game and decided to stop supporting/updating my repo, well after some thought and a few days I have decided to semi-comeback. I'm not coming back fully [as in I won't be playing the game.] as I still don't like the direction the game is currently going, but I will be updating my scripts from time to time [not as often as I was doing before though] and I will be semi-supporting my repo for now. if things change in the near future I will of course let you all know. </p>
 
-Would like to thank for help on my codes/this repo/code snippits/testing things or whatever you may have helped with!
-& in no perticuler order.
+<p align="center"> Thanks to the follow people for helping on snippits/code/and whatever else. </p>
 
 1.@Sulsaries
 
@@ -28,7 +25,7 @@ Would like to thank for help on my codes/this repo/code snippits/testing things 
 
 12.@Sekirei
 
-And anyone else who I may have missed, I thank you all! :)
+And anyone else in the future and who I may have missed.
 
 #
 ### Adventure Land Codes
