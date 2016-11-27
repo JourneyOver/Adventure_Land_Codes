@@ -65,7 +65,7 @@ function draw_text(x, y, text, size = 20, color = 0x000000, font = 'pixel', qual
   return sprite;
 }
 
-const colours = [0x00FFFF, 0x00CCFF, 0x0099FF, 0x0066FF, 0x0033FF, 0x0000FF];
+var colours = [0x00FFFF, 0x00CCFF, 0x0099FF, 0x0066FF, 0x0033FF, 0x0000FF];
 
 function draw() {
   clear_drawings();
@@ -87,7 +87,7 @@ function clear_drawings() {
 function draw_party_data() {
   let party_members = parent.party_list;
   if (party_members.length < 1) {
-    return;
+    return[];
   }
   let sprite_array = [];
   for (let i = 0; i < party_members.length; i++) {
@@ -97,7 +97,8 @@ function draw_party_data() {
     }
     // Drawing Party Member's Range
     sprite_array.push(draw_rectangle(entity.real_x - (entity.awidth / 2), entity.real_y - character.aheight, entity.awidth, entity.aheight, null, colours[i]));
-    sprite_array.push(draw_circle(entity.real_x, entity.real_y, entity.range + 40, null, colours[i]));
+    //uncomment below to add a circle to show range of your character [remove the two //]
+    //sprite_array.push(draw_circle(entity.real_x, entity.real_y, entity.range + 40, null, colours[i]));
     let target = get_target_of(entity);
     if (!target) {
       continue;
@@ -163,3 +164,19 @@ function apply_PIXI(sprite_array) {
     parent.map.addChild(sprite);
   }
 }
+
+function filter_in_range() {
+  var e = [];
+  for (id in parent.entities) {
+    var current = parent.entities[id];
+    if (in_range(current)) e.push(current);
+  }
+  return e;
+}
+
+function in_range(entity) {
+  if (parent.distance(character, entity) <= character.range) return true;
+  return false;
+}
+
+setInterval(draw, 100);
