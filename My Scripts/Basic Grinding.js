@@ -194,7 +194,7 @@ function upgrade(ulevel, clevel) {
   }
 }
 
-function purchase_potions(buyHP, buyMP) {
+/* function purchase_potions(buyHP, buyMP) {
   let [hpslot, hppot] = find_item_filter(i => i.name == hp_potion);
   let [mpslot, mppot] = find_item_filter(i => i.name == mp_potion);
 
@@ -222,7 +222,7 @@ function find_item_filter(filter, search_slot) {
   }
 
   return [-1, null];
-}
+} */
 
 // Returns the grade of the item.
 function item_info(item) {
