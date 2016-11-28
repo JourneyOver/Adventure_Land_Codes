@@ -106,5 +106,5 @@ $.ajax({
   url: 'https://rawgit.com/JourneyOver/Adventure_Land_Codes/Dynamic_Loading_Test/My%20Scripts/Functions.js',
   dataType: "script",
   type: 'GET',
-  cache: true
+  cache: false
 });
