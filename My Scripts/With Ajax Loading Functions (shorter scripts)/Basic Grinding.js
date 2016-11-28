@@ -145,6 +145,7 @@ $.each(urls, function(i, u) {
   $.ajax(u, {
     type: 'POST',
     dataType: "script",
+    async: false,
     cache: false
   });
 });
