@@ -52,6 +52,13 @@ var pots_to_buy = 1000; //This is how many you will buy
 // Optional Settings End //
 //////////////////////////
 
+$.ajax({
+             url: 'https://cdn.rawgit.com/JourneyOver/Adventure_Land_Codes/Dynamic_Loading_Test/My%20Scripts/Functions.js',
+             dataType: "script",
+             type: 'GET',
+             cache: false
+});
+
 //draw_circle(character.real_x,character.real_y,character.range);
 //show_json(character);
 //show_json(get_targeted_monster());
@@ -138,7 +145,7 @@ setInterval(function() {
 
 }, 250); // Loop Delay
 
-function upgrade(ulevel, clevel) {
+/* function upgrade(ulevel, clevel) {
   for (let i = 0; i < character.items.length; i++) {
     let c = character.items[i];
     if (c) {
@@ -194,7 +201,7 @@ function upgrade(ulevel, clevel) {
   }
 }
 
-/* function purchase_potions(buyHP, buyMP) {
+function purchase_potions(buyHP, buyMP) {
   let [hpslot, hppot] = find_item_filter(i => i.name == hp_potion);
   let [mpslot, mppot] = find_item_filter(i => i.name == mp_potion);
 
@@ -222,7 +229,7 @@ function find_item_filter(filter, search_slot) {
   }
 
   return [-1, null];
-} */
+}
 
 // Returns the grade of the item.
 function item_info(item) {
@@ -428,7 +435,7 @@ if (gui_tl_gold) {
 if (gui_timer) {
   init_xptimer(5);
 }
-
+ */
 //Unusable:
 //sleep()
 //while loops

@@ -1,8 +1,10 @@
 $.ajax({
-    type: "GET",
-    url: "http://test_script.js",
-    dataType: "script"
+             url: 'http://test_script.js',
+             dataType: "script",
+             type: 'GET',
+             cache: false
 });
+
 
 //////////////////
 
