@@ -1,0 +1,17 @@
+$.ajax({
+             url: 'http://test_script.js',
+             dataType: "script",
+             type: 'GET',
+             cache: false
+});
+
+
+//////////////////
+
+$.getScript( "http://test_script.js" )
+  .done(function( script, textStatus ) {
+    alert('Successfully loaded script');
+  })
+  .fail(function( jqxhr, settings, exception ) {
+    alert('Failed to load script');
+});
