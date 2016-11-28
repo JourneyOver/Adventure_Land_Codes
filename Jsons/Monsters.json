@@ -138,6 +138,18 @@
     "attack": 24,
     "aggro": 0.2
   },
+  "plantoid": {
+    "hp": 80000,
+    "frequency": 1.2,
+    "damage_type": "physical",
+    "xp": 10,
+    "speed": 20,
+    "name": "Sprawling",
+    "respawn": 1,
+    "range": 80,
+    "attack": 1800,
+    "aggro": 0.2
+  },
   "redfairy": {
     "aa": 1,
     "hit": "explode_c",
@@ -150,6 +162,19 @@
     "respawn": 0,
     "range": 999999,
     "attack": 4000,
+    "aggro": 0
+  },
+  "rat": {
+    "aa": 1,
+    "hp": 4000,
+    "frequency": 0.5,
+    "damage_type": "physical",
+    "xp": 100,
+    "speed": 12,
+    "name": "Rat",
+    "respawn": 42,
+    "range": 40,
+    "attack": 240,
     "aggro": 0
   },
   "squigtoad": {
@@ -283,6 +308,18 @@
     "range": 64,
     "attack": 320,
     "aggro": 0.1
+  },
+  "iceroamer": {
+    "hp": 80000,
+    "frequency": 1.2,
+    "damage_type": "physical",
+    "xp": 10,
+    "speed": 20,
+    "name": "Water Spirit",
+    "respawn": 1,
+    "range": 80,
+    "attack": 1800,
+    "aggro": 0.2
   },
   "crabx": {
     "aa": 1,

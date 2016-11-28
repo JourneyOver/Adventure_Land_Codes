@@ -8,51 +8,6 @@
     "skin": "thehelmet",
     "speed": 40
   },
-  "scrolls": {
-    "items": [
-      "scroll0",
-      "cscroll0",
-      "strscroll",
-      "intscroll",
-      "dexscroll",
-      "scroll1",
-      "cscroll1",
-      null,
-      null,
-      null,
-      "scroll2",
-      "cscroll2",
-      null,
-      null,
-      null,
-      "stoneofxp",
-      "offering",
-      null,
-      null,
-      "xptome"
-    ],
-    "says": "Good Luck",
-    "role": "merchant",
-    "skin": "scrolls"
-  },
-  "exchange": {
-    "says": "Good Luck!",
-    "role": "exchange",
-    "skin": "magic"
-  },
-  "appearance": {
-    "color": "#D95CB4",
-    "says": "Soon",
-    "aspeed": "slow",
-    "role": "tease",
-    "skin": "zengirl"
-  },
-  "pvpblocker": {
-    "says": "I will leave when there are* 4 people around.",
-    "type": "fullstatic",
-    "role": "blocker",
-    "skin": "thehelmet"
-  },
   "firstc": {
     "says": [
       "I've heard Goo's drop Amulets.",
@@ -61,6 +16,58 @@
     "type": "fullstatic",
     "role": "companion",
     "skin": "lady1"
+  },
+  "fancypots": {
+    "color": "#E57636",
+    "items": [
+      "hpot0",
+      "mpot0",
+      "hpot1",
+      "mpot1",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "computer"
+    ],
+    "says": "Woo. Hic.",
+    "role": "merchant",
+    "skin": "fancypots"
+  },
+  "transport": {
+    "color": "#7965C6",
+    "says": "Woo",
+    "role": "transport",
+    "skin": "spell"
+  },
+  "weapons": {
+    "items": [
+      "blade",
+      "claw",
+      "staff",
+      "bow"
+    ],
+    "says": "Blades, blades, blades",
+    "role": "merchant",
+    "skin": "daggers"
+  },
+  "jailer": {
+    "color": "#62C3DF",
+    "type": "fullstatic",
+    "says": "Tu-tu-tu",
+    "role": "jailer",
+    "skin": "thehelmet"
   },
   "pots": {
     "says": "Oh, Hello",
@@ -91,6 +98,11 @@
     "skin": "yellowlady",
     "stopframe": 1
   },
+  "newupgrade": {
+    "says": "YESS",
+    "role": "shrine",
+    "skin": "armorguy"
+  },
   "armors": {
     "items": [
       "helmet",
@@ -103,16 +115,85 @@
     "role": "merchant",
     "skin": "armorguy"
   },
-  "weapons": {
+  "wizardrepeater": {
+    "says": "SHELLS!",
+    "name": "Wizard",
+    "color": "#66BB52",
+    "interval": 3000,
+    "role": "repeater",
+    "skin": "king",
+    "type": "fullstatic"
+  },
+  "goldnpc": {
+    "says": "GOLD!",
+    "name": "Mr. Rich",
+    "color": "#E0B427",
+    "role": "gold",
+    "skin": "goblin_a",
+    "aspeed": "slow"
+  },
+  "shrine": {
+    "type": "static",
+    "role": "shrine",
+    "skin": "shrine"
+  },
+  "scrolls": {
     "items": [
-      "blade",
-      "claw",
-      "staff",
-      "bow"
+      "scroll0",
+      "cscroll0",
+      "strscroll",
+      "intscroll",
+      "dexscroll",
+      "scroll1",
+      "cscroll1",
+      null,
+      null,
+      null,
+      "scroll2",
+      "cscroll2",
+      null,
+      null,
+      null,
+      "offering",
+      null,
+      null,
+      null,
+      "xptome"
     ],
-    "says": "Blades, blades, blades",
+    "says": "Good Luck",
     "role": "merchant",
-    "skin": "daggers"
+    "skin": "scrolls"
+  },
+  "exchange": {
+    "says": "Good Luck!",
+    "role": "exchange",
+    "skin": "magic"
+  },
+  "wnpc": {
+    "says": "Hmm",
+    "name": "Wizard",
+    "color": "#23B0AB",
+    "role": "thesearch",
+    "skin": "king",
+    "type": "fullstatic"
+  },
+  "compound": {
+    "type": "static",
+    "role": "compound",
+    "skin": "shrine2"
+  },
+  "pvpblocker": {
+    "says": "I will leave when there are* 4 people around.",
+    "type": "fullstatic",
+    "role": "blocker",
+    "skin": "thehelmet"
+  },
+  "appearance": {
+    "color": "#D95CB4",
+    "says": "Soon",
+    "aspeed": "slow",
+    "role": "tease",
+    "skin": "zengirl"
   },
   "items0": {
     "name": "Gabrielle",
@@ -130,10 +211,12 @@
     "type": "fullstatic",
     "pack": "items1"
   },
-  "compound": {
-    "type": "static",
-    "role": "compound",
-    "skin": "shrine2"
+  "lotterylady": {
+    "color": "#DF5AC5",
+    "type": "fullstatic",
+    "says": "Hey there",
+    "role": "lottery",
+    "skin": "llady"
   },
   "lichteaser": {
     "color": "#5A1D7F",
@@ -141,52 +224,5 @@
     "says": "Soon",
     "role": "tease",
     "skin": "lichteaser"
-  },
-  "fancypots": {
-    "color": "#E57636",
-    "items": [
-      "hpot0",
-      "mpot0",
-      "hpot1",
-      "mpot1",
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      "computer"
-    ],
-    "says": "Woo. Hic.",
-    "role": "merchant",
-    "skin": "fancypots"
-  },
-  "goldnpc": {
-    "says": "GOLD!",
-    "name": "Mr. Rich",
-    "color": "#E0B427",
-    "role": "gold",
-    "skin": "goblin_a",
-    "aspeed": "slow"
-  },
-  "shrine": {
-    "type": "static",
-    "role": "shrine",
-    "skin": "shrine"
-  },
-  "transport": {
-    "color": "#7965C6",
-    "says": "Woo",
-    "role": "transport",
-    "skin": "spell"
   }
 }

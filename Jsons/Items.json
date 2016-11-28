@@ -19,7 +19,7 @@
     "resistance": 16,
     "grades": [
       0,
-      8
+      7
     ],
     "skin": "helmet1",
     "tier": 2,
@@ -104,21 +104,23 @@
     "a": true,
     "int": 1,
     "hp": 40,
-    "compound": {
-      "dex": 1,
-      "reflection": 0.5,
-      "evasion": 1,
-      "int": 1,
-      "hp": 60,
-      "armor": 2,
-      "str": 1
-    },
+    "skin": "amuletofm",
     "g": 640000,
     "grades": [
       3,
       5
     ],
-    "skin": "amuletofm",
+    "compound": {
+      "dex": 1,
+      "int": 1,
+      "reflection": 0.5,
+      "evasion": 1,
+      "crit": 1,
+      "str": 1,
+      "hp": 60,
+      "armor": 2
+    },
+    "crit": 2,
     "name": "Amulet of Mystery",
     "dex": 1,
     "reflection": 0.5,
@@ -128,7 +130,7 @@
     "type": "amulet"
   },
   "stoneofluck": {
-    "g": 2970000,
+    "g": 5760000,
     "days": 30,
     "skin_a": "stoneofluck",
     "name": "Stone of Luck",
@@ -177,7 +179,7 @@
     "resistance": 5
   },
   "stoneofxp": {
-    "g": 2970000,
+    "g": 5760000,
     "days": 30,
     "skin_a": "stoneofxp_a",
     "name": "Stone of Wisdom",
@@ -260,7 +262,7 @@
     "resistance": 12,
     "grades": [
       0,
-      8
+      7
     ],
     "skin": "pants1",
     "tier": 2,
@@ -342,7 +344,7 @@
   },
   "computer": {
     "name": "Ancient Computer",
-    "g": 1320000,
+    "g": 2560000,
     "explanation": "Networks you to NPC's and extends the CODE capabilities.",
     "cash": 1600,
     "skin": "ancientcomputer",
@@ -412,6 +414,17 @@
     },
     "type": "earring"
   },
+  "vitring": {
+    "name": "Ring of Vitality",
+    "g": 24000,
+    "skin": "ring",
+    "ignore": true,
+    "vit": 1,
+    "compound": {
+      "vit": 1
+    },
+    "type": "ring"
+  },
   "xgloves": {
     "stat": 1,
     "grade": 2,
@@ -460,15 +473,14 @@
     "type": "helmet",
     "scroll": true
   },
-  "orbofres": {
-    "name": "Orb of Resistance",
-    "g": 240000,
-    "skin": "blueorb",
-    "resistance": 40,
-    "compound": {
-      "resistance": 20
-    },
-    "type": "orb"
+  "vitscroll": {
+    "stat": "vit",
+    "name": "Vitality Scroll",
+    "g": 8000,
+    "explanation": "Adds Vitality to an armor with a Stat attribute.",
+    "s": true,
+    "skin": "vitscroll",
+    "type": "pscroll"
   },
   "xarmor": {
     "stat": 1,
@@ -522,7 +534,7 @@
     "grade": 1,
     "grades": [
       0,
-      8
+      7
     ],
     "skin": "shoes1",
     "tier": 2,
@@ -630,7 +642,7 @@
     "scroll": true
   },
   "stoneofgold": {
-    "g": 2970000,
+    "g": 5760000,
     "days": 30,
     "skin_a": "stoneofgold",
     "name": "Stone of Riches",
@@ -662,16 +674,6 @@
     "edge": 4,
     "type": "chest",
     "scroll": true
-  },
-  "tokenofcode": {
-    "name": "Token of Code",
-    "g": 4125,
-    "type": "token",
-    "explanation": "Gives your character 240 minutes of additional CODE. This is a ~4 months old prototype people, but yeah, I'm considering limiting the free CODE hours to 8 or 12 hours a day. Might leave it unlimited too, undecided.",
-    "cash": 5,
-    "s": true,
-    "skin": "tokenofcode",
-    "minutes": 240
   },
   "candy1": {
     "a": 2,
@@ -708,6 +710,20 @@
         400
       ]
     ]
+  },
+  "xpbooster": {
+    "days": 30,
+    "explanation": "Increases experience gain by 25%. Needs to be activated. Can be morphed into other boosters.",
+    "skin_a": "stoneofxp_a",
+    "g": 1536000,
+    "skin": "stoneofxp",
+    "xp": 25,
+    "compound": {
+      "xp": 25
+    },
+    "type": "booster",
+    "cash": 960,
+    "name": "XP Booster"
   },
   "mpot1": {
     "name": "MP Potion",
@@ -777,9 +793,9 @@
   },
   "xptome": {
     "name": "Tome of Protection",
-    "g": 16500,
-    "explanation": "Significantly reduces experience loss on death. If the owner is defeated by another player, the victor receives half the cost of this item.",
-    "cash": 20,
+    "g": 25600,
+    "explanation": "Significantly reduces experience loss on death. If the owner is defeated by another player, the victor receives a portion of the Tome's cost.",
+    "cash": 16,
     "s": true,
     "skin": "xptome",
     "type": "tome"
@@ -867,7 +883,7 @@
     "resistance": 16,
     "grades": [
       0,
-      8
+      7
     ],
     "skin": "coat1",
     "tier": 2,
@@ -934,7 +950,7 @@
   "offering": {
     "a": true,
     "name": "Primordial Shard",
-    "g": 198000,
+    "g": 384000,
     "explanation": "Can be offered to the gods during an upgrade. Believed to increase the odds of success by gaining their favor.",
     "cash": 240,
     "s": true,
@@ -957,7 +973,7 @@
     "resistance": 8,
     "grades": [
       0,
-      8
+      7
     ],
     "skin": "gloves1",
     "tier": 2,
@@ -1172,7 +1188,7 @@
     "a": true,
     "upgrade": {
       "armor": 4,
-      "attack": 6,
+      "attack": 8,
       "range": 1,
       "attr0": 0.4,
       "attr1": 0.2
@@ -1195,6 +1211,16 @@
     "skin": "basher",
     "type": "weapon",
     "ability": "bash"
+  },
+  "orbofres": {
+    "name": "Orb of Resistance",
+    "g": 240000,
+    "skin": "blueorb",
+    "resistance": 40,
+    "compound": {
+      "resistance": 20
+    },
+    "type": "orb"
   },
   "claw": {
     "attack": 10,
