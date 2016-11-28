@@ -109,6 +109,6 @@ $.each(urls, function(i, u) {
     type: 'POST',
     dataType: "script",
     async: false,
-    cache: false
+    cache: true
   });
 });
