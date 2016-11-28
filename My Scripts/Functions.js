@@ -1,3 +1,54 @@
+//////////////////////////
+//Basic Grinding Functions
+////////////////////////
+
+//Custom Mtype Targetting
+function get_closest_monster(args) {
+  //args:
+  // m_type_priority - the monster you want to attack (bosses)
+  // m_type_secondary - the monster you attack when your boss is not there
+  // target: Only return monsters that target this "name" or player object
+  var min_d = 999999,
+    target = null;
+  var mode = -1;
+  if (args.targeting_mode) {
+    mode = args.targeting_mode
+    if (mode == 2) min_d = character.range;
+  }
+  if (args.m_type_priority == null && args.m_type_secondary == null) return null;
+  if (args && args.target && args.target.name) args.target = args.target.name;
+  for (id in parent.entities) {
+    var current = parent.entities[id];
+    if (current.type != "monster" || current.dead || (current.target && current.target != character.name)) continue;
+    if (args.no_target && current.target && current.target != null && current.target != character.name) continue;
+    var c_dist = parent.distance(character, current);
+    if (current.mtype == args.m_type_priority) {
+      if (mode != 2) return current;
+      else if (mode == 2 && c_dist < character.range) return current;
+    } else if (c_dist < min_d && current.mtype == args.m_type_secondary) {
+      min_d = c_dist;
+      target = current;
+    }
+  }
+  return target;
+}
+
+////////////////////////
+//Pocket Priest Functions
+//////////////////////
+
+
+
+//////////////////////////////
+//simple follow lead Functions
+////////////////////////////
+
+
+
+/////////////////
+//Global Functions
+///////////////
+
 //Upgrade and Compound Items
 function upgrade(ulevel, clevel) {
   for (let i = 0; i < character.items.length; i++) {
@@ -89,37 +140,6 @@ function find_item_filter(filter, search_slot) {
 // Returns the grade of the item.
 function item_info(item) {
   return parent.G.items[item.name];
-}
-
-//Custom Mtype Targetting
-function get_closest_monster(args) {
-  //args:
-  // m_type_priority - the monster you want to attack (bosses)
-  // m_type_secondary - the monster you attack when your boss is not there
-  // target: Only return monsters that target this "name" or player object
-  var min_d = 999999,
-    target = null;
-  var mode = -1;
-  if (args.targeting_mode) {
-    mode = args.targeting_mode
-    if (mode == 2) min_d = character.range;
-  }
-  if (args.m_type_priority == null && args.m_type_secondary == null) return null;
-  if (args && args.target && args.target.name) args.target = args.target.name;
-  for (id in parent.entities) {
-    var current = parent.entities[id];
-    if (current.type != "monster" || current.dead || (current.target && current.target != character.name)) continue;
-    if (args.no_target && current.target && current.target != null && current.target != character.name) continue;
-    var c_dist = parent.distance(character, current);
-    if (current.mtype == args.m_type_priority) {
-      if (mode != 2) return current;
-      else if (mode == 2 && c_dist < character.range) return current;
-    } else if (c_dist < min_d && current.mtype == args.m_type_secondary) {
-      min_d = c_dist;
-      target = current;
-    }
-  }
-  return target;
 }
 
 //GUI Stuff
