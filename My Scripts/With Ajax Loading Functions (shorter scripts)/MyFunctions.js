@@ -37,7 +37,45 @@ function get_closest_monster(args) {
 //Pocket Priest Functions
 //////////////////////
 
+//Curse target on cooldown
+var lastcurse;
 
+function curse(target) {
+  //Curse only if target hasn't been cursed and if curse off cd (cd is 5sec).
+  if ((!lastcurse || new Date() - lastcurse > 5000) && !target.cursed) {
+    lastcurse = new Date();
+    parent.socket.emit("ability", {
+      name: "curse",
+      id: target.id
+    });
+  }
+}
+
+//Returns the injured party members.
+function GetInjured(leader) {
+  //List of party members.
+  let res = [];
+  //Only heal targets below 80% hp.
+  let percentage = 0.8;
+
+  for (id in parent.entities) {
+    //current entity
+    let c = parent.entities[id];
+
+    //Only add if the target is a player, has a party and it's your party, isn't dead and in healing range.
+    if (c.type == "character" && c.party && c.party == leader && !c.rip && can_attack(c)) {
+      //Check if target is injured enough.
+      if (c.hp < c.max_hp * percentage)
+        res.push(c);
+    }
+  }
+
+  //Add yourself to the party if you don't have full health.
+  if (character.hp < character.max_hp * percentage)
+    res.push(character);
+
+  return res;
+}
 
 //////////////////////////////
 //simple follow lead Functions
