@@ -76,7 +76,6 @@ setInterval(function() {
 
   if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
     parent.use('mp');
-  //Constrained Healing
 
   //Purchases Potions when below threshold
   if (purchase_pots) {
