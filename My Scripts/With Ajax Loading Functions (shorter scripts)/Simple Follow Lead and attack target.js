@@ -81,7 +81,7 @@ setInterval(function() {
   let targetTarget = get_target_of(currentTarget);
 
   // Change the target.
-  if (!currentTarget || currentTarget != leaderTarget) {
+  if (!currentTarget || currentTarget !== leaderTarget) {
     // Current target is empty or other than the leader's.
     change_target(leaderTarget);
     currentTarget = get_target();
@@ -95,13 +95,13 @@ setInterval(function() {
   }
 
   //Move to leader.
-  if (!character.moving)
+  if (leader && !character.moving)
   // Move only if you are not already moving.
     move(leader.real_x + 30, leader.real_y - 30);
 
 }, 250);
 
-//If an error starts producing, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
+//If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
 var urls = ['http://tiny.cc/MyFunctions', 'http://tiny.cc/Game_Log_Filters'];
 
 $.each(urls, function(i, u) {

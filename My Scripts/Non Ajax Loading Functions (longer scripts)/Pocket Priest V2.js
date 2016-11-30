@@ -122,7 +122,7 @@ setInterval(function() {
   }
 
   //Move to leader.
-  if (!character.moving)
+  if (leader && !character.moving)
   // Move only if you are not already moving.
     move(leader.real_x - 30, leader.real_y - 30);
 
