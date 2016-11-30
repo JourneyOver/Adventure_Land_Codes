@@ -67,8 +67,6 @@ function GetInjured(leader) {
 //simple follow lead Functions
 ////////////////////////////
 
-
-
 /////////////////
 //Global Functions
 ///////////////

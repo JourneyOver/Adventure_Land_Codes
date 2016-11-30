@@ -24,7 +24,7 @@
       "indent_inner_html": true, // Indent <head> and <body> sections
       "indent_scripts": "normal", // [keep|separate|normal]
       "indent_size": 2, // Indentation size
-      "max_preserve_newlines": 10, // Maximum number of line breaks to be preserved in one chunk (0 disables)
+      "max_preserve_newlines": 2, // Maximum number of line breaks to be preserved in one chunk (0 disables)
       "preserve_newlines": true, // Whether existing line breaks before elements should be preserved (only works before elements, not inside tags or for text)
       "unformatted": ["a", "sub", "sup", "b", "i", "u"], // List of tags that should not be reformatted
       "wrap_line_length": 0 // Lines should wrap at next opportunity after this number of characters (0 disables)
@@ -50,7 +50,7 @@
       "jslint_happy": false, // If true, then jslint-stricter mode is enforced
       "keep_array_indentation": false, // Preserve array indentation
       "keep_function_indentation": false, // Preserve function indentation
-      "max_preserve_newlines": 10, // Maximum number of line breaks to be preserved in one chunk (0 disables)
+      "max_preserve_newlines": 2, // Maximum number of line breaks to be preserved in one chunk (0 disables)
       "preserve_newlines": true, // Whether existing line breaks should be preserved
       "space_after_anon_function": false, // Should the space before an anonymous function's parens be added, "function()" vs "function ()"
       "space_before_conditional": true, // Should the space before conditional statement be added, "if(true)" vs "if (true)"

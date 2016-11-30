@@ -124,7 +124,6 @@ setInterval(function() {
   }
   set_message("Highest priority found.");
 
-
   //target = get_player(party_list[0].name);
 
   target = get_player(party_list[highest_priority].name);
