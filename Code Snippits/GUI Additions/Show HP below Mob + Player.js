@@ -87,7 +87,7 @@ function clear_drawings() {
 function draw_party_data() {
   let party_members = parent.party_list;
   if (party_members.length < 1) {
-    return[];
+    return [];
   }
   let sprite_array = [];
   for (let i = 0; i < party_members.length; i++) {

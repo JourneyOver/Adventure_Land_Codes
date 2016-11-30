@@ -13,31 +13,31 @@ var pots_to_buy = 1000; //This is how many you will buy
 //Automatic Potion Purchasing!
 
 //Grind Code below --------------------------
-var party_list = [
+var party_list = [{
+    name: "",
+    priority: 0.0
+  },
   {
     name: "",
     priority: 0.0
-},
+  },
   {
     name: "",
     priority: 0.0
-},
+  },
   {
     name: "",
     priority: 0.0
-},
+  },
   {
     name: "",
     priority: 0.0
-},
+  },
   {
     name: "",
     priority: 0.0
-},
-  {
-    name: "",
-    priority: 0.0
-}]
+  }
+]
 
 var party_count = 0;
 //Fills the Party List

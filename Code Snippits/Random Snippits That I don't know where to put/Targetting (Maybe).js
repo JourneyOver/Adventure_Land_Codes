@@ -4,10 +4,10 @@
 
     // SCORE ENEMIES
     let enemy_scores = all_enemies.map(m => {
-        // SHORT CIRCUIT PARTY MEMBERS
-        if (m.name && parent.party_list.includes(m.name))           { return [0, null];  }
+          // SHORT CIRCUIT PARTY MEMBERS
+          if (m.name && parent.party_list.includes(m.name)) { return [0, null]; }
 
-        let score = 0;
-        // TARGET SCORING
-        if ((parent.G.maps[character.map].pvp || character.goldm != 1)
-            && m.type && m.type == "character")                        { score |= 0b100000; }
+          let score = 0;
+          // TARGET SCORING
+          if ((parent.G.maps[character.map].pvp || character.goldm != 1) &&
+            m.type && m.type == "character") { score |= 0b100000; }
