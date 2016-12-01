@@ -1,7 +1,7 @@
 // Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.5.2
+// Version 1.5.4
 
 //////////////////////////////
 // Optional Settings Start //
@@ -68,8 +68,8 @@ setInterval(function() {
   if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
     parent.use('mp');
 
+  //Loot available chests
   loot();
-  //Loot Chests
 
   // Party leader
   let leader = get_player(character.party);
@@ -100,6 +100,7 @@ setInterval(function() {
 
 }, 250);
 
+//Upgrade & Compound items in your inventory
 function upgrade(ulevel, clevel) {
   for (let i = 0; i < character.items.length; i++) {
     let c = character.items[i];
@@ -156,6 +157,7 @@ function upgrade(ulevel, clevel) {
   }
 }
 
+//Purchase Potions
 function purchase_potions(buyHP, buyMP) {
   let [hpslot, hppot] = find_item_filter(i => i.name == hp_potion);
   let [mpslot, mppot] = find_item_filter(i => i.name == mp_potion);

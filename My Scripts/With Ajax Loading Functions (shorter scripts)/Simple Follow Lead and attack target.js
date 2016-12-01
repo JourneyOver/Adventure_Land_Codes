@@ -1,7 +1,7 @@
 // Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.6.0
+// Version 1.6.2
 
 //////////////////////////////
 // Optional Settings Start //
@@ -68,8 +68,8 @@ setInterval(function() {
   if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
     parent.use('mp');
 
+  //Loot available chests
   loot();
-  //Loot Chests
 
   // Party leader
   let leader = get_player(character.party);

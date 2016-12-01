@@ -1,7 +1,7 @@
 // Pocket Priest V2
 // Base code and Auto Compounding Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.5.0
+// Version 1.5.2
 
 //////////////////////////
 // Main Settings Start //

@@ -1,6 +1,6 @@
 // Basic Grinding
 // Auto Compounding & Upgrading stuff Courtesy of: Mark
-// Version 1.9.3
+// Version 1.9.5
 
 //////////////////////////
 // Main Settings Start //
@@ -94,9 +94,10 @@ setInterval(function() {
   if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
     parent.use('mp');
 
+  //Loot available chests
   loot();
-  //Loot Chests
 
+  //Monster Searching
   var target = get_targeted_monster();
   if (mode == 2 && target && !in_attack_range(target)) target = null;
   if (!target || (target.target && target.target != character.name)) {
@@ -114,13 +115,13 @@ setInterval(function() {
       return;
     }
   }
-  //Monster Searching
 
+  //Attack
   if (can_attack(target))
     attack(target);
   set_message("Attacking: " + target.mtype);
-  //Attack
 
+  //Following/Maintaining Distance
   if (mode == 0) {
     // Walk half the distance
     if (!in_attack_range(target)) {
@@ -133,10 +134,10 @@ setInterval(function() {
     // Move to front of target
     move(target.real_x + 5, target.real_y + 5);
   }
-  //Following/Maintaining Distance
 
 }, 250); // Loop Delay
 
+//Upgrade & Compound items in your inventory
 function upgrade(ulevel, clevel) {
   for (let i = 0; i < character.items.length; i++) {
     let c = character.items[i];
@@ -193,6 +194,7 @@ function upgrade(ulevel, clevel) {
   }
 }
 
+//Potion Purchasing
 function purchase_potions(buyHP, buyMP) {
   let [hpslot, hppot] = find_item_filter(i => i.name == hp_potion);
   let [mpslot, mppot] = find_item_filter(i => i.name == mp_potion);
@@ -228,6 +230,7 @@ function item_info(item) {
   return parent.G.items[item.name];
 }
 
+//Custom m_type targetting
 function get_closest_monster(args) {
   //args:
   // m_type_priority - the monster you want to attack (bosses)

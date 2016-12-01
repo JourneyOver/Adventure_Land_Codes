@@ -1,7 +1,7 @@
 // Pocket Priest V2
 // Base code and Auto Compounding Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.4.1
+// Version 1.4.4
 
 //////////////////////////
 // Main Settings Start //
@@ -127,6 +127,7 @@ setInterval(function() {
 
 }, 250);
 
+//Upgrade & Compound items in your inventory
 function upgrade(ulevel, clevel) {
   for (let i = 0; i < character.items.length; i++) {
     let c = character.items[i];
@@ -219,6 +220,7 @@ function find_item_filter(filter, search_slot) {
   return [-1, null];
 }
 
+//Put curse on target if it's not already cursed
 var lastcurse;
 
 function curse(target) {

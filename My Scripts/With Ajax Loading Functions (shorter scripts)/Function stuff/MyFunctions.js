@@ -2,7 +2,7 @@
 //Basic Grinding Functions
 ////////////////////////
 
-//Custom Mtype Targetting
+//Custom m_type Targetting
 function get_closest_monster(args) {
   //args:
   // m_type_priority - the monster you want to attack (bosses)
