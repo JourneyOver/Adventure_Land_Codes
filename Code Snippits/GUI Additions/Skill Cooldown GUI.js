@@ -65,7 +65,6 @@ function create_cooldown(skill) {
     position: 'relative',
   });
 
-
   cd.append(slider);
   cd.append(text);
 

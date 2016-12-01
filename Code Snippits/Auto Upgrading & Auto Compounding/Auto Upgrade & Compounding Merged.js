@@ -10,7 +10,7 @@ var cwhitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring',
 
 setInterval(function() {
 
-//Upgrade and Compound Items
+  //Upgrade and Compound Items
   if (uc) {
     upgrade(umaxlevel, cmaxlevel);
   }

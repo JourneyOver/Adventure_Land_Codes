@@ -1,7 +1,7 @@
 // Pocket Priest V2
 // Base code and Auto Compounding Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.4.1
+// Version 1.4.4
 
 //////////////////////////
 // Main Settings Start //
@@ -76,7 +76,6 @@ setInterval(function() {
 
   if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
     parent.use('mp');
-  //Constrained Healing
 
   //Purchases Potions when below threshold
   if (purchase_pots) {
@@ -122,12 +121,13 @@ setInterval(function() {
   }
 
   //Move to leader.
-  if (!character.moving)
+  if (leader && !character.moving)
   // Move only if you are not already moving.
     move(leader.real_x - 30, leader.real_y - 30);
 
 }, 250);
 
+//Upgrade & Compound items in your inventory
 function upgrade(ulevel, clevel) {
   for (let i = 0; i < character.items.length; i++) {
     let c = character.items[i];
@@ -220,6 +220,7 @@ function find_item_filter(filter, search_slot) {
   return [-1, null];
 }
 
+//Put curse on target if it's not already cursed
 var lastcurse;
 
 function curse(target) {

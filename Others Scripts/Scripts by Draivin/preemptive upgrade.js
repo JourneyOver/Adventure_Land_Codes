@@ -55,7 +55,6 @@ function preemptive_upgrades(item_slot, scroll0_slot, scroll1_slot, max_level) {
   if (upgrade_running) return;
   upgrade_running = true;
 
-
   let starting_level = item.level;
   let current_level = item.level;
 

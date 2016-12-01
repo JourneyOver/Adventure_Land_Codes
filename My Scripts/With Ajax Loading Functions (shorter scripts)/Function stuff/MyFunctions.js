@@ -2,7 +2,7 @@
 //Basic Grinding Functions
 ////////////////////////
 
-//Custom Mtype Targetting
+//Custom m_type Targetting
 function get_closest_monster(args) {
   //args:
   // m_type_priority - the monster you want to attack (bosses)
@@ -37,20 +37,6 @@ function get_closest_monster(args) {
 //Pocket Priest Functions
 //////////////////////
 
-//Curse target on cooldown
-var lastcurse;
-
-function curse(target) {
-  //Curse only if target hasn't been cursed and if curse off cd (cd is 5sec).
-  if ((!lastcurse || new Date() - lastcurse > 5000) && !target.cursed) {
-    lastcurse = new Date();
-    parent.socket.emit("ability", {
-      name: "curse",
-      id: target.id
-    });
-  }
-}
-
 //Returns the injured party members.
 function GetInjured(leader) {
   //List of party members.
@@ -80,8 +66,6 @@ function GetInjured(leader) {
 //////////////////////////////
 //simple follow lead Functions
 ////////////////////////////
-
-
 
 /////////////////
 //Global Functions

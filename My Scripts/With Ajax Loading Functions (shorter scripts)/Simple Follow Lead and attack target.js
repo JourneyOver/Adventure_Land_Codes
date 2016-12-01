@@ -1,7 +1,7 @@
 // Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.6.0
+// Version 1.6.2
 
 //////////////////////////////
 // Optional Settings Start //
@@ -67,10 +67,9 @@ setInterval(function() {
 
   if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
     parent.use('mp');
-  //Constrained Healing
 
+  //Loot available chests
   loot();
-  //Loot Chests
 
   // Party leader
   let leader = get_player(character.party);
@@ -81,7 +80,7 @@ setInterval(function() {
   let targetTarget = get_target_of(currentTarget);
 
   // Change the target.
-  if (!currentTarget || currentTarget != leaderTarget) {
+  if (!currentTarget || currentTarget !== leaderTarget) {
     // Current target is empty or other than the leader's.
     change_target(leaderTarget);
     currentTarget = get_target();
@@ -95,13 +94,13 @@ setInterval(function() {
   }
 
   //Move to leader.
-  if (!character.moving)
+  if (leader && !character.moving)
   // Move only if you are not already moving.
     move(leader.real_x + 30, leader.real_y - 30);
 
 }, 250);
 
-//If an error starts producing, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
+//If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
 var urls = ['http://tiny.cc/MyFunctions', 'http://tiny.cc/Game_Log_Filters'];
 
 $.each(urls, function(i, u) {

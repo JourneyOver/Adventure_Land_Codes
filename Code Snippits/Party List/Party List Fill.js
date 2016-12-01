@@ -1,29 +1,29 @@
 //Fills the party_list with the living members of your party in the area
-var party_list = [
+var party_list = [{
+    name: "",
+    priority: 0.0
+  },
   {
     name: "",
     priority: 0.0
-},
+  },
   {
     name: "",
     priority: 0.0
-},
+  },
   {
     name: "",
     priority: 0.0
-},
+  },
   {
     name: "",
     priority: 0.0
-},
+  },
   {
     name: "",
     priority: 0.0
-},
-  {
-    name: "",
-    priority: 0.0
-}]
+  }
+]
 
 var party_count = 0;
 //Fills the Party List

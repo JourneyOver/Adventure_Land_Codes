@@ -1,6 +1,6 @@
 // Basic Grinding
 // Auto Compounding & Upgrading stuff Courtesy of: Mark
-// Version 1.10.0
+// Version 1.10.2
 
 //////////////////////////
 // Main Settings Start //
@@ -29,7 +29,7 @@ mtype2 = 'bee'; //Monster Type of the enemy you want to attack if you can't find
 
 gui_tl_gold = false; //Enable kill (or xp) till level & GPH [scripted session] = true, Disable kill (or xp) till level & GPH [scripted session] = false
 gui_timer = false; //Enable time till level [scripted session] = true, Disable time till level [scripted session] = false
-till_level = 0; // Kills till level = 0, XP till level = 1
+till_level = 0; //Kills till level = 0, XP till level = 1
 // GUI [if either GUI setting is turned on and then you want to turn them off you'll have to refresh the game] //
 
 uc = false; //Enable Upgrading & Compounding of items = true, Disable Upgrading & Compounding of items = false
@@ -47,6 +47,13 @@ mp_potion = 'mpot0'; //+300 MP Potion = 'mpot0', +500 MP Potion = 'mpot1' [alway
 pots_minimum = 50; //If you have less than this, you will buy more
 pots_to_buy = 1000; //This is how many you will buy
 // Potion Maintenance //
+
+useInvis = false; //[Rogue Skill] //Enable going invisible on cooldown = true, Disable going invisible on cooldown = false
+useBurst = false; //[Mage Skill] //Enable Using burst on cooldown [only on targets above 6,000 hp] = true, Disable using burst on cooldown = false
+useTaunt = false; //[Warrior Skill] //Enable Using taunt on cooldown = true, Disable using taunt on cooldown = false
+useCharge = false; //[Warrior Skill] //Enable Using charge on cooldown = true, Disable using charge on cooldown = false
+useSupershot = false; //[Ranger Skill] //Enable using supershot on cooldown = true, Disable using supershot on cooldown = false
+// Skill Usage [Only turn on skill for the class you are running, if you want to use skills] //
 
 ////////////////////////////
 // Optional Settings End //
@@ -93,11 +100,11 @@ setInterval(function() {
 
   if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
     parent.use('mp');
-  //Constrained Healing
 
+  //Loot available chests
   loot();
-  //Loot Chests
 
+  //Monster Searching
   var target = get_targeted_monster();
   if (mode == 2 && target && !in_attack_range(target)) target = null;
   if (!target || (target.target && target.target != character.name)) {
@@ -115,13 +122,38 @@ setInterval(function() {
       return;
     }
   }
-  //Monster Searching
 
+  //Attack
   if (can_attack(target))
     attack(target);
   set_message("Attacking: " + target.mtype);
-  //Attack
 
+  //Uses Vanish if enabled
+  if (useInvis && character.ctype === 'rogue') {
+    invis();
+  }
+
+  //Uses Burst if enabled [only on targets above 6,000 hp]
+  if (useBurst && target.hp > 6000 && character.ctype === 'mage') {
+    burst(target);
+  }
+
+  //Uses taunt if enabled
+  if (useTaunt && character.ctype === 'warrior') {
+    taunt(target);
+  }
+
+  //Uses Charge if enabled
+  if (useCharge && character.ctype === 'warrior') {
+    charge();
+  }
+
+  //Uses supershot if enabled [only on targets above 6,000 hp]
+  if (useSupershot && target.hp > 6000 && character.ctype === 'ranger') {
+    supershot(target);
+  }
+
+  //Following/Maintaining Distance
   if (mode == 0) {
     // Walk half the distance
     if (!in_attack_range(target)) {
@@ -134,11 +166,10 @@ setInterval(function() {
     // Move to front of target
     move(target.real_x + 5, target.real_y + 5);
   }
-  //Following/Maintaining Distance
 
 }, 250); // Loop Delay
 
-//If an error starts producing, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
+//If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
 var urls = ['http://tiny.cc/MyFunctions', 'http://tiny.cc/Game_Log_Filters'];
 
 $.each(urls, function(i, u) {
