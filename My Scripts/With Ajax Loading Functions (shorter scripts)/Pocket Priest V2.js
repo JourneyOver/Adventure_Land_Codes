@@ -1,7 +1,7 @@
 // Pocket Priest V2
 // Base code and Auto Compounding Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.5.0
+// Version 1.5.2
 
 //////////////////////////
 // Main Settings Start //
@@ -76,7 +76,6 @@ setInterval(function() {
 
   if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
     parent.use('mp');
-  //Constrained Healing
 
   //Purchases Potions when below threshold
   if (purchase_pots) {
@@ -122,14 +121,14 @@ setInterval(function() {
   }
 
   //Move to leader.
-  if (!character.moving)
+  if (leader && !character.moving)
   // Move only if you are not already moving.
     move(leader.real_x - 30, leader.real_y - 30);
 
 }, 250);
 
-//If an error starts producing, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
-var urls = ['http://tiny.cc/MyFunctions', 'http://tiny.cc/Game_Log_Filters'];
+//If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
+var urls = ['http://tiny.cc/MyFunctions', 'http://tiny.cc/Skill_Usage_BP', 'http://tiny.cc/Game_Log_Filters'];
 
 $.each(urls, function(i, u) {
   $.ajax(u, {

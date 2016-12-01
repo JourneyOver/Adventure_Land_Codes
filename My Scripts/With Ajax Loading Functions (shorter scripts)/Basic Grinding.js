@@ -1,6 +1,6 @@
 // Basic Grinding
 // Auto Compounding & Upgrading stuff Courtesy of: Mark
-// Version 1.10.0
+// Version 1.10.2
 
 //////////////////////////
 // Main Settings Start //
@@ -29,7 +29,7 @@ mtype2 = 'bee'; //Monster Type of the enemy you want to attack if you can't find
 
 gui_tl_gold = false; //Enable kill (or xp) till level & GPH [scripted session] = true, Disable kill (or xp) till level & GPH [scripted session] = false
 gui_timer = false; //Enable time till level [scripted session] = true, Disable time till level [scripted session] = false
-till_level = 0; // Kills till level = 0, XP till level = 1
+till_level = 0; //Kills till level = 0, XP till level = 1
 // GUI [if either GUI setting is turned on and then you want to turn them off you'll have to refresh the game] //
 
 uc = false; //Enable Upgrading & Compounding of items = true, Disable Upgrading & Compounding of items = false
@@ -93,11 +93,11 @@ setInterval(function() {
 
   if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
     parent.use('mp');
-  //Constrained Healing
 
+  //Loot available chests
   loot();
-  //Loot Chests
 
+  //Monster Searching
   var target = get_targeted_monster();
   if (mode == 2 && target && !in_attack_range(target)) target = null;
   if (!target || (target.target && target.target != character.name)) {
@@ -115,13 +115,13 @@ setInterval(function() {
       return;
     }
   }
-  //Monster Searching
 
+  //Attack
   if (can_attack(target))
     attack(target);
   set_message("Attacking: " + target.mtype);
-  //Attack
 
+  //Following/Maintaining Distance
   if (mode == 0) {
     // Walk half the distance
     if (!in_attack_range(target)) {
@@ -134,12 +134,11 @@ setInterval(function() {
     // Move to front of target
     move(target.real_x + 5, target.real_y + 5);
   }
-  //Following/Maintaining Distance
 
 }, 250); // Loop Delay
 
-//If an error starts producing, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
-var urls = ['http://tiny.cc/MyFunctions', 'http://tiny.cc/Game_Log_Filters'];
+//If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord! [do not uncomment skill usage]
+var urls = ['http://tiny.cc/MyFunctions', /*'http://tiny.cc/Skill_Usage_BP',*/ 'http://tiny.cc/Game_Log_Filters'];
 
 $.each(urls, function(i, u) {
   $.ajax(u, {

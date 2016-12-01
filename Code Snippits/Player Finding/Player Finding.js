@@ -21,19 +21,19 @@
 //Return Nearest Living Player.
 //Function Name:
 function get_nearest_player()
-  //Condition:
+//Condition:
 current.player === false || current.dead
 
 //Return Nearest Living Player not in a Party
 //Function Name:
 function get_nearest_solo_player()
-  //Condition:
+//Condition:
 current.player === false || current.dead || current.party
 
 //Returns Nearest Living Player in your Party
 //Function Name:
 function get_nearest_party_member()
-  //Condition:
+//Condition:
 current.player === false || current.dead || current.party != character.party
 
 //////////////////////////////////////////////////////////////////////////////

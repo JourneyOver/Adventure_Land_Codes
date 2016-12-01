@@ -15,7 +15,7 @@ var pots_to_buy = 1000; //This is how many you will buy
 
 setInterval(function() {
 
-    //Updates GUI for Till_Level/Gold
+  //Updates GUI for Till_Level/Gold
   updateGUI();
 
   //Purchases Potions when below threshold
@@ -45,7 +45,7 @@ setInterval(function() {
       no_target: true
     });
     if (target)
-    change_target(target);
+      change_target(target);
     else {
       set_message("No Monsters");
       return;
@@ -67,6 +67,7 @@ setInterval(function() {
 }, 1000 / 4);
 
 var lasttaunt;
+
 function taunt(target) {
   // Taunt only if target hasn't been taunted and if curse is from cd (cd is 5sec).
   if ((!lasttaunt || new Date() - lasttaunt > 6000) && !target.taunted) {
