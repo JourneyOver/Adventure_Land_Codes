@@ -1,6 +1,6 @@
 // Basic Grinding
 // Auto Compounding & Upgrading stuff Courtesy of: Mark
-// Version 1.9.5
+// Version 1.9.8
 
 //////////////////////////
 // Main Settings Start //
@@ -29,7 +29,7 @@ var mtype2 = 'bee'; //Monster Type of the enemy you want to attack if you can't 
 
 var gui_tl_gold = false; //Enable kill (or xp) till level & GPH [scripted session] = true, Disable kill (or xp) till level & GPH [scripted session] = false
 var gui_timer = false; //Enable time till level [scripted session] = true, Disable time till level [scripted session] = false
-var till_level = 0; // Kills till level = 0, XP till level = 1
+var till_level = 0; //Kills till level = 0, XP till level = 1
 // GUI [if either GUI setting is turned on and then you want to turn them off you'll have to refresh the game] //
 
 var uc = false; //Enable Upgrading & Compounding of items = true, Disable Upgrading & Compounding of items = false
@@ -47,6 +47,13 @@ var mp_potion = 'mpot0'; //+300 MP Potion = 'mpot0', +500 MP Potion = 'mpot1' [a
 var pots_minimum = 50; //If you have less than this, you will buy more
 var pots_to_buy = 1000; //This is how many you will buy
 // Potion Maintenance //
+
+useInvis = false; //[Rogue Skill] //Enable going invisible on cooldown = true, Disable going invisible on cooldown = false
+useBurst = false; //[Mage Skill] //Enable Using burst on cooldown [only on targets above 6,000 hp] = true, Disable using burst on cooldown = false
+useTaunt = false; //[Warrior Skill] //Enable Using taunt on cooldown = true, Disable using taunt on cooldown = false
+useCharge = false; //[Warrior Skill] //Enable Using charge on cooldown = true, Disable using charge on cooldown = false
+useSupershot = false; //[Ranger Skill] //Enable using supershot on cooldown = true, Disable using supershot on cooldown = false
+// Skill Usage [Only turn on skill for the class you are running, if you want to use skills] //
 
 ////////////////////////////
 // Optional Settings End //
@@ -116,6 +123,31 @@ setInterval(function() {
     }
   }
 
+  //Uses Vanish if enabled
+  if (useInvis && character.ctype === 'rogue') {
+    invis();
+  }
+
+  //Uses Burst if enabled [only on targets above 6,000 hp]
+  if (useBurst && target.hp > 6000 && character.ctype === 'mage') {
+    burst(target);
+  }
+
+  //Uses taunt if enabled
+  if (useTaunt && character.ctype === 'warrior') {
+    taunt(target);
+  }
+
+  //Uses Charge if enabled
+  if (useCharge && character.ctype === 'warrior') {
+    charge();
+  }
+
+  //Uses supershot if enabled [only on targets above 6,000 hp]
+  if (useSupershot && target.hp > 6000 && character.ctype === 'ranger') {
+    supershot(target);
+  }
+
   //Attack
   if (can_attack(target))
     attack(target);
@@ -123,7 +155,7 @@ setInterval(function() {
 
   //Following/Maintaining Distance
   if (mode == 0) {
-    // Walk half the distance
+    //Walk half the distance
     if (!in_attack_range(target)) {
       move(
         character.real_x + (target.real_x - character.real_x) / 2,
@@ -131,11 +163,11 @@ setInterval(function() {
       );
     }
   } else if (mode == 1) {
-    // Move to front of target
+    //Move to front of target
     move(target.real_x + 5, target.real_y + 5);
   }
 
-}, 250); // Loop Delay
+}, 250); //Loop Delay
 
 //Upgrade & Compound items in your inventory
 function upgrade(ulevel, clevel) {
@@ -209,7 +241,7 @@ function purchase_potions(buyHP, buyMP) {
   }
 }
 
-// Returns the item slot and the item given the slot to start from and a filter.
+//Returns the item slot and the item given the slot to start from and a filter.
 function find_item_filter(filter, search_slot) {
   let slot = search_slot;
   if (!slot)
@@ -225,7 +257,7 @@ function find_item_filter(filter, search_slot) {
   return [-1, null];
 }
 
-// Returns the grade of the item.
+//Returns the grade of the item.
 function item_info(item) {
   return parent.G.items[item.name];
 }
@@ -233,9 +265,9 @@ function item_info(item) {
 //Custom m_type targetting
 function get_closest_monster(args) {
   //args:
-  // m_type_priority - the monster you want to attack (bosses)
-  // m_type_secondary - the monster you attack when your boss is not there
-  // target: Only return monsters that target this "name" or player object
+  //m_type_priority - the monster you want to attack (bosses)
+  //m_type_secondary - the monster you attack when your boss is not there
+  //target: Only return monsters that target this "name" or player object
   var min_d = 999999,
     target = null;
   var mode = -1;
@@ -261,8 +293,78 @@ function get_closest_monster(args) {
   return target;
 }
 
+//Skill Usage
+
+//Casts Vanish if class is Rogue and enabled and off cooldown
+var lastinvis;
+
+function invis() {
+  //Vanish one invis is off cd (cd is 12sec).
+  if (!lastinvis || new Date() - lastinvis > 12000) {
+    lastinvis = new Date();
+    parent.socket.emit("ability", {
+      name: "invis",
+    });
+  }
+}
+
+//Casts burst if class is mage and enabled and off cooldown
+var lastburst;
+
+function burst(target) {
+  //Cast burst on target whenever you're off cd (cd is 10sec).
+  if (!lastburst || new Date() - lastburst > 10000) {
+    lastburst = new Date();
+    parent.socket.emit("ability", {
+      name: "burst",
+      id: target.id
+    });
+  }
+}
+
+//casts Taunt if class is warrior and enabled and off cooldown
+var lasttaunt;
+
+function taunt(target) {
+  //Taunt only if target hasn't been taunted and if taunt is from cd (cd is 6sec).
+  if ((!lasttaunt || new Date() - lasttaunt > 6000) && !target.taunted) {
+    lasttaunt = new Date();
+    parent.socket.emit("ability", {
+      name: "taunt",
+      id: target.id
+    });
+  }
+}
+
+//casts charge if class is warrior and enabled and off cooldown
+var lastcharge;
+
+function charge() {
+  //Charge only if charge is off of cd (cd is 40sec).
+  if (!lastcharge || new Date() - lastcharge > 40000) {
+    lastcharge = new Date();
+    parent.socket.emit("ability", {
+      name: "charge",
+    });
+  }
+}
+
+//casts supershot when off cooldown and if enabled
+var lastsupershot;
+
+function supershot(target) {
+  //Cast supershot whenever your off cd (cd is 30sec).
+  if (!lastsupershot || new Date() - lastsupershot > 30000) {
+    lastsupershot = new Date();
+    parent.socket.emit("ability", {
+      name: "supershot",
+      id: target.id
+    });
+  }
+}
+
 //GUI Stuff
-var minute_refresh; // how long before the clock refreshes
+var minute_refresh; //how long before the clock refreshes
 var last_target = null;
 var gold = character.gold;
 var date = new Date();
@@ -306,7 +408,7 @@ function init_xptimer(minref) {
 var last_minutes_checked = new Date();
 var last_xp_checked_minutes = character.xp;
 var last_xp_checked_kill = character.xp;
-// lxc_minutes = xp after {minute_refresh} min has passed, lxc_kill = xp after a kill (the timer updates after each kill)
+//lxc_minutes = xp after {minute_refresh} min has passed, lxc_kill = xp after a kill (the timer updates after each kill)
 
 function update_xptimer() {
   if (character.xp == last_xp_checked_kill) return;
@@ -360,7 +462,7 @@ function initGUI() {
     textAlign: 'center',
     marginBottom: '-5px'
   });
-  let ggl = $('<div id="goldgainloss"></div>').css({ // gold gain loss
+  let ggl = $('<div id="goldgainloss"></div>').css({ //gold gain loss
     background: 'black',
     border: 'solid gray',
     borderWidth: '5px 5px',

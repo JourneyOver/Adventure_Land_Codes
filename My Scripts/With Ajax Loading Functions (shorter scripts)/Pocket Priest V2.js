@@ -1,7 +1,7 @@
 // Pocket Priest V2
 // Base code and Auto Compounding Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.5.2
+// Version 1.5.3
 
 //////////////////////////
 // Main Settings Start //
@@ -20,7 +20,7 @@ useCursing = true; //Enable Cursing = true, Disable Cursing = false
 
 gui_tl_gold = false; //Enable Kill (or XP) till level & GPH & Skill cooldown [scripted session] = true, Disable Kill (or XP) till level & GPH & Skill cooldown [scripted session] = false
 gui_timer = false; //Enable time till level [scripted session] = true, Disable time till level [scripted session] = false
-till_level = 0; // Kills till level = 0, XP till level = 1
+till_level = 0; //Kills till level = 0, XP till level = 1
 // GUI [if either GUI setting is turned on and then you want to turn them off you'll have to refresh the game] //
 
 uc = false; //Enable Upgrading & Compounding of items = true, Disable Upgrading & Compounding of items = false
@@ -84,18 +84,18 @@ setInterval(function() {
 
   //Get the Party leader
   let leader = get_player(character.party);
-  // This particular code only works when the priest in a party and within the searchrange of the leader.
+  //This particular code only works when the priest in a party and within the searchrange of the leader.
   if (!leader) return;
 
   //Get the injured party members.
   let injured = GetInjured(leader.name);
 
-  // Heal a party member
+  //Heal a party member
   if (injured.length > 0) {
     let target = injured[0];
 
     for (let i = 1; i < injured.length; i++) {
-      // Target the party member with the lowest amount of hp
+      //Target the party member with the lowest amount of hp
       if (injured[i].max_hp - injured[i].hp > target.max_hp - target.hp)
         target = injured[i];
     }
@@ -104,17 +104,17 @@ setInterval(function() {
     set_message("Healing: " + target.name);
   }
 
-  // Do damage.
+  //Do damage.
   target = get_target_of(leader);
 
-  // If there is a valid target, attempt to curse it.
+  //If there is a valid target, attempt to curse it.
   if (target && get_target_of(target) && in_attack_range(target) && get_target_of(target).party == character.party) {
     if (useCursing && target.hp > 6000) {
       curse(target);
       set_message("Cursing: " + target.mtype);
     }
 
-    // If you can attack the target, do so.
+    //If you can attack the target, do so.
     if (can_attack(target))
       attack(target);
     set_message("Attacking: " + target.mtype);
@@ -122,7 +122,7 @@ setInterval(function() {
 
   //Move to leader.
   if (leader && !character.moving)
-  // Move only if you are not already moving.
+  //Move only if you are not already moving.
     move(leader.real_x - 30, leader.real_y - 30);
 
 }, 250);

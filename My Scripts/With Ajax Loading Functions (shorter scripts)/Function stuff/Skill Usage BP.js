@@ -1,4 +1,4 @@
-//Only useful for Basic Grinding & pocket priest scripts!
+//Only used for Basic Grinding & pocket priest scripts!
 
 //Curse target on cooldown
 var lastcurse;
@@ -31,7 +31,7 @@ function invis() {
 var lastburst;
 
 function burst(target) {
-  // Cast burst on target whenever you're off cd (cd is 10sec).
+  //Cast burst on target whenever you're off cd (cd is 10sec).
   if (!lastburst || new Date() - lastburst > 10000) {
     lastburst = new Date();
     parent.socket.emit("ability", {
@@ -45,7 +45,7 @@ function burst(target) {
 var lasttaunt;
 
 function taunt(target) {
-  // Taunt only if target hasn't been taunted and if taunt is from cd (cd is 6sec).
+  //Taunt only if target hasn't been taunted and if taunt is from cd (cd is 6sec).
   if ((!lasttaunt || new Date() - lasttaunt > 6000) && !target.taunted) {
     lasttaunt = new Date();
     parent.socket.emit("ability", {
@@ -59,7 +59,7 @@ function taunt(target) {
 var lastcharge;
 
 function charge() {
-  // charge only if charge is off of cd (cd is 40sec).
+  //Charge only if charge is off of cd (cd is 40sec).
   if (!lastcharge || new Date() - lastcharge > 40000) {
     lastcharge = new Date();
     parent.socket.emit("ability", {
@@ -72,7 +72,7 @@ function charge() {
 var lastsupershot;
 
 function supershot(target) {
-  // Cast supershot whenever your off cd (cd is 30sec).
+  //Cast supershot whenever your off cd (cd is 30sec).
   if (!lastsupershot || new Date() - lastsupershot > 30000) {
     lastsupershot = new Date();
     parent.socket.emit("ability", {
