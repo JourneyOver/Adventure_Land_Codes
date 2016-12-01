@@ -4,7 +4,7 @@
 //Courtesy of: Sulsaries and JourneyOver
 //Version 1.1.2
 
-var till_level = 1; // Kills till level = 0, XP till level = 1 (do not use 0 for now until I can get attacking/cursing in)
+var till_level = 1; //Kills till level = 0, XP till level = 1 (do not use 0 for now until I can get attacking/cursing in)
 //Main Settings
 
 var purchase_pots = false; //Set to true in order to allow potion purchases
@@ -86,7 +86,6 @@ setInterval(function() {
 
   if (character.mp / character.max_mp < 0.3)
     parent.use('mp');
-  //Constrained Healing
 
   //Purchases Potions when below threshold
   if (purchase_pots) {
@@ -141,7 +140,7 @@ setInterval(function() {
 
   //set_message(party_count);
 
-}, 1000 / 3); // Loops every 1/4 seconds.
+}, 1000 / 3); //Loops every 1/4 seconds.
 
 function purchase_potions() {
   set_message("Buying pots.");

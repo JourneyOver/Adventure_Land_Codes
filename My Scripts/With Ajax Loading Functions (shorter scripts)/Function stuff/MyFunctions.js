@@ -5,9 +5,9 @@
 //Custom m_type Targetting
 function get_closest_monster(args) {
   //args:
-  // m_type_priority - the monster you want to attack (bosses)
-  // m_type_secondary - the monster you attack when your boss is not there
-  // target: Only return monsters that target this "name" or player object
+  //m_type_priority - the monster you want to attack (bosses)
+  //m_type_secondary - the monster you attack when your boss is not there
+  //target: Only return monsters that target this "name" or player object
   var min_d = 450,
     target = null;
   var mode = -1;
@@ -143,7 +143,7 @@ function purchase_potions(buyHP, buyMP) {
   }
 }
 
-// Returns the item slot and the item given the slot to start from and a filter.
+//Returns the item slot and the item given the slot to start from and a filter.
 function find_item_filter(filter, search_slot) {
   let slot = search_slot;
   if (!slot)
@@ -159,13 +159,13 @@ function find_item_filter(filter, search_slot) {
   return [-1, null];
 }
 
-// Returns the grade of the item.
+//Returns the grade of the item.
 function item_info(item) {
   return parent.G.items[item.name];
 }
 
 //GUI Stuff
-var minute_refresh; // how long before the clock refreshes
+var minute_refresh; //how long before the clock refreshes
 var last_target = null;
 var gold = character.gold;
 var date = new Date();
@@ -209,7 +209,7 @@ function init_xptimer(minref) {
 var last_minutes_checked = new Date();
 var last_xp_checked_minutes = character.xp;
 var last_xp_checked_kill = character.xp;
-// lxc_minutes = xp after {minute_refresh} min has passed, lxc_kill = xp after a kill (the timer updates after each kill)
+//lxc_minutes = xp after {minute_refresh} min has passed, lxc_kill = xp after a kill (the timer updates after each kill)
 
 function update_xptimer() {
   if (character.xp == last_xp_checked_kill) return;
@@ -263,7 +263,7 @@ function initGUI() {
     textAlign: 'center',
     marginBottom: '-5px'
   });
-  let ggl = $('<div id="goldgainloss"></div>').css({ // gold gain loss
+  let ggl = $('<div id="goldgainloss"></div>').css({ //gold gain loss
     background: 'black',
     border: 'solid gray',
     borderWidth: '5px 5px',

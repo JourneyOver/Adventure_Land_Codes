@@ -1,7 +1,7 @@
 // Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.6.2
+// Version 1.7.0
 
 //////////////////////////////
 // Optional Settings Start //
@@ -9,7 +9,7 @@
 
 gui_tl_gold = false; //Enable Kill (or XP) till level & GPH [scripted session] = true, Disable Kill (or XP) till level & GPH [scripted session] = false
 gui_timer = false; //Enable time till level [scripted session] = true, Disable time till level [scripted session] = false
-till_level = 0; // Kills till level = 0, XP till level = 1
+till_level = 0; //Kills till level = 0, XP till level = 1
 // GUI [if either GUI setting is turned on and then you want to turn them off you'll have to refresh the game] //
 
 uc = false; //Enable Upgrading & Compounding of items = true, Disable Upgrading & Compounding of items = false
@@ -27,6 +27,12 @@ mp_potion = 'mpot0'; //+300 MP Potion = 'mpot0', +500 MP Potion = 'mpot1' [alway
 pots_minimum = 50; //If you have less than this, you will buy more
 pots_to_buy = 1000; //This is how many you will buy
 // Potion Maintenance //
+
+useInvis = false; //[Rogue Skill] //Enable going invisible on cooldown = true, Disable going invisible on cooldown = false
+useBurst = false; //[Mage Skill] //Enable Using burst on cooldown [only on targets above 6,000 hp] = true, Disable using burst on cooldown = false
+useCharge = false; //[Warrior Skill] //Enable Using charge on cooldown = true, Disable using charge on cooldown = false
+useSupershot = false; //[Ranger Skill] //Enable using supershot on cooldown = true, Disable using supershot on cooldown = false
+// Skill Usage [Only turn on skill for the class you are running, if you want to use skills] //
 
 ////////////////////////////
 // Optional Settings End //
@@ -71,26 +77,46 @@ setInterval(function() {
   //Loot available chests
   loot();
 
-  // Party leader
+  //Party leader
   let leader = get_player(character.party);
 
-  // Current target and target of leader.
+  //Current target and target of leader.
   let currentTarget = get_target();
   let leaderTarget = get_target_of(leader);
   let targetTarget = get_target_of(currentTarget);
 
-  // Change the target.
+  //Change the target.
   if (!currentTarget || currentTarget !== leaderTarget) {
-    // Current target is empty or other than the leader's.
+    //Current target is empty or other than the leader's.
     change_target(leaderTarget);
     currentTarget = get_target();
   }
 
-  // Attack the target.
+  //Attack the target.
   if (currentTarget && can_attack(currentTarget) && targetTarget == leader) {
-    // Current target isn't empty and attackable.
+    //Current target isn't empty and attackable.
     attack(currentTarget);
     set_message("Attacking: " + currentTarget.mtype);
+  }
+
+  //Uses Vanish if enabled
+  if (useInvis && character.ctype === 'rogue') {
+    invis();
+  }
+
+  //Uses Burst if enabled [only on targets above 6,000 hp]
+  if (useBurst && currentTarget && currentTarget.hp > 6000 && character.ctype === 'mage') {
+    burst(currentTarget);
+  }
+
+  //Uses Charge if enabled
+  if (useCharge && character.ctype === 'warrior') {
+    charge();
+  }
+
+  //Uses supershot if enabled [only on targets above 6,000 hp]
+  if (useSupershot && currentTarget && currentTarget.hp > 6000 && character.ctype === 'ranger') {
+    supershot(currentTarget);
   }
 
   //Move to leader.
@@ -101,7 +127,7 @@ setInterval(function() {
 }, 250);
 
 //If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord! [do not uncomment skill usage]
-var urls = ['http://tiny.cc/MyFunctions', /*'http://tiny.cc/Skill_Usage_S',*/ 'http://tiny.cc/Game_Log_Filters'];
+var urls = ['http://tiny.cc/MyFunctions', 'http://tiny.cc/Skill_Usage_S', 'http://tiny.cc/Game_Log_Filters'];
 
 $.each(urls, function(i, u) {
   $.ajax(u, {

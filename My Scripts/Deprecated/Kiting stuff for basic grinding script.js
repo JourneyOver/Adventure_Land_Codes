@@ -80,7 +80,7 @@ setInterval(function() {
         character.real_y + (target.real_y - character.real_y) / 2
       );
     }
-    // Walk half the distance
+    //Walk half the distance
   } else if (mode == 2) {
     move(target.real_x + 5, target.real_y + 5);
   } else if (mode == 3) {}
@@ -90,7 +90,7 @@ setInterval(function() {
   prevy = Math.ceil(character.real_y);
   //Sets new coords to prev coords
 
-}, 200); // Loop Delay
+}, 200); //Loop Delay
 
 function move_to_position(target, enemydist) //Movement Algorithm
 {

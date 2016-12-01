@@ -1,6 +1,6 @@
 // Basic Grinding
 // Auto Compounding & Upgrading stuff Courtesy of: Mark
-// Version 1.10.2
+// Version 1.10.3
 
 //////////////////////////
 // Main Settings Start //
@@ -155,7 +155,7 @@ setInterval(function() {
 
   //Following/Maintaining Distance
   if (mode == 0) {
-    // Walk half the distance
+    //Walk half the distance
     if (!in_attack_range(target)) {
       move(
         character.real_x + (target.real_x - character.real_x) / 2,
@@ -163,11 +163,11 @@ setInterval(function() {
       );
     }
   } else if (mode == 1) {
-    // Move to front of target
+    //Move to front of target
     move(target.real_x + 5, target.real_y + 5);
   }
 
-}, 250); // Loop Delay
+}, 250); //Loop Delay
 
 //If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
 var urls = ['http://tiny.cc/MyFunctions', 'http://tiny.cc/Skill_Usage_BP', 'http://tiny.cc/Game_Log_Filters'];

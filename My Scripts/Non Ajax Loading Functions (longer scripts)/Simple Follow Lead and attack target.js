@@ -1,7 +1,7 @@
 // Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.5.4
+// Version 1.5.5
 
 //////////////////////////////
 // Optional Settings Start //
@@ -9,7 +9,7 @@
 
 var gui_tl_gold = false; //Enable Kill (or XP) till level & GPH [scripted session] = true, Disable Kill (or XP) till level & GPH [scripted session] = false
 var gui_timer = false; //Enable time till level [scripted session] = true, Disable time till level [scripted session] = false
-var till_level = 0; // Kills till level = 0, XP till level = 1
+var till_level = 0; //Kills till level = 0, XP till level = 1
 // GUI [if either GUI setting is turned on and then you want to turn them off you'll have to refresh the game] //
 
 var uc = false; //Enable Upgrading & Compounding of items = true, Disable Upgrading & Compounding of items = false
@@ -27,6 +27,12 @@ var mp_potion = 'mpot0'; //+300 MP Potion = 'mpot0', +500 MP Potion = 'mpot1' [a
 var pots_minimum = 50; //If you have less than this, you will buy more
 var pots_to_buy = 1000; //This is how many you will buy
 // Potion Maintenance //
+
+useInvis = false; //[Rogue Skill] //Enable going invisible on cooldown = true, Disable going invisible on cooldown = false
+useBurst = false; //[Mage Skill] //Enable Using burst on cooldown [only on targets above 6,000 hp] = true, Disable using burst on cooldown = false
+useCharge = false; //[Warrior Skill] //Enable Using charge on cooldown = true, Disable using charge on cooldown = false
+useSupershot = false; //[Ranger Skill] //Enable using supershot on cooldown = true, Disable using supershot on cooldown = false
+// Skill Usage [Only turn on skill for the class you are running, if you want to use skills] //
 
 ////////////////////////////
 // Optional Settings End //
@@ -71,31 +77,51 @@ setInterval(function() {
   //Loot available chests
   loot();
 
-  // Party leader
+  //Party leader
   let leader = get_player(character.party);
 
-  // Current target and target of leader.
+  //Current target and target of leader.
   let currentTarget = get_target();
   let leaderTarget = get_target_of(leader);
   let targetTarget = get_target_of(currentTarget);
 
-  // Change the target.
+  //Change the target.
   if (!currentTarget || currentTarget !== leaderTarget) {
-    // Current target is empty or other than the leader's.
+    //Current target is empty or other than the leader's.
     change_target(leaderTarget);
     currentTarget = get_target();
   }
 
-  // Attack the target.
+  //Attack the target.
   if (currentTarget && can_attack(currentTarget) && targetTarget == leader) {
-    // Current target isn't empty and attackable.
+    //Current target isn't empty and attackable.
     attack(currentTarget);
     set_message("Attacking: " + currentTarget.mtype);
   }
 
+  //Uses Vanish if enabled
+  if (useInvis && character.ctype === 'rogue') {
+    invis();
+  }
+
+  //Uses Burst if enabled [only on targets above 6,000 hp]
+  if (useBurst && currentTarget && currentTarget.hp > 6000 && character.ctype === 'mage') {
+    burst(currentTarget);
+  }
+
+  //Uses Charge if enabled
+  if (useCharge && character.ctype === 'warrior') {
+    charge();
+  }
+
+  //Uses supershot if enabled [only on targets above 6,000 hp]
+  if (useSupershot && currentTarget && currentTarget.hp > 6000 && character.ctype === 'ranger') {
+    supershot(currentTarget);
+  }
+
   //Move to leader.
   if (leader && !character.moving)
-  // Move only if you are not already moving.
+  //Move only if you are not already moving.
     move(leader.real_x + 30, leader.real_y - 30);
 
 }, 250);
@@ -172,12 +198,12 @@ function purchase_potions(buyHP, buyMP) {
   }
 }
 
-// Returns the grade of the item.
+//Returns the grade of the item.
 function item_info(item) {
   return parent.G.items[item.name];
 }
 
-// Returns the item slot and the item given the slot to start from and a filter.
+//Returns the item slot and the item given the slot to start from and a filter.
 function find_item_filter(filter, search_slot) {
   let slot = search_slot;
   if (!slot)
@@ -193,8 +219,49 @@ function find_item_filter(filter, search_slot) {
   return [-1, null];
 }
 
+//Casts burst if class is mage and enabled and off cooldown
+var lastburst;
+
+function burst(currentTarget) {
+  //Cast burst on target whenever you're off cd (cd is 10sec).
+  if (!lastburst || new Date() - lastburst > 10000) {
+    lastburst = new Date();
+    parent.socket.emit("ability", {
+      name: "burst",
+      id: currentTarget.id
+    });
+  }
+}
+
+//casts charge if class is warrior and enabled and off cooldown
+var lastcharge;
+
+function charge() {
+  //Charge only if charge is off of cd (cd is 40sec).
+  if (!lastcharge || new Date() - lastcharge > 40000) {
+    lastcharge = new Date();
+    parent.socket.emit("ability", {
+      name: "charge",
+    });
+  }
+}
+
+//casts supershot when off cooldown and if enabled
+var lastsupershot;
+
+function supershot(currentTarget) {
+  //Cast supershot on target whenever you're off cd (cd is 30sec).
+  if (!lastsupershot || new Date() - lastsupershot > 30000) {
+    lastsupershot = new Date();
+    parent.socket.emit("ability", {
+      name: "supershot",
+      id: currentTarget.id
+    });
+  }
+}
+
 //GUI Stuff
-var minute_refresh; // how long before the tracker refreshes
+var minute_refresh; //how long before the tracker refreshes
 var last_target = null;
 var gold = character.gold;
 var date = new Date();
@@ -238,7 +305,7 @@ function init_xptimer(minref) {
 var last_minutes_checked = new Date();
 var last_xp_checked_minutes = character.xp;
 var last_xp_checked_kill = character.xp;
-// lxc_minutes = xp after {minute_refresh} min has passed, lxc_kill = xp after a kill (the timer updates after each kill)
+//lxc_minutes = xp after {minute_refresh} min has passed, lxc_kill = xp after a kill (the timer updates after each kill)
 
 function update_xptimer() {
   if (character.xp == last_xp_checked_kill) return;
@@ -292,7 +359,7 @@ function initGUI() {
     textAlign: 'center',
     marginBottom: '-5px'
   });
-  let ggl = $('<div id="goldgainloss"></div>').css({ // gold gain loss
+  let ggl = $('<div id="goldgainloss"></div>').css({ //gold gain loss
     background: 'black',
     border: 'solid gray',
     borderWidth: '5px 5px',

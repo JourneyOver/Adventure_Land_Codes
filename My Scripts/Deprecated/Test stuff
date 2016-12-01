@@ -1,3 +1,16 @@
+var urls = ['http://test_script1.js, 'http://test_script2.js', ...];
+
+$.each(urls, function(i, u) {
+  $.ajax(u, {
+    type: 'POST',
+    dataType: "script",
+    async: false,
+    cache: true
+  });
+});
+
+//////////////////
+
 $.ajax({
   url: 'http://test_script.js',
   dataType: "script",
