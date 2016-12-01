@@ -100,8 +100,8 @@ setInterval(function() {
 
 }, 250);
 
-//If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
-var urls = ['http://tiny.cc/MyFunctions', 'http://tiny.cc/Game_Log_Filters'];
+//If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord! [do not uncomment skill usage]
+var urls = ['http://tiny.cc/MyFunctions', /*'http://tiny.cc/Skill_Usage_S',*/ 'http://tiny.cc/Game_Log_Filters'];
 
 $.each(urls, function(i, u) {
   $.ajax(u, {

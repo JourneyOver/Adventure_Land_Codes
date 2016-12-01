@@ -48,13 +48,6 @@ pots_minimum = 50; //If you have less than this, you will buy more
 pots_to_buy = 1000; //This is how many you will buy
 // Potion Maintenance //
 
-useInvis = false; //[Rogue Skill] //Enable going invisible on cooldown = true, Disable going invisible on cooldown = false
-useBurst = false; //[Mage Skill] //Enable Using burst on cooldown [only on targets above 6,000 hp] = true, Disable using burst on cooldown = false
-useTaunt = false; //[Warrior Skill] //Enable Using taunt on cooldown = true, Disable using taunt on cooldown = false
-useCharge = false; //[Warrior Skill] //Enable Using charge on cooldown = true, Disable using charge on cooldown = false
-useSupershot = false; //[Ranger Skill] //Enable using supershot on cooldown = true, Disable using supershot on cooldown = false
-// Skill Usage [Only turn on skill for the class you are running, if you want to use skills] //
-
 ////////////////////////////
 // Optional Settings End //
 //////////////////////////
@@ -128,31 +121,6 @@ setInterval(function() {
     attack(target);
   set_message("Attacking: " + target.mtype);
 
-  //Uses Vanish if enabled
-  if (useInvis && character.ctype === 'rogue') {
-    invis();
-  }
-
-  //Uses Burst if enabled [only on targets above 6,000 hp]
-  if (useBurst && target.hp > 6000 && character.ctype === 'mage') {
-    burst(target);
-  }
-
-  //Uses taunt if enabled
-  if (useTaunt && character.ctype === 'warrior') {
-    taunt(target);
-  }
-
-  //Uses Charge if enabled
-  if (useCharge && character.ctype === 'warrior') {
-    charge();
-  }
-
-  //Uses supershot if enabled [only on targets above 6,000 hp]
-  if (useSupershot && target.hp > 6000 && character.ctype === 'ranger') {
-    supershot(target);
-  }
-
   //Following/Maintaining Distance
   if (mode == 0) {
     // Walk half the distance
@@ -169,8 +137,8 @@ setInterval(function() {
 
 }, 250); // Loop Delay
 
-//If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
-var urls = ['http://tiny.cc/MyFunctions', 'http://tiny.cc/Game_Log_Filters'];
+//If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord! [do not uncomment skill usage]
+var urls = ['http://tiny.cc/MyFunctions', /*'http://tiny.cc/Skill_Usage_BP',*/ 'http://tiny.cc/Game_Log_Filters'];
 
 $.each(urls, function(i, u) {
   $.ajax(u, {
