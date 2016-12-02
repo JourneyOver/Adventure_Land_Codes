@@ -1,6 +1,6 @@
 // Basic Grinding
 // Auto Compounding & Upgrading stuff Courtesy of: Mark
-// Version 1.10.4
+// Version 1.10.5
 
 //////////////////////////
 // Main Settings Start //
@@ -75,8 +75,8 @@ setInterval(function() {
       m_type_priority: mtype,
       m_type_secondary: mtype2,
       targeting_mode: mode,
-      no_attack: true
-
+      no_attack: true,
+      path_check: true
     });
     if (mode == 2 && target && !in_attack_range(target)) target = null;
     if (target) {
@@ -117,23 +117,26 @@ setInterval(function() {
     attack(target);
   set_message("Attacking: " + target.mtype);
 
+}, (1 / character.frequency + 50) / 4);
+
+setInterval(function() {
+
+  var target = get_targeted_monster();
   //Following/Maintaining Distance
   if (mode == 0) {
     //Walk half the distance
-    if (!in_attack_range(target)) {
+    if (target && !in_attack_range(target)) {
       move(
         character.real_x + (target.real_x - character.real_x) / 2,
         character.real_y + (target.real_y - character.real_y) / 2
       );
     }
   } else if (mode == 1) {
-    //Move to front of target
-    move(target.real_x + 5, target.real_y + 5);
+    if (target) {
+      //Move to front of target
+      move(target.real_x + 5, target.real_y + 5);
+    }
   }
-
-}, (1 / character.frequency + 50) / 4);
-
-setInterval(function() {
 
   //Heal and restore mana if required
   if (character.hp / character.max_hp < 0.4 && new Date() > parent.next_potion) {

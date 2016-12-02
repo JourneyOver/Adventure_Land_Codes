@@ -21,6 +21,7 @@ function get_closest_monster(args) {
     var current = parent.entities[id];
     if (current.type != "monster" || current.dead || (current.target && current.target != character.name)) continue;
     if (args.no_target && current.target && current.target != null && current.target != character.name) continue;
+    if (args.path_check && !can_move_to(current)) continue;
     var c_dist = parent.distance(character, current);
     if (current.mtype == args.m_type_priority) {
       if (mode != 2) return current;
