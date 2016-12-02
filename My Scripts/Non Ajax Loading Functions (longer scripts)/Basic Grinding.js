@@ -117,7 +117,7 @@ setInterval(function() {
     attack(target);
   set_message("Attacking: " + target.mtype);
 
-}, (1 / character.frequency + 50) / 4);
+}, (1 / character.frequency + 50) / 4); //base loop off character frequency
 
 setInterval(function() {
 

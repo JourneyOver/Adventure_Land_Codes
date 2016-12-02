@@ -117,7 +117,7 @@ setInterval(function() {
     attack(target);
   set_message("Attacking: " + target.mtype);
 
-}, (1 / character.frequency + 50) / 4);
+}, (1 / character.frequency + 50) / 4); //base loop off character frequency
 
 setInterval(function() {
 
@@ -185,7 +185,7 @@ setInterval(function() {
 }, 500); //Loop every 500 milliseconds
 //--------------------------Grind Code End
 
-//If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord!
+//If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord! [uncomment game log filters if you want them]
 var urls = ['http://tiny.cc/MyFunctions', 'http://tiny.cc/Skill_Usage_BP' /*, 'http://tiny.cc/Game_Log_Filters' */ ];
 
 $.each(urls, function(i, u) {
