@@ -21,6 +21,7 @@ function get_closest_monster(args) {
     var current = parent.entities[id];
     if (current.type != "monster" || current.dead || (current.target && current.target != character.name)) continue;
     if (args.no_target && current.target && current.target != null && current.target != character.name) continue;
+    if (args.path_check && !can_move_to(current)) continue;
     var c_dist = parent.distance(character, current);
     if (current.mtype == args.m_type_priority) {
       if (mode != 2) return current;
@@ -72,19 +73,21 @@ function GetInjured(leader) {
 ///////////////
 
 //Upgrade and Compound Items
-function upgrade(ulevel, clevel) {
+function upgrade_and_compound(ulevel, clevel) {
   for (let i = 0; i < character.items.length; i++) {
     let c = character.items[i];
     if (c) {
       if (uwhitelist.includes(c.name) && c.level < ulevel) {
         let grades = item_info(c).grades;
         let scrollname;
+        //Gets the item grade from parent.G.items so it only uses the cheapest scroll possible.
         if (c.level < grades[0])
           scrollname = 'scroll0';
         else if (c.level < grades[1])
           scrollname = 'scroll1';
-        //else
-        //scrollname = 'scroll2';
+        else
+          scrollname = 'scroll2';
+        //Check if the required scroll is in the inventory, buy one if there isn't.
 
         let [scroll_slot, scroll] = find_item_filter(i => i.name === scrollname);
         if (!scroll) {
@@ -92,6 +95,7 @@ function upgrade(ulevel, clevel) {
           return;
         }
 
+        //Upgrade the item.
         parent.socket.emit('upgrade', {
           item_num: i,
           scroll_num: scroll_slot,
@@ -99,22 +103,24 @@ function upgrade(ulevel, clevel) {
           clevel: c.level
         });
         return;
-      } else if (cwhitelist.includes(c.name) && c.level < clevel) {
-        let [item2_slot, item2] = find_item_filter((item) => c.name === item.name && c.level === item.level, i + 1);
-        let [item3_slot, item3] = find_item_filter((item) => c.name === item.name && c.level === item.level, item2_slot + 1);
-        if (item2 && item3) {
+      } else if (cwhitelist.includes(c.name) && c.level < clevel) { //There is an item that has to be compounded.
+        let [item2_slot, item2] = find_item_filter((item) => c.name === item.name && c.level === item.level, i + 1); //The second item to compound.
+        let [item3_slot, item3] = find_item_filter((item) => c.name === item.name && c.level === item.level, item2_slot + 1); //The third item to compound.
+        if (item2 && item3) { //If there is a second and third copy of the item compound them.
           let cscrollname;
-          if (c.level < 2)
+          if (c.level < 2) //Use whitescroll at base and +1.
             cscrollname = 'cscroll0';
-          else
+          else //Use blackscroll at +2 and higher
             cscrollname = 'cscroll1';
 
+          //Check if the required scroll is in the inventory, buy one if there isn't.
           let [cscroll_slot, cscroll] = find_item_filter(i => i.name === cscrollname);
           if (!cscroll) {
             parent.buy(cscrollname);
             return;
           }
 
+          //Compound the items.
           parent.socket.emit('compound', {
             items: [i, item2_slot, item3_slot],
             scroll_num: cscroll_slot,
@@ -159,7 +165,7 @@ function find_item_filter(filter, search_slot) {
   return [-1, null];
 }
 
-//Returns the grade of the item.
+//Returns the item information from parent.G.items of the item.
 function item_info(item) {
   return parent.G.items[item.name];
 }
