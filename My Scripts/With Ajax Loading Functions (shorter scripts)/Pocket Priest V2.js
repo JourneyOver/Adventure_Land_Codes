@@ -26,8 +26,8 @@ till_level = 0; //Kills till level = 0, XP till level = 1
 uc = false; //Enable Upgrading & Compounding of items = true, Disable Upgrading & Compounding of items = false
 upgrade_level = 8; //Max level it will stop upgrading items at if enabled
 compound_level = 3; //Max level it will stop compounding items at if enabled
-uwhitelist = []; // uwhitelist is for the upgrading of items.
-cwhitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj', 'amuletofm', 'orbofstr', 'orbofint', 'orbofres', 'orbofhp']; // cwhitelist is for the compounding of items.
+uwhitelist = []; //uwhitelist is for the upgrading of items.
+cwhitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj', 'amuletofm', 'orbofstr', 'orbofint', 'orbofres', 'orbofhp']; //cwhitelist is for the compounding of items.
 // Upgrading & Compounding [will only upgrade & Compound items that are in your inventory & in the whitelists] //
 
 purchase_pots = false; //Enable Potion Purchasing = true, Disable Potion Purchasing = false
@@ -86,7 +86,7 @@ setInterval(function() {
     }
   }
 
-}, (1 / character.frequency + 50) / 4);
+}, (1 / character.frequency + 50) / 4); //base loop off character frequency
 
 setInterval(function() {
 
@@ -127,7 +127,7 @@ setInterval(function() {
     purchase_potions(buy_hp, buy_mp);
   }
 
-}, 1000); // Loops every 1 second.
+}, 1000); //Loop every 1 second.
 
 setInterval(function() {
 
