@@ -1,6 +1,6 @@
 // Basic Grinding
 // Auto Compounding & Upgrading stuff Courtesy of: Mark
-// Version 1.9.8
+// Version 1.9.9
 
 //////////////////////////
 // Main Settings Start //
@@ -33,10 +33,10 @@ var till_level = 0; //Kills till level = 0, XP till level = 1
 // GUI [if either GUI setting is turned on and then you want to turn them off you'll have to refresh the game] //
 
 var uc = false; //Enable Upgrading & Compounding of items = true, Disable Upgrading & Compounding of items = false
-var umaxlevel = 8; //Max level it will stop upgrading items at if enabled
-var cmaxlevel = 3; //Max level it will stop compounding items at if enabled
-var uwhitelist = []; //Add items that you want to be upgraded as they come into your inventory [always add ' ' around item and , after item]
-var cwhitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj', 'amuletofm', 'orbofstr', 'orbofint', 'orbofres', 'orbofhp']; //Add items that you want to be compounded [always add ' ' around item and , after item]
+var upgrade_level = 8; //Max level it will stop upgrading items at if enabled
+var compound_level = 3; //Max level it will stop compounding items at if enabled
+uwhitelist = []; // uwhitelist is for the upgrading of items.
+cwhitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj', 'amuletofm', 'orbofstr', 'orbofint', 'orbofres', 'orbofhp']; // cwhitelist is for the compounding of items.
 // Upgrading & Compounding [will only upgrade & Compound items that are in your inventory & in the whitelists] //
 
 var purchase_pots = false; //Enable Potion Purchasing = true, Disable Potion Purchasing = false
@@ -65,45 +65,8 @@ useSupershot = false; //[Ranger Skill] //Enable using supershot on cooldown = tr
 //show_json(parent.M);
 //JSONs
 
-//Grind Code below --------------------------
+//Grind Code start --------------------------
 setInterval(function() {
-
-  //Updates GUI for Till_Level/Gold
-  if (gui_tl_gold) {
-    updateGUI();
-  }
-
-  //Updates GUI for time till level
-  if (gui_timer) {
-    update_xptimer();
-  }
-
-  //Upgrade and Compound Items
-  if (uc) {
-    upgrade(umaxlevel, cmaxlevel);
-  }
-
-  //Purchases Potions when below threshold
-  if (purchase_pots) {
-    purchase_potions(buy_hp, buy_mp);
-  }
-
-  //Heal and restore mana if required
-  if (character.hp / character.max_hp < 0.4 && new Date() > parent.next_potion) {
-    parent.use('hp');
-    if (character.hp <= 100)
-      parent.socket.emit("transport", {
-        to: "main"
-      });
-    //Panic Button
-  }
-
-  if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
-    parent.use('mp');
-
-  //Loot available chests
-  loot();
-
   //Monster Searching
   var target = get_targeted_monster();
   if (mode == 2 && target && !in_attack_range(target)) target = null;
@@ -111,8 +74,9 @@ setInterval(function() {
     target = get_closest_monster({
       m_type_priority: mtype,
       m_type_secondary: mtype2,
-      no_attack: true,
-      targeting_mode: mode
+      targeting_mode: mode,
+      no_attack: true
+
     });
     if (mode == 2 && target && !in_attack_range(target)) target = null;
     if (target) {
@@ -167,22 +131,73 @@ setInterval(function() {
     move(target.real_x + 5, target.real_y + 5);
   }
 
-}, 250); //Loop Delay
+}, (1 / character.frequency + 50) / 4);
+
+setInterval(function() {
+
+  //Heal and restore mana if required
+  if (character.hp / character.max_hp < 0.4 && new Date() > parent.next_potion) {
+    parent.use('hp');
+    if (character.hp <= 100)
+      parent.socket.emit("transport", {
+        to: "main"
+      });
+    //Panic Button
+  }
+
+  if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
+    parent.use('mp');
+
+}, 250); //Loop every 250 milliseconds
+
+setInterval(function() {
+
+  //Upgrade and Compound Items
+  if (uc) {
+    upgrade_and_compound(upgrade_level, compound_level);
+  }
+
+  //Purchases Potions when below threshold
+  if (purchase_pots) {
+    purchase_potions(buy_hp, buy_mp);
+  }
+
+}, 1000); // Loops every 1 second.
+
+setInterval(function() {
+
+  //Updates GUI for Till_Level/Gold
+  if (gui_tl_gold) {
+    updateGUI();
+  }
+
+  //Updates GUI for Time Till Level
+  if (gui_timer) {
+    update_xptimer();
+  }
+
+  //Loot available chests
+  loot();
+
+}, 500); //Loop every 500 milliseconds
+//--------------------------Grind Code End
 
 //Upgrade & Compound items in your inventory
-function upgrade(ulevel, clevel) {
+function upgrade_and_compound(ulevel, clevel) {
   for (let i = 0; i < character.items.length; i++) {
     let c = character.items[i];
     if (c) {
       if (uwhitelist.includes(c.name) && c.level < ulevel) {
         let grades = item_info(c).grades;
         let scrollname;
+        //Gets the item grade from parent.G.items so it only uses the cheapest scroll possible.
         if (c.level < grades[0])
           scrollname = 'scroll0';
         else if (c.level < grades[1])
           scrollname = 'scroll1';
-        //else
-        //scrollname = 'scroll2';
+        else
+          scrollname = 'scroll2';
+        //Check if the required scroll is in the inventory, buy one if there isn't.
 
         let [scroll_slot, scroll] = find_item_filter(i => i.name === scrollname);
         if (!scroll) {
@@ -190,6 +205,7 @@ function upgrade(ulevel, clevel) {
           return;
         }
 
+        //Upgrade the item.
         parent.socket.emit('upgrade', {
           item_num: i,
           scroll_num: scroll_slot,
@@ -197,22 +213,24 @@ function upgrade(ulevel, clevel) {
           clevel: c.level
         });
         return;
-      } else if (cwhitelist.includes(c.name) && c.level < clevel) {
-        let [item2_slot, item2] = find_item_filter((item) => c.name === item.name && c.level === item.level, i + 1);
-        let [item3_slot, item3] = find_item_filter((item) => c.name === item.name && c.level === item.level, item2_slot + 1);
-        if (item2 && item3) {
+      } else if (cwhitelist.includes(c.name) && c.level < clevel) { //There is an item that has to be compounded.
+        let [item2_slot, item2] = find_item_filter((item) => c.name === item.name && c.level === item.level, i + 1); //The second item to compound.
+        let [item3_slot, item3] = find_item_filter((item) => c.name === item.name && c.level === item.level, item2_slot + 1); //The third item to compound.
+        if (item2 && item3) { //If there is a second and third copy of the item compound them.
           let cscrollname;
-          if (c.level < 2)
+          if (c.level < 2) //Use whitescroll at base and +1.
             cscrollname = 'cscroll0';
-          else
+          else //Use blackscroll at +2 and higher
             cscrollname = 'cscroll1';
 
+          //Check if the required scroll is in the inventory, buy one if there isn't.
           let [cscroll_slot, cscroll] = find_item_filter(i => i.name === cscrollname);
           if (!cscroll) {
             parent.buy(cscrollname);
             return;
           }
 
+          //Compound the items.
           parent.socket.emit('compound', {
             items: [i, item2_slot, item3_slot],
             scroll_num: cscroll_slot,
@@ -257,7 +275,7 @@ function find_item_filter(filter, search_slot) {
   return [-1, null];
 }
 
-//Returns the grade of the item.
+//Returns the item information from parent.G.items of the item.
 function item_info(item) {
   return parent.G.items[item.name];
 }
