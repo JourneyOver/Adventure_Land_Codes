@@ -1,7 +1,7 @@
 // Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.7.1
+// Version 1.7.2
 
 //////////////////////////////
 // Optional Settings Start //
@@ -39,107 +39,109 @@ useSupershot = false; //[Ranger Skill] //Enable using supershot on cooldown = tr
 //////////////////////////
 
 //Grind Code start --------------------------
-setInterval(function() {
+setTimeout(function() {
+  setCorrectingInterval(function() {
 
-  //Party leader
-  let leader = get_player(character.party);
+    //Party leader
+    let leader = get_player(character.party);
 
-  //Current target and target of leader.
-  let currentTarget = get_target();
-  let leaderTarget = get_target_of(leader);
-  let targetTarget = get_target_of(currentTarget);
+    //Current target and target of leader.
+    let currentTarget = get_target();
+    let leaderTarget = get_target_of(leader);
+    let targetTarget = get_target_of(currentTarget);
 
-  //Change the target.
-  if (!currentTarget || currentTarget !== leaderTarget) {
-    //Current target is empty or other than the leader's.
-    change_target(leaderTarget);
-    currentTarget = get_target();
-  }
+    //Change the target.
+    if (!currentTarget || currentTarget !== leaderTarget) {
+      //Current target is empty or other than the leader's.
+      change_target(leaderTarget);
+      currentTarget = get_target();
+    }
 
-  //Uses Vanish if enabled
-  if (useInvis && character.ctype === 'rogue') {
-    invis();
-  }
+    //Uses Vanish if enabled
+    if (useInvis && character.ctype === 'rogue') {
+      invis();
+    }
 
-  //Uses Burst if enabled [only on targets above 6,000 hp]
-  if (useBurst && currentTarget && currentTarget.hp > 6000 && character.ctype === 'mage') {
-    burst(currentTarget);
-  }
+    //Uses Burst if enabled [only on targets above 6,000 hp]
+    if (useBurst && currentTarget && currentTarget.hp > 6000 && character.ctype === 'mage') {
+      burst(currentTarget);
+    }
 
-  //Uses Charge if enabled
-  if (useCharge && character.ctype === 'warrior') {
-    charge();
-  }
+    //Uses Charge if enabled
+    if (useCharge && character.ctype === 'warrior') {
+      charge();
+    }
 
-  //Uses supershot if enabled [only on targets above 6,000 hp]
-  if (useSupershot && currentTarget && currentTarget.hp > 6000 && character.ctype === 'ranger') {
-    supershot(currentTarget);
-  }
+    //Uses supershot if enabled [only on targets above 6,000 hp]
+    if (useSupershot && currentTarget && currentTarget.hp > 6000 && character.ctype === 'ranger') {
+      supershot(currentTarget);
+    }
 
-  //Attack the target.
-  if (currentTarget && can_attack(currentTarget) && targetTarget == leader) {
-    //Current target isn't empty and attackable.
-    attack(currentTarget);
-    set_message("Attacking: " + currentTarget.mtype);
-  }
+    //Attack the target.
+    if (currentTarget && can_attack(currentTarget) && targetTarget == leader) {
+      //Current target isn't empty and attackable.
+      attack(currentTarget);
+      set_message("Attacking: " + currentTarget.mtype);
+    }
 
-}, (1 / character.frequency + 50) / 4); //base loop off character frequency
+  }, (1 / character.frequency + 50) / 4); //base loop off character frequency
 
-setInterval(function() {
+  setCorrectingInterval(function() {
 
-  //Party leader
-  let leader = get_player(character.party);
+    //Party leader
+    let leader = get_player(character.party);
 
-  //Move to leader.
-  if (leader && !character.moving)
-  //Move only if you are not already moving.
-    move(leader.real_x + 30, leader.real_y - 30);
+    //Move to leader.
+    if (leader && !character.moving)
+    //Move only if you are not already moving.
+      move(leader.real_x + 30, leader.real_y - 30);
 
-  //Heal and restore mana if required
-  if (character.hp / character.max_hp < 0.3 && new Date() > parent.next_potion) {
-    parent.use('hp');
-    if (character.hp <= 100)
-      parent.socket.emit("transport", {
-        to: "main"
-      });
-    //Panic Button
-  }
+    //Heal and restore mana if required
+    if (character.hp / character.max_hp < 0.3 && new Date() > parent.next_potion) {
+      parent.use('hp');
+      if (character.hp <= 100)
+        parent.socket.emit("transport", {
+          to: "main"
+        });
+      //Panic Button
+    }
 
-  if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
-    parent.use('mp');
+    if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
+      parent.use('mp');
 
-}, 250); //Loop every 250 milliseconds
+  }, 250); //Loop every 250 milliseconds
 
-setInterval(function() {
+  setCorrectingInterval(function() {
 
-  //Upgrade and Compound Items
-  if (uc) {
-    upgrade_and_compound(upgrade_level, compound_level);
-  }
+    //Upgrade and Compound Items
+    if (uc) {
+      upgrade_and_compound(upgrade_level, compound_level);
+    }
 
-  //Purchases Potions when below threshold
-  if (purchase_pots) {
-    purchase_potions(buy_hp, buy_mp);
-  }
+    //Purchases Potions when below threshold
+    if (purchase_pots) {
+      purchase_potions(buy_hp, buy_mp);
+    }
 
-}, 1000); //Loop every 1 second.
+  }, 1000); //Loop every 1 second.
 
-setInterval(function() {
+  setCorrectingInterval(function() {
 
-  //Updates GUI for Till_Level/Gold
-  if (gui_tl_gold) {
-    updateGUI();
-  }
+    //Updates GUI for Till_Level/Gold
+    if (gui_tl_gold) {
+      updateGUI();
+    }
 
-  //Updates GUI for Time Till Level
-  if (gui_timer) {
-    update_xptimer();
-  }
+    //Updates GUI for Time Till Level
+    if (gui_timer) {
+      update_xptimer();
+    }
 
-  //Loot available chests
-  loot();
+    //Loot available chests
+    loot();
 
-}, 500); //Loop every 500 milliseconds
+  }, 500); //Loop every 500 milliseconds
+}, 300); //Delay execution of Grind Code by 300 milliseconds to load ajax.
 //--------------------------Grind Code End
 
 //If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord! [uncomment game log filters if you want them]

@@ -1,6 +1,6 @@
 // Basic Grinding
 // Auto Compounding & Upgrading stuff Courtesy of: Mark
-// Version 1.10.5
+// Version 1.10.6
 
 //////////////////////////
 // Main Settings Start //
@@ -66,123 +66,126 @@ useSupershot = false; //[Ranger Skill] //Enable using supershot on cooldown = tr
 //JSONs
 
 //Grind Code start --------------------------
-setInterval(function() {
-  //Monster Searching
-  var target = get_targeted_monster();
-  if (mode == 2 && target && !in_attack_range(target)) target = null;
-  if (!target || (target.target && target.target != character.name)) {
-    target = get_closest_monster({
-      m_type_priority: mtype,
-      m_type_secondary: mtype2,
-      targeting_mode: mode,
-      no_attack: true,
-      path_check: true
-    });
+setTimeout(function() {
+  setCorrectingInterval(function() {
+
+    //Monster Searching
+    var target = get_targeted_monster();
     if (mode == 2 && target && !in_attack_range(target)) target = null;
-    if (target) {
-      change_target(target);
-    } else {
-      set_message("No Monsters");
-      return;
-    }
-  }
-
-  //Uses Vanish if enabled
-  if (useInvis && character.ctype === 'rogue') {
-    invis();
-  }
-
-  //Uses Burst if enabled [only on targets above 6,000 hp]
-  if (useBurst && target.hp > 6000 && character.ctype === 'mage') {
-    burst(target);
-  }
-
-  //Uses taunt if enabled
-  if (useTaunt && character.ctype === 'warrior') {
-    taunt(target);
-  }
-
-  //Uses Charge if enabled
-  if (useCharge && character.ctype === 'warrior') {
-    charge();
-  }
-
-  //Uses supershot if enabled [only on targets above 6,000 hp]
-  if (useSupershot && target.hp > 6000 && character.ctype === 'ranger') {
-    supershot(target);
-  }
-
-  //Attack
-  if (can_attack(target))
-    attack(target);
-  set_message("Attacking: " + target.mtype);
-
-}, (1 / character.frequency + 50) / 4); //base loop off character frequency
-
-setInterval(function() {
-
-  var target = get_targeted_monster();
-  //Following/Maintaining Distance
-  if (mode == 0) {
-    //Walk half the distance
-    if (target && !in_attack_range(target)) {
-      move(
-        character.real_x + (target.real_x - character.real_x) / 2,
-        character.real_y + (target.real_y - character.real_y) / 2
-      );
-    }
-  } else if (mode == 1) {
-    if (target) {
-      //Move to front of target
-      move(target.real_x + 5, target.real_y + 5);
-    }
-  }
-
-  //Heal and restore mana if required
-  if (character.hp / character.max_hp < 0.4 && new Date() > parent.next_potion) {
-    parent.use('hp');
-    if (character.hp <= 100)
-      parent.socket.emit("transport", {
-        to: "main"
+    if (!target || (target.target && target.target != character.name)) {
+      target = get_closest_monster({
+        m_type_priority: mtype,
+        m_type_secondary: mtype2,
+        targeting_mode: mode,
+        no_attack: true,
+        path_check: true
       });
-    //Panic Button
-  }
+      if (mode == 2 && target && !in_attack_range(target)) target = null;
+      if (target) {
+        change_target(target);
+      } else {
+        set_message("No Monsters");
+        return;
+      }
+    }
 
-  if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
-    parent.use('mp');
+    //Uses Vanish if enabled
+    if (useInvis && character.ctype === 'rogue') {
+      invis();
+    }
 
-}, 250); //Loop every 250 milliseconds
+    //Uses Burst if enabled [only on targets above 6,000 hp]
+    if (useBurst && target.hp > 6000 && character.ctype === 'mage') {
+      burst(target);
+    }
 
-setInterval(function() {
+    //Uses taunt if enabled
+    if (useTaunt && character.ctype === 'warrior') {
+      taunt(target);
+    }
 
-  //Upgrade and Compound Items
-  if (uc) {
-    upgrade_and_compound(upgrade_level, compound_level);
-  }
+    //Uses Charge if enabled
+    if (useCharge && character.ctype === 'warrior') {
+      charge();
+    }
 
-  //Purchases Potions when below threshold
-  if (purchase_pots) {
-    purchase_potions(buy_hp, buy_mp);
-  }
+    //Uses supershot if enabled [only on targets above 6,000 hp]
+    if (useSupershot && target.hp > 6000 && character.ctype === 'ranger') {
+      supershot(target);
+    }
 
-}, 1000); //Loop every 1 second.
+    //Attack
+    if (can_attack(target))
+      attack(target);
+    set_message("Attacking: " + target.mtype);
 
-setInterval(function() {
+  }, (1 / character.frequency + 50) / 4); //base loop off character frequency
 
-  //Updates GUI for Till_Level/Gold
-  if (gui_tl_gold) {
-    updateGUI();
-  }
+  setCorrectingInterval(function() {
 
-  //Updates GUI for Time Till Level
-  if (gui_timer) {
-    update_xptimer();
-  }
+    var target = get_targeted_monster();
+    //Following/Maintaining Distance
+    if (mode == 0) {
+      //Walk half the distance
+      if (target && !in_attack_range(target)) {
+        move(
+          character.real_x + (target.real_x - character.real_x) / 2,
+          character.real_y + (target.real_y - character.real_y) / 2
+        );
+      }
+    } else if (mode == 1) {
+      if (target) {
+        //Move to front of target
+        move(target.real_x + 5, target.real_y + 5);
+      }
+    }
 
-  //Loot available chests
-  loot();
+    //Heal and restore mana if required
+    if (character.hp / character.max_hp < 0.4 && new Date() > parent.next_potion) {
+      parent.use('hp');
+      if (character.hp <= 100)
+        parent.socket.emit("transport", {
+          to: "main"
+        });
+      //Panic Button
+    }
 
-}, 500); //Loop every 500 milliseconds
+    if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
+      parent.use('mp');
+
+  }, 250); //Loop every 250 milliseconds
+
+  setCorrectingInterval(function() {
+
+    //Upgrade and Compound Items
+    if (uc) {
+      upgrade_and_compound(upgrade_level, compound_level);
+    }
+
+    //Purchases Potions when below threshold
+    if (purchase_pots) {
+      purchase_potions(buy_hp, buy_mp);
+    }
+
+  }, 1000); //Loop every 1 second.
+
+  setCorrectingInterval(function() {
+
+    //Updates GUI for Till_Level/Gold
+    if (gui_tl_gold) {
+      updateGUI();
+    }
+
+    //Updates GUI for Time Till Level
+    if (gui_timer) {
+      update_xptimer();
+    }
+
+    //Loot available chests
+    loot();
+
+  }, 500); //Loop every 500 milliseconds
+}, 300); //Delay execution of Grind Code by 300 milliseconds to load ajax.
 //--------------------------Grind Code End
 
 //If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord! [uncomment game log filters if you want them]
