@@ -1,7 +1,7 @@
 // Pocket Priest V2
 // Base code and Auto Compounding Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.5.4
+// Version 1.5.5
 
 //////////////////////////
 // Main Settings Start //
@@ -44,107 +44,109 @@ pots_to_buy = 1000; //This is how many you will buy
 //////////////////////////
 
 //Grind Code start --------------------------
-setInterval(function() {
+setTimeout(function() {
+  setCorrectingInterval(function() {
 
-  //Get the Party leader
-  let leader = get_player(character.party);
-  //This particular code only works when the priest in a party and within the searchrange of the leader.
-  if (!leader) return;
+    //Get the Party leader
+    let leader = get_player(character.party);
+    //This particular code only works when the priest in a party and within the searchrange of the leader.
+    if (!leader) return;
 
-  //Get the injured party members.
-  let injured = GetInjured(leader.name);
+    //Get the injured party members.
+    let injured = GetInjured(leader.name);
 
-  //Heal a party member
-  if (injured.length > 0) {
-    let target = injured[0];
+    //Heal a party member
+    if (injured.length > 0) {
+      let target = injured[0];
 
-    for (let i = 1; i < injured.length; i++) {
-      //Target the party member with the lowest amount of hp
-      if (injured[i].max_hp - injured[i].hp > target.max_hp - target.hp)
-        target = injured[i];
+      for (let i = 1; i < injured.length; i++) {
+        //Target the party member with the lowest amount of hp
+        if (injured[i].max_hp - injured[i].hp > target.max_hp - target.hp)
+          target = injured[i];
+      }
+
+      heal(target);
+      set_message("Healing: " + character.party);
+      return;
     }
 
-    heal(target);
-    set_message("Healing: " + character.party);
-    return;
-  }
+    //Do damage.
+    target = get_target_of(leader);
 
-  //Do damage.
-  target = get_target_of(leader);
+    //If there is a valid target, attempt to curse it.
+    if (target && get_target_of(target) && in_attack_range(target) && get_target_of(target).party == character.party) {
+      if (useCursing && target.hp > 6000) {
+        curse(target);
+        set_message("Cursing: " + target.mtype);
+      }
 
-  //If there is a valid target, attempt to curse it.
-  if (target && get_target_of(target) && in_attack_range(target) && get_target_of(target).party == character.party) {
-    if (useCursing && target.hp > 6000) {
-      curse(target);
-      set_message("Cursing: " + target.mtype);
+      //If you can attack the target, do so.
+      if (can_attack(target)) {
+        attack(target);
+        set_message("Attacking: " + target.mtype);
+      }
     }
 
-    //If you can attack the target, do so.
-    if (can_attack(target)) {
-      attack(target);
-      set_message("Attacking: " + target.mtype);
+  }, (1 / character.frequency + 50) / 4); //base loop off character frequency
+
+  setCorrectingInterval(function() {
+
+    //Get the Party leader
+    let leader = get_player(character.party);
+    //This particular code only works when the priest in a party and within the searchrange of the leader.
+    if (!leader) return;
+
+    //Move to leader.
+    if (leader && !character.moving)
+    //Move only if you are not already moving.
+      move(leader.real_x - 30, leader.real_y - 30);
+
+    //Heal and restore mana if required
+    if (character.hp / character.max_hp < 0.3 && new Date() > parent.next_potion) {
+      parent.use('hp');
+      if (character.hp <= 100)
+        parent.socket.emit("transport", {
+          to: "main"
+        });
+      //Panic Button
     }
-  }
 
-}, (1 / character.frequency + 50) / 4); //base loop off character frequency
+    if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
+      parent.use('mp');
 
-setInterval(function() {
+  }, 250); //Loop every 250 milliseconds
 
-  //Get the Party leader
-  let leader = get_player(character.party);
-  //This particular code only works when the priest in a party and within the searchrange of the leader.
-  if (!leader) return;
+  setCorrectingInterval(function() {
 
-  //Move to leader.
-  if (leader && !character.moving)
-  //Move only if you are not already moving.
-    move(leader.real_x - 30, leader.real_y - 30);
+    //Upgrade and Compound Items
+    if (uc) {
+      upgrade_and_compound(upgrade_level, compound_level);
+    }
 
-  //Heal and restore mana if required
-  if (character.hp / character.max_hp < 0.3 && new Date() > parent.next_potion) {
-    parent.use('hp');
-    if (character.hp <= 100)
-      parent.socket.emit("transport", {
-        to: "main"
-      });
-    //Panic Button
-  }
+    //Purchases Potions when below threshold
+    if (purchase_pots) {
+      purchase_potions(buy_hp, buy_mp);
+    }
 
-  if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
-    parent.use('mp');
+  }, 1000); //Loop every 1 second.
 
-}, 250); //Loop every 250 milliseconds
+  setCorrectingInterval(function() {
 
-setInterval(function() {
+    //Updates GUI for Till_Level/Gold
+    if (gui_tl_gold) {
+      updateGUI();
+    }
 
-  //Upgrade and Compound Items
-  if (uc) {
-    upgrade_and_compound(upgrade_level, compound_level);
-  }
+    //Updates GUI for Time Till Level
+    if (gui_timer) {
+      update_xptimer();
+    }
 
-  //Purchases Potions when below threshold
-  if (purchase_pots) {
-    purchase_potions(buy_hp, buy_mp);
-  }
+    //Loot available chests
+    loot();
 
-}, 1000); //Loop every 1 second.
-
-setInterval(function() {
-
-  //Updates GUI for Till_Level/Gold
-  if (gui_tl_gold) {
-    updateGUI();
-  }
-
-  //Updates GUI for Time Till Level
-  if (gui_timer) {
-    update_xptimer();
-  }
-
-  //Loot available chests
-  loot();
-
-}, 500); //Loop every 500 milliseconds
+  }, 500); //Loop every 500 milliseconds
+}, 300); //Delay execution of Grind Code by 300 milliseconds to load ajax.
 //--------------------------Grind Code End
 
 //If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord! [uncomment game log filters if you want them]
