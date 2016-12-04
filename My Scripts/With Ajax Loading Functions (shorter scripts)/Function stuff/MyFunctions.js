@@ -99,8 +99,8 @@ window.setCorrectingInterval = (function(func, delay) {
   return tick(func, delay);
 });
 
-//Upgrade and Compound Items
-function upgrade_and_compound(ulevel, clevel) {
+//Upgrade/Compound/Sell/Exchange Items
+function seuc_merge(ulevel, clevel) {
   for (let i = 0; i < character.items.length; i++) {
     let c = character.items[i];
     if (c) {
@@ -156,6 +156,15 @@ function upgrade_and_compound(ulevel, clevel) {
           });
           return;
         }
+      } else if (c && ewhitelist.includes(c.name)) { //There is an item that has to be exchanged.
+
+        //Exchange the items.
+        exchange(i)
+        parent.e_item = i;
+      } else if (c && swhitelist.includes(c.name)) { //There is an item that has to be sold.
+
+        //Sell the items.
+        sell(i);
       }
     }
   }
@@ -251,7 +260,7 @@ function update_xptimer() {
   let now = new Date();
 
   let time = Math.round((now.getTime() - last_minutes_checked.getTime()) / 1000);
-  if (time < 1) return; // 1s safe delay
+  if (time < 1) return; //1s safe delay
   let xp_rate = Math.round((character.xp - last_xp_checked_minutes) / time);
   if (time > 60 * minute_refresh) {
     last_minutes_checked = new Date();

@@ -1,7 +1,7 @@
 // Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.7.2
+// Version 1.7.3
 
 //////////////////////////////
 // Optional Settings Start //
@@ -12,12 +12,14 @@ gui_timer = false; //Enable time till level [scripted session] = true, Disable t
 till_level = 0; //Kills till level = 0, XP till level = 1
 // GUI [if either GUI setting is turned on and then you want to turn them off you'll have to refresh the game] //
 
-uc = false; //Enable Upgrading & Compounding of items = true, Disable Upgrading & Compounding of items = false
+uc = false; //Enable Upgrading/Compounding/selling/exchanging of items = true, Disable Upgrading/Compounding/selling/exchanging of items = false
 upgrade_level = 8; //Max level it will stop upgrading items at if enabled
 compound_level = 3; //Max level it will stop compounding items at if enabled
+swhitelist = []; //swhitelist is for the selling of items
+ewhitelist = []; //ewhitelist is for the exchanging of items
 uwhitelist = []; //uwhitelist is for the upgrading of items.
 cwhitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj', 'amuletofm', 'orbofstr', 'orbofint', 'orbofres', 'orbofhp']; //cwhitelist is for the compounding of items.
-// Upgrading & Compounding [will only upgrade & Compound items that are in your inventory & in the whitelists] //
+// Upgrading/Compounding/selling/exchanging //
 
 purchase_pots = false; //Enable Potion Purchasing = true, Disable Potion Purchasing = false
 buy_hp = false; //Allow HP Pot Purchasing = true, Disallow HP Pot Purchasing = false
@@ -113,9 +115,9 @@ setTimeout(function() {
 
   setCorrectingInterval(function() {
 
-    //Upgrade and Compound Items
+    //Upgrade/Compound/Sell/Exchange Items
     if (uc) {
-      upgrade_and_compound(upgrade_level, compound_level);
+      seuc_merge(upgrade_level, compound_level);
     }
 
     //Purchases Potions when below threshold

@@ -1,7 +1,7 @@
 // Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.5.7
+// Version 1.5.8
 
 //////////////////////////////
 // Optional Settings Start //
@@ -12,12 +12,14 @@ var gui_timer = false; //Enable time till level [scripted session] = true, Disab
 var till_level = 0; //Kills till level = 0, XP till level = 1
 // GUI [if either GUI setting is turned on and then you want to turn them off you'll have to refresh the game] //
 
-var uc = false; //Enable Upgrading & Compounding of items = true, Disable Upgrading & Compounding of items = false
+var uc = false; //Enable Upgrading/Compounding/selling/exchanging of items = true, Disable Upgrading/Compounding/selling/exchanging of items = false
 var upgrade_level = 8; //Max level it will stop upgrading items at if enabled
 var compound_level = 3; //Max level it will stop compounding items at if enabled
+swhitelist = []; //swhitelist is for the selling of items
+ewhitelist = []; //ewhitelist is for the exchanging of items
 uwhitelist = []; //uwhitelist is for the upgrading of items.
 cwhitelist = ['wbook0', 'intamulet', 'stramulet', 'dexamulet', 'intearring', 'strearring', 'dexearring', 'hpbelt', 'hpamulet', 'ringsj', 'amuletofm', 'orbofstr', 'orbofint', 'orbofres', 'orbofhp']; //cwhitelist is for the compounding of items.
-// Upgrading & Compounding [will only upgrade & Compound items that are in your inventory & in the whitelists] //
+// Upgrading/Compounding/selling/exchanging //
 
 var purchase_pots = false; //Enable Potion Purchasing = true, Disable Potion Purchasing = false
 var buy_hp = false; //Allow HP Pot Purchasing = true, Disallow HP Pot Purchasing = false
@@ -113,9 +115,9 @@ setTimeout(function() {
 
   setCorrectingInterval(function() {
 
-    //Upgrade and Compound Items
+    //Upgrade/Compound/Sell/Exchange Items
     if (uc) {
-      upgrade_and_compound(upgrade_level, compound_level);
+      seuc_merge(upgrade_level, compound_level);
     }
 
     //Purchases Potions when below threshold
@@ -171,8 +173,8 @@ window.setCorrectingInterval = (function(func, delay) {
   return tick(func, delay);
 });
 
-//Upgrade & Compound items in your inventory
-function upgrade_and_compound(ulevel, clevel) {
+//Upgrade/Compound/Sell/Exchange Items
+function seuc_merge(ulevel, clevel) {
   for (let i = 0; i < character.items.length; i++) {
     let c = character.items[i];
     if (c) {
@@ -228,6 +230,15 @@ function upgrade_and_compound(ulevel, clevel) {
           });
           return;
         }
+      } else if (c && ewhitelist.includes(c.name)) { //There is an item that has to be exchanged.
+
+        //Exchange the items.
+        exchange(i)
+        parent.e_item = i;
+      } else if (c && swhitelist.includes(c.name)) { //There is an item that has to be sold.
+
+        //Sell the items.
+        sell(i);
       }
     }
   }
@@ -379,7 +390,7 @@ function update_xptimer() {
   let now = new Date();
 
   let time = Math.round((now.getTime() - last_minutes_checked.getTime()) / 1000);
-  if (time < 1) return; // 1s safe delay
+  if (time < 1) return; //1s safe delay
   let xp_rate = Math.round((character.xp - last_xp_checked_minutes) / time);
   if (time > 60 * minute_refresh) {
     last_minutes_checked = new Date();
