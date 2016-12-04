@@ -54,5 +54,5 @@ And anyone else in the future and who I may have missed.
   [4547b56c]: https://github.com/Dreemlan/Adventure-Land "Dreemlan Scripts"
   [d0515cb7]: https://github.com/TrentWDB/AdventureLandScripts "TrentWDB Scripts"
   [d2824ab2]: https://github.com/ishaanbharal/AdventureLand_Party "@ishaan1 Scripts"
-  [c3819301]: https://github.com/marcopoloq/adventure.land "Marcopoloq Scripts"
+  [c3819301]: https://github.com/marcopoloq/adventure.land-public "Marcopoloq Scripts"
   [f9271940]: https://github.com/kobergj/AdventureLandCODE "Kobergj Scripts"
