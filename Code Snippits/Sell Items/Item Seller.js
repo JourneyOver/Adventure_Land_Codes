@@ -1,4 +1,5 @@
 //Sells items in whitelist
+//currently sells items 1 at a time if an item is stacked
 //Courtesy of: JourneyOver
 
 var sItem = false; //Enable selling of items = true, Disable selling of items = false
@@ -8,7 +9,7 @@ setInterval(function() {
 
   //sells items in whitelist
   if (sItem) {
-    sellItem(i)
+    sellItem()
   }
 
 }, 1000 / 4); //Loop every 1/4 seconds.
