@@ -1,4 +1,4 @@
-//Only works on items already in your inventory! Auto Buys scrolls if out though!
+// Only items in the whitelists will be upgraded, items not in the list or above the required level are ignored.
 //Courtesy of: Mark
 
 var en = false; //Enable Upgrading of items = true, Disable Upgrading of items = false
@@ -15,8 +15,7 @@ setInterval(function() {
 }, 1000 / 4); // Loops every 1/4 seconds.
 
 function upgrade(level) {
-  let i = character.items.length;
-  while (i--) {
+  for (let i = 0; i < character.items.length; i++) {
     let c = character.items[i];
     if (c && whitelist.includes(c.name) && c.level < level) {
       let grades = get_grade(c);

@@ -1,9 +1,8 @@
 //Sells items in whitelist
-//currently sells items 1 at a time if an item is stacked
 //Courtesy of: JourneyOver
 
 var sItem = false; //Enable selling of items = true, Disable selling of items = false
-var whitelist = []; //Add items that you want to be sold as they come to your inventory [always add ' ' around item and , after item if adding more items]
+var whitelist = []; //whitelist is for the selling of items
 
 setInterval(function() {
 
@@ -15,13 +14,13 @@ setInterval(function() {
 }, 1000 / 4); //Loop every 1/4 seconds.
 
 function sellItem() {
-  let i = character.items.length;
-  while (i--) {
+  for (let i = 0; i < character.items.length; i++) {
     let c = character.items[i];
-    if (c && whitelist.includes(c.name)) {
+    if (c) {
+      if (c && whitelist.includes(c.name)) {
 
-      sell(i);
-      return;
+        sell(i);
+      }
     }
   }
 }
