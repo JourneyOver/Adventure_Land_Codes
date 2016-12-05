@@ -1,5 +1,53 @@
+<h1>Adventure Land Scripts</h1>
 
-<p align="center"> Thanks to the follow people for helping on snippits/code/and whatever else. </p>
+<p>This repo is a collection of scripts I have either pulled together from reddit, discord, various other sources, or created myself.</p>
+
+<p>-- Link to play the game --</p>
+
+<p>http://adventure.land/</p>
+
+<hr />
+
+<h2>Discussion / Discord Channel</h2>
+
+<p><a href="https://discord.gg/SfQ3FQm"><img src="https://pbs.twimg.com/profile_images/568588143226413056/9Lwrixxj.png" width=48></a>
+Discord is a chat program. Come to talk about Adventure Land, for help, or suggestions for new features https://discord.gg/SfQ3FQm</p>
+
+<hr />
+
+<h2>Contributing</h2>
+
+<p>Please use the Issue tracker here on Github for Issues, I'll gladly merge Pull requests.</p>
+
+<hr />
+
+<h2>Links!</h2>
+
+<p>Helpful Links</p>
+
+<ul>
+<li>Reddit: http://www.reddit.com/r/adventureland</li>
+<li>Wiki: http://adventureland.wikia.com/wiki/AdventureLand_Wiki</li>
+<li>FAQ for beginners: https://www.reddit.com/r/AdventureLand/comments/5918px/</li>
+<li>Using Chrome to help you CODE: https://www.reddit.com/r/AdventureLand/comments/58yp8e/</li>
+<li>CODE docs+runner_functions.js: https://github.com/kaansoral/adventureland/</li>
+</ul>
+
+<p>Links to other repositories with more scripts</p>
+
+<ul>
+<li><p><a href="https://github.com/TrentWDB/AdventureLandScripts" title="TrentWDB Scripts">TrentWDB Scripts</a></p></li>
+<li><p><a href="https://github.com/ishaanbharal/AdventureLand_Party" title="@ishaan1 Scripts">Ishaan1 Scripts</a></p></li>
+<li><p><a href="https://github.com/marcopoloq/adventure.land-public" title="Marcopoloq Scripts">Marcopoloq Scripts</a></p></li>
+<li><p><a href="https://github.com/Dreemlan/Adventure-Land" title="Dreemlan Scripts">Dreemlan Scripts</a></p></li>
+<li><p><a href="https://github.com/s3609381/AdventureLand" title="s3609381 Scripts">s3609381 Scripts</a></p></li>
+<li><p><a href="https://github.com/kobergj/AdventureLandCODE" title="Kobergj Scripts">Kobergj Scripts</a></p></li>
+<li><p><a href="https://github.com/zehric/ALCodes" title="Zehric Scripts">Zehric Scripts</a></p></li>
+</ul>
+
+<hr />
+
+<p align="center">Thanks to the follow people for helping on snippits/code/and whatever else. </p>
 
 1.@Sulsaries
 
@@ -27,32 +75,4 @@
 
 And anyone else in the future and who I may have missed.
 
-#
-### Adventure Land Codes
-
-## Get more functions from --
-
-[Adventure.land function base][9f58efd3]
-
-  [9f58efd3]: <https://github.com/kaansoral/adventureland> "Adventure.land function base"
-
-## Get some more scripts from --
-
-[TrentWDB Scripts][d0515cb7]
-
-[@ishaan1 Scripts][d2824ab2]
-
-[Marcopoloq Scripts][c3819301]
-
-[Dreemlan Scripts][4547b56c]
-
-[s3609381 Scripts][8690d847]
-
-[Kobergj Scripts][f9271940]
-
-  [8690d847]: https://github.com/s3609381/AdventureLand "s3609381 Scripts"
-  [4547b56c]: https://github.com/Dreemlan/Adventure-Land "Dreemlan Scripts"
-  [d0515cb7]: https://github.com/TrentWDB/AdventureLandScripts "TrentWDB Scripts"
-  [d2824ab2]: https://github.com/ishaanbharal/AdventureLand_Party "@ishaan1 Scripts"
-  [c3819301]: https://github.com/marcopoloq/adventure.land-public "Marcopoloq Scripts"
-  [f9271940]: https://github.com/kobergj/AdventureLandCODE "Kobergj Scripts"
+<hr />
