@@ -1,7 +1,7 @@
 // Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.7.3
+// Version 1.7.4
 
 //////////////////////////////
 // Optional Settings Start //
@@ -143,7 +143,7 @@ setTimeout(function() {
     loot();
 
   }, 500); //Loop every 500 milliseconds
-}, 300); //Delay execution of Grind Code by 300 milliseconds to load ajax.
+}, 500); //Delay execution of Grind Code by 500 milliseconds to load ajax.
 //--------------------------Grind Code End
 
 //If an error starts producing consistently, please notify me (@♦👻 ᒍOᑌᖇᑎᕮY Oᐯᕮᖇ 💎★#4607) on discord! [uncomment game log filters if you want them]
