@@ -1,6 +1,6 @@
 <h1>Game Over</h1>
 
-<p>As a consequence of the recent 1 + 1 + 1 character limit and the game going to what feels like full P2W, I will no longer be updating this repo.</p>
+<p>As a consequence of the recent 1 + 1 + 1 character limit and the game going to what feels like full P2W, I will no longer be updating this repo unless something changes or the 1 + 1 + 1 character limit is reverted back to 2 + 1 + 1.</p>
 
 <p>If someone else fancies to keep the show running, they are free to do so by forking this repo.</p>
 
