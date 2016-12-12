@@ -1,3 +1,9 @@
+<h1>Game Over</h1>
+
+<p>As a consequence of the recent 1 + 1 + 1 character limit and the game going to what feels like full P2W, I will no longer be updating this repo.</p>
+
+<p>If someone else fancies to keep the show running, they are free to do so by forking this repo.</p>
+
 <h1>Adventure Land Scripts</h1>
 
 <p>This repo is a collection of scripts I have either pulled together from reddit, discord, various other sources, or created myself.</p>
@@ -6,20 +12,14 @@
 
 <p>http://adventure.land/</p>
 
-<hr />
-
 <h2>Discussion / Discord Channel</h2>
 
 <p><a href="https://discord.gg/SfQ3FQm"><img src="https://pbs.twimg.com/profile_images/568588143226413056/9Lwrixxj.png" width=48></a>
 Discord is a chat program. Come to talk about Adventure Land, for help, or suggestions for new features https://discord.gg/SfQ3FQm</p>
 
-<hr />
-
 <h2>Contributing</h2>
 
 <p>Please use the Issue tracker here on Github for Issues, I'll gladly merge Pull requests.</p>
-
-<hr />
 
 <h2>Links!</h2>
 
