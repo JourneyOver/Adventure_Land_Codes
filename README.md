@@ -34,6 +34,7 @@ Discord is a chat program. Come to talk about Adventure Land, for help, or sugge
 </ul>
 
 <p>Links to other repositories with more scripts</p>
+<p>If you would like to be removed from the list below, please create a new issue stating you want to be removed and i will kindly remove you from the list</p>
 
 <ul>
 <li><p><a href="https://github.com/TrentWDB/AdventureLandScripts" title="TrentWDB Scripts">TrentWDB Scripts</a></p></li>
@@ -42,7 +43,6 @@ Discord is a chat program. Come to talk about Adventure Land, for help, or sugge
 <li><p><a href="https://github.com/Dreemlan/Adventure-Land" title="Dreemlan Scripts">Dreemlan Scripts</a></p></li>
 <li><p><a href="https://github.com/s3609381/AdventureLand" title="s3609381 Scripts">s3609381 Scripts</a></p></li>
 <li><p><a href="https://github.com/kobergj/AdventureLandCODE" title="Kobergj Scripts">Kobergj Scripts</a></p></li>
-<li><p><a href="https://github.com/zehric/ALCodes" title="Zehric Scripts">Zehric Scripts</a></p></li>
 </ul>
 
 <hr />
