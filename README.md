@@ -2,6 +2,8 @@
 
 <p>As a consequence of the recent 1 + 1 + 1 character limit and the game going to what feels like full P2W, I will no longer be updating this repo, nor supporting anything in this repo anymore unless something changes or the 1 + 1 + 1 character limit is reverted back to 2 + 1 + 1.</p>
 
+<p>UPDATE: As of recent (07/26/17) I had noticed that the game seems to be back to 2 + 1 + 1 on the character limit, even though this is back to at least how I somewhat prefer the game to be I do not think I will be coming back to it any time soon still. I'm still not going to be updating this repo, nor supporting anything in the repo for the most part (only thing I will continue to support is any sort of pull requests to this repo (if there are ever any that is xD)). I can't say if I will come back or not, I may check out how things are when the steam release comes out and possibly see about doing some updates then or see about maybe just coming back fully.</p>
+
 <p>If someone else fancies to keep the show running, they are free to do so by forking this repo.</p>
 
 <h1>Adventure Land Scripts</h1>
