@@ -1,6 +1,6 @@
 // Basic Grinding
 // Auto Compounding & Upgrading stuff Courtesy of: Mark
-// Version 1.10.8
+// Version 1.10.9
 
 //////////////////////////
 // Main Settings Start //
@@ -68,8 +68,8 @@ useSupershot = false; //[Ranger Skill] //Enable using supershot on cooldown = tr
 //JSONs
 
 //Grind Code start --------------------------
-setTimeout(function() {
-  setCorrectingInterval(function() {
+setTimeout(function () {
+  setInterval(function () {
 
     //Monster Searching
     var target = get_targeted_monster();
@@ -123,7 +123,7 @@ setTimeout(function() {
 
   }, (1 / character.frequency + 50) / 4); //base loop off character frequency
 
-  setCorrectingInterval(function() {
+  setInterval(function () {
 
     var target = get_targeted_monster();
     //Following/Maintaining Distance
@@ -157,7 +157,7 @@ setTimeout(function() {
 
   }, 250); //Loop every 250 milliseconds
 
-  setCorrectingInterval(function() {
+  setInterval(function () {
 
     //Upgrade/Compound/Sell/Exchange Items
     if (uc) {
@@ -171,7 +171,7 @@ setTimeout(function() {
 
   }, 1000); //Loop every 1 second.
 
-  setCorrectingInterval(function() {
+  setInterval(function () {
 
     //Updates GUI for Till_Level/Gold
     if (gui_tl_gold) {

@@ -1,6 +1,6 @@
 // Basic Grinding
 // Auto Compounding & Upgrading stuff Courtesy of: Mark
-// Version 1.10.2
+// Version 1.10.3
 
 //////////////////////////
 // Main Settings Start //
@@ -68,154 +68,126 @@ useSupershot = false; //[Ranger Skill] //Enable using supershot on cooldown = tr
 //JSONs
 
 //Grind Code start --------------------------
-setTimeout(function() {
-  setCorrectingInterval(function() {
+setInterval(function () {
 
-    //Monster Searching
-    var target = get_targeted_monster();
+  //Monster Searching
+  var target = get_targeted_monster();
+  if (mode == 2 && target && !in_attack_range(target)) target = null;
+  if (!target || (target.target && target.target != character.name)) {
+    target = get_closest_monster({
+      m_type_priority: mtype,
+      m_type_secondary: mtype2,
+      targeting_mode: mode,
+      no_attack: true,
+      path_check: true
+    });
     if (mode == 2 && target && !in_attack_range(target)) target = null;
-    if (!target || (target.target && target.target != character.name)) {
-      target = get_closest_monster({
-        m_type_priority: mtype,
-        m_type_secondary: mtype2,
-        targeting_mode: mode,
-        no_attack: true,
-        path_check: true
-      });
-      if (mode == 2 && target && !in_attack_range(target)) target = null;
-      if (target) {
-        change_target(target);
-      } else {
-        set_message("No Monsters");
-        return;
-      }
-    }
-
-    //Uses Vanish if enabled
-    if (useInvis && character.ctype === 'rogue') {
-      invis();
-    }
-
-    //Uses Burst if enabled [only on targets above 6,000 hp]
-    if (useBurst && target.hp > 6000 && character.ctype === 'mage') {
-      burst(target);
-    }
-
-    //Uses taunt if enabled
-    if (useTaunt && character.ctype === 'warrior') {
-      taunt(target);
-    }
-
-    //Uses Charge if enabled
-    if (useCharge && character.ctype === 'warrior') {
-      charge();
-    }
-
-    //Uses supershot if enabled [only on targets above 6,000 hp]
-    if (useSupershot && target.hp > 6000 && character.ctype === 'ranger') {
-      supershot(target);
-    }
-
-    //Attack
-    if (can_attack(target))
-      attack(target);
-    set_message("Attacking: " + target.mtype);
-
-  }, (1 / character.frequency + 50) / 4); //base loop off character frequency
-
-  setCorrectingInterval(function() {
-
-    var target = get_targeted_monster();
-    //Following/Maintaining Distance
-    if (mode == 0) {
-      //Walk half the distance
-      if (target && !in_attack_range(target)) {
-        move(
-          character.real_x + (target.real_x - character.real_x) / 2,
-          character.real_y + (target.real_y - character.real_y) / 2
-        );
-      }
-    } else if (mode == 1) {
-      if (target) {
-        //Move to front of target
-        move(target.real_x + 5, target.real_y + 5);
-      }
-    }
-
-    //Heal and restore mana if required
-    if (character.hp / character.max_hp < 0.4 && new Date() > parent.next_potion) {
-      parent.use('hp');
-      if (character.hp <= 100)
-        parent.socket.emit("transport", {
-          to: "main"
-        });
-      //Panic Button
-    }
-
-    if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
-      parent.use('mp');
-
-  }, 250); //Loop every 250 milliseconds
-
-  setCorrectingInterval(function() {
-
-    //Upgrade/Compound/Sell/Exchange Items
-    if (uc) {
-      seuc_merge(upgrade_level, compound_level);
-    }
-
-    //Purchases Potions when below threshold
-    if (purchase_pots) {
-      purchase_potions(buy_hp, buy_mp);
-    }
-
-  }, 1000); //Loop every 1 second.
-
-  setCorrectingInterval(function() {
-
-    //Updates GUI for Till_Level/Gold
-    if (gui_tl_gold) {
-      updateGUI();
-    }
-
-    //Updates GUI for Time Till Level
-    if (gui_timer) {
-      update_xptimer();
-    }
-
-    //Loot available chests
-    loot();
-
-  }, 500); //Loop every 500 milliseconds
-}, 10); //Delay execution of Grind Code by 10 milliseconds to load setCorrectingInterval.
-//--------------------------Grind Code End
-
-//self-correcting setInterval
-window.setCorrectingInterval = (function(func, delay) {
-  var instance = {};
-
-  function tick(func, delay) {
-    if (!instance.started) {
-      instance.func = func;
-      instance.delay = delay;
-      instance.startTime = new Date().valueOf();
-      instance.target = delay;
-      instance.started = true;
-
-      setTimeout(tick, delay);
+    if (target) {
+      change_target(target);
     } else {
-      var elapsed = new Date().valueOf() - instance.startTime,
-        adjust = instance.target - elapsed;
-
-      instance.func();
-      instance.target += instance.delay;
-
-      setTimeout(tick, instance.delay + adjust);
+      set_message("No Monsters");
+      return;
     }
-  };
+  }
 
-  return tick(func, delay);
-});
+  //Uses Vanish if enabled
+  if (useInvis && character.ctype === 'rogue') {
+    invis();
+  }
+
+  //Uses Burst if enabled [only on targets above 6,000 hp]
+  if (useBurst && target.hp > 6000 && character.ctype === 'mage') {
+    burst(target);
+  }
+
+  //Uses taunt if enabled
+  if (useTaunt && character.ctype === 'warrior') {
+    taunt(target);
+  }
+
+  //Uses Charge if enabled
+  if (useCharge && character.ctype === 'warrior') {
+    charge();
+  }
+
+  //Uses supershot if enabled [only on targets above 6,000 hp]
+  if (useSupershot && target.hp > 6000 && character.ctype === 'ranger') {
+    supershot(target);
+  }
+
+  //Attack
+  if (can_attack(target))
+    attack(target);
+  set_message("Attacking: " + target.mtype);
+
+}, (1 / character.frequency + 50) / 4); //base loop off character frequency
+
+setInterval(function () {
+
+  var target = get_targeted_monster();
+  //Following/Maintaining Distance
+  if (mode == 0) {
+    //Walk half the distance
+    if (target && !in_attack_range(target)) {
+      move(
+        character.real_x + (target.real_x - character.real_x) / 2,
+        character.real_y + (target.real_y - character.real_y) / 2
+      );
+    }
+  } else if (mode == 1) {
+    if (target) {
+      //Move to front of target
+      move(target.real_x + 5, target.real_y + 5);
+    }
+  }
+
+  //Heal and restore mana if required
+  if (character.hp / character.max_hp < 0.4 && new Date() > parent.next_potion) {
+    parent.use('hp');
+    if (character.hp <= 100)
+      parent.socket.emit("transport", {
+        to: "main"
+      });
+    //Panic Button
+  }
+
+  if (character.mp / character.max_mp < 0.3 && new Date() > parent.next_potion)
+    parent.use('mp');
+
+}, 250); //Loop every 250 milliseconds
+
+setInterval(function () {
+
+  //Upgrade/Compound/Sell/Exchange Items
+  if (uc) {
+    seuc_merge(upgrade_level, compound_level);
+  }
+
+  //Purchases Potions when below threshold
+  if (purchase_pots) {
+    purchase_potions(buy_hp, buy_mp);
+  }
+
+}, 1000); //Loop every 1 second.
+
+setCorrectingInterval(function () {
+
+  //Updates GUI for Till_Level/Gold
+  if (gui_tl_gold) {
+    updateGUI();
+  }
+
+  //Updates GUI for Time Till Level
+  if (gui_timer) {
+    update_xptimer();
+  }
+
+  //Loot available chests
+  loot();
+
+}, 500); //Loop every 500 milliseconds
+
+//--------------------------Grind Code End
 
 //Upgrade/Compound/Sell/Exchange Items
 function seuc_merge(ulevel, clevel) {

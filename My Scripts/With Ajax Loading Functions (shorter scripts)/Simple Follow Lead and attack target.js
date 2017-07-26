@@ -1,7 +1,7 @@
 // Follow Lead & Attack Leaders Target
 // Base Code & Auto Compounding stuff Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.7.4
+// Version 1.7.5
 
 //////////////////////////////
 // Optional Settings Start //
@@ -41,8 +41,8 @@ useSupershot = false; //[Ranger Skill] //Enable using supershot on cooldown = tr
 //////////////////////////
 
 //Grind Code start --------------------------
-setTimeout(function() {
-  setCorrectingInterval(function() {
+setTimeout(function () {
+  setInterval(function () {
 
     //Party leader
     let leader = get_player(character.party);
@@ -88,14 +88,14 @@ setTimeout(function() {
 
   }, (1 / character.frequency + 50) / 4); //base loop off character frequency
 
-  setCorrectingInterval(function() {
+  setInterval(function () {
 
     //Party leader
     let leader = get_player(character.party);
 
     //Move to leader.
     if (leader && !character.moving)
-    //Move only if you are not already moving.
+      //Move only if you are not already moving.
       move(leader.real_x + 30, leader.real_y - 30);
 
     //Heal and restore mana if required
@@ -113,7 +113,7 @@ setTimeout(function() {
 
   }, 250); //Loop every 250 milliseconds
 
-  setCorrectingInterval(function() {
+  setInterval(function () {
 
     //Upgrade/Compound/Sell/Exchange Items
     if (uc) {
@@ -127,7 +127,7 @@ setTimeout(function() {
 
   }, 1000); //Loop every 1 second.
 
-  setCorrectingInterval(function() {
+  setInterval(function () {
 
     //Updates GUI for Till_Level/Gold
     if (gui_tl_gold) {

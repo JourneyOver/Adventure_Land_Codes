@@ -14,8 +14,8 @@
 
 <h2>Discussion / Discord Channel</h2>
 
-<p><a href="https://discord.gg/SfQ3FQm"><img src="https://pbs.twimg.com/profile_images/568588143226413056/9Lwrixxj.png" width=48></a>
-Discord is a chat program. Come to talk about Adventure Land, for help, or suggestions for new features https://discord.gg/SfQ3FQm</p>
+<p><a href="https://discord.gg/4NUDSeG"><img src="http://68.media.tumblr.com/620cbc7437f078f413be90840891c36d/tumblr_o4g3i5qhBO1tpeordo1_400.png" width=48></a>
+Discord is a chat program. Come to talk about Adventure Land, for help, or suggestions for new features https://discord.gg/4NUDSeG</p>
 
 <h2>Contributing</h2>
 

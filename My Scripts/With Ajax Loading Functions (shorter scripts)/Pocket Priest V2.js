@@ -1,7 +1,7 @@
 // Pocket Priest V2
 // Base code and Auto Compounding Courtesy of: Mark
 // Edits & Additions By: JourneyOver
-// Version 1.5.7
+// Version 1.5.8
 
 //////////////////////////
 // Main Settings Start //
@@ -46,8 +46,8 @@ pots_to_buy = 1000; //This is how many you will buy
 //////////////////////////
 
 //Grind Code start --------------------------
-setTimeout(function() {
-  setCorrectingInterval(function() {
+setTimeout(function () {
+  setInterval(function () {
 
     //Get the Party leader
     let leader = get_player(character.party);
@@ -91,7 +91,7 @@ setTimeout(function() {
 
   }, (1 / character.frequency + 50) / 4); //base loop off character frequency
 
-  setCorrectingInterval(function() {
+  setInterval(function () {
 
     //Get the Party leader
     let leader = get_player(character.party);
@@ -100,7 +100,7 @@ setTimeout(function() {
 
     //Move to leader.
     if (leader && !character.moving)
-    //Move only if you are not already moving.
+      //Move only if you are not already moving.
       move(leader.real_x - 30, leader.real_y - 30);
 
     //Heal and restore mana if required
@@ -118,7 +118,7 @@ setTimeout(function() {
 
   }, 250); //Loop every 250 milliseconds
 
-  setCorrectingInterval(function() {
+  setInterval(function () {
 
     //Upgrade/Compound/Sell/Exchange Items
     if (uc) {
@@ -132,7 +132,7 @@ setTimeout(function() {
 
   }, 1000); //Loop every 1 second.
 
-  setCorrectingInterval(function() {
+  setInterval(function () {
 
     //Updates GUI for Till_Level/Gold
     if (gui_tl_gold) {
