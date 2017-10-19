@@ -170,7 +170,7 @@ setInterval(function () {
 
 }, 1000); //Loop every 1 second.
 
-setCorrectingInterval(function () {
+setInterval(function () {
 
   //Updates GUI for Till_Level/Gold
   if (gui_tl_gold) {
