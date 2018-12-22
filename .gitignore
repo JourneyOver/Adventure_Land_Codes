@@ -1,0 +1,10 @@
+### Don't upload these ###
+*.APIKEY
+*.txt
+common_functions.js
+functions.js
+game.js
+html.js
+index.css
+keyboard.js
+socket.io.js
